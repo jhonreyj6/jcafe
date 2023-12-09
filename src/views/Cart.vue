@@ -258,12 +258,9 @@ export default {
             cart_items: "",
             orders: [],
             subtotal: "",
-            
         };
     },
-    components: {
-        
-    },
+    components: {},
 
     props: [],
 

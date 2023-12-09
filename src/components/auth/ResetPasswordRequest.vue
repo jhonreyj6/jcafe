@@ -71,7 +71,7 @@ export default {
 
         })
         .catch(function (err) {
-          // this.$refs.reset_btn.removeAttribute('disabled');
+          console.log(err.response.data.message);
         });
 
     },
