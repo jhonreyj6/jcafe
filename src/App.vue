@@ -4,11 +4,14 @@
         <router-view></router-view>
         <Footer v-if="$route.name == 'Intro' || $route.name == 'Login' || $route.name == 'Rules'" />
         
+        <ChatBox v-if="currentUser" />
     </div>
 </template>
 <script>
+import ChatBox from './components/ChatBox.vue';
 import Footer from './components/Footer.vue';
 import Nav from './components/Nav.vue'
+import { userStore } from './stores/userStore';
 
 export default {
     data() {
@@ -19,6 +22,7 @@ export default {
     components: {
         Nav,
         Footer,
+        ChatBox,
     },
 
     props: {
@@ -26,7 +30,9 @@ export default {
     },
 
     computed: {
-
+        currentUser() {
+            return userStore().user;
+        }
     },
 
     methods: {
