@@ -1,18 +1,17 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.js';
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-import './helpers/axios'
-import './helpers/pusher'
+import { createApp } from "vue";
+import { createPinia } from "pinia";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.js";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import "./helpers/axios";
+import "./helpers/pusher";
+import App from "./App.vue";
+import router from "./router";
+import { StripePlugin } from '@vue-stripe/vue-stripe';
 
+const app = createApp(App);
 
-import App from './App.vue'
-import router from './router'
+app.use(createPinia().use(piniaPluginPersistedstate));
+app.use(router);
 
-const app = createApp(App)
-
-app.use(createPinia().use(piniaPluginPersistedstate))
-app.use(router)
-
-app.mount('#app')
+app.mount("#app");

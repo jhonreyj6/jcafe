@@ -342,10 +342,8 @@ export default {
             })
                 .then((res) => {
                     if (res.data.message == "like") {
-                        console.log("if");
                         data.get_likes.push(res.data.data);
                     } else {
-                        console.log("else");
                         data.get_likes.forEach((elem, index) => {
                             if (elem.user_id == userStore().user.id) {
                                 data.get_likes.splice(index, 1);

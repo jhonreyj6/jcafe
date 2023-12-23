@@ -142,18 +142,20 @@ export default {
             this.form.message = e.target.innerText.trim();
         },
 
-        // loadNewMessages() {
-        //   window.Echo.channel("chat").listen(".new_chat_message", (e) => {
-        //     this.chats.push(e.chat);
-        //     console.log(e.chat);
-        //   });
-        
         loadNewMessages() {
-            window.Echo.private("chat." + this.currentRoom).listen(".new_chat_message", (e) => {
-                this.chats.push(e.chat);
-                console.log('load new message');
-            });
+            this.getChatMessages();
+            let vm = this;
+            window.Echo.private("chat." + this.currentRoom).listen(
+                ".message.new",
+                (e) => {console.log(e); console.log("load new message");
+                    vm.getChatMessages();   
+                }
+            );
         },
+        
+        // disconnectChat() {
+        //     window.Echo.leave("chat." + this.currentRoom);
+        // },
 
         sendMessage() {
             const AuthStr = "Bearer ".concat(userStore().access_token);
@@ -163,9 +165,11 @@ export default {
                 url: `/api/chat`,
                 headers: { Authorization: AuthStr },
             })
-                .then((res) => {console.log(res.data);
+                .then((res) => {
                     this.form.message = "";
                     this.$refs.chatbox.textContent = "";
+                    // added
+                    this.chats.push(res.data);
                 })
                 .catch((err) => {
                     console.log(err.response.data.message);
@@ -180,6 +184,10 @@ export default {
             },
             deep: true,
         },
+        
+        currentRoom: function (val, oldVal) {
+            this.loadNewMessages();
+        },
     },
 
     updated() {},
@@ -187,9 +195,7 @@ export default {
     beforeMounted() {},
 
     mounted() {
-        this.getChatMessages();
         this.getChatRoom();
-        this.loadNewMessages();
     },
 };
 </script>

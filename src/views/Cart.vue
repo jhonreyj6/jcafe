@@ -247,10 +247,21 @@
                 </div>
             </div>
         </div>
+
+        <stripe-checkout
+            ref="checkoutRef"
+            mode="payment"
+            :pk="stripe.key"
+            :line-items="stripe.lineItems"
+            :success-url="stripe.successURL"
+            :cancel-url="stripe.cancelURL"
+            @loading="v => loading = v"
+        />
     </div>
 </template>
 <script>
 import { userStore } from "../stores/userStore";
+import { StripeCheckout } from "@vue-stripe/vue-stripe";
 
 export default {
     data() {
@@ -258,9 +269,26 @@ export default {
             cart_items: "",
             orders: [],
             subtotal: "",
+            stripe: {
+                key: import.meta.env.VITE_STRIPE_PK,
+                lineItems: [
+                    // {
+                    //   price: 'price_1N5u4PEcY1OBCePNf2mXqkdp',
+                    //   quantity: 1,
+                    // },
+                    // {
+                    //   price: 'price_1N5u2qEcY1OBCePNSKyIiJkS',
+                    //   quantity: 1,
+                    // }
+                ],
+                successURL:  `${window.location.origin}/payment/stripe/success`,
+                cancelURL: `${window.location.origin}/payment/stripe/cancel`,
+            },
         };
     },
-    components: {},
+    components: {
+        StripeCheckout
+    },
 
     props: [],
 
@@ -451,26 +479,41 @@ export default {
                     });
                 }
             });
+            
+            this.$refs.checkoutRef.redirectToCheckout();
 
+            // const AuthStr = "Bearer ".concat(userStore().access_token);
+            // axios({
+            //     method: "post",
+            //     data: { id: this.orders },
+            //     url: `/api/orders`,
+            //     headers: { Authorization: AuthStr },
+            // })
+            //     .then((res) => {
+            //         e.target.removeAttribute("disabled");
+            //         this.orders = [];
+            //         this.cart_items.forEach((item, index) => {
+            //             if (this.orders.includes(item.id)) {
+            //                 this.cart_items.splice(index, 1);
+            //             }
+            //         });
+            //     })
+            //     .catch((err) => {
+            //         console.log(err.response.data.message);
+            //     });
+        },
+
+        getCartITems() {
             const AuthStr = "Bearer ".concat(userStore().access_token);
             axios({
-                method: "post",
-                data: { id: this.orders },
-                url: `/api/orders`,
+                method: "get",
+                url: `/api/cart`,
                 headers: { Authorization: AuthStr },
             })
                 .then((res) => {
-                    e.target.removeAttribute("disabled");
-                    this.orders = [];
-                    this.cart_items.forEach((item, index) => {
-                        if (this.orders.includes(item.id)) {
-                            this.cart_items.splice(index, 1);
-                        }
-                    });
+                    this.cart_items = res.data.cart_items;
                 })
-                .catch((err) => {
-                    console.log(err.response.data.message);
-                });
+                .catch((err) => {});
         },
     },
 
@@ -486,16 +529,7 @@ export default {
     updated() {},
 
     mounted() {
-        const AuthStr = "Bearer ".concat(userStore().access_token);
-        axios({
-            method: "get",
-            url: `/api/cart`,
-            headers: { Authorization: AuthStr },
-        })
-            .then((res) => {
-                this.cart_items = res.data.cart_items;
-            })
-            .catch((err) => {});
+        this.getCartITems();
     },
 };
 </script>
