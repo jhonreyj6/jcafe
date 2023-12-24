@@ -145,6 +145,7 @@ const router = createRouter({
             meta: { requiresAuth: true },
             component: () =>
                 import(/* webpackChunkName: "Cart" */ "../views/Cart.vue"),
+            // components: () => defineAsyncComponent(() => import('../views/Cart.vue')),
         },
 
         {

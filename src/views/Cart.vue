@@ -263,7 +263,7 @@
 import { userStore } from "../stores/userStore";
 import { StripeCheckout } from "@vue-stripe/vue-stripe";
 
-export default {
+export default { 
     data() {
         return {
             cart_items: "",
