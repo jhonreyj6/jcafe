@@ -248,31 +248,28 @@
             </div>
         </div>
 
-        <div v-if="stripe.active">
-            <stripe-checkout
-                ref="checkoutRef"
-                mode="payment"
-                :pk="stripe.key"
-                :line-items="stripe.lineItems"
-                :success-url="stripe.successURL"
-                :cancel-url="stripe.cancelURL"
-                @loading="v => loading = v"
-            />
-        </div>
+        <stripe-checkout
+            ref="checkoutRef"
+            mode="payment"
+            :pk="stripe.key"
+            :line-items="stripe.lineItems"
+            :success-url="stripe.successURL"
+            :cancel-url="stripe.cancelURL"
+            @loading="(v) => (stripe.loading = v)"
+        />
     </div>
 </template>
 <script>
 import { userStore } from "../stores/userStore";
 import { StripeCheckout } from "@vue-stripe/vue-stripe";
 
-export default { 
+export default {
     data() {
         return {
             cart_items: "",
             orders: [],
             subtotal: "",
             stripe: {
-                active: false,
                 key: import.meta.env.VITE_STRIPE_PK,
                 lineItems: [
                     // {
@@ -280,13 +277,14 @@ export default {
                     //   quantity: 1,
                     // },
                 ],
-                successURL:  `${window.location.origin}/payment/stripe/success`,
+                successURL: `${window.location.origin}/payment/stripe/success`,
                 cancelURL: `${window.location.origin}/payment/stripe/cancel`,
+                loading: false,
             },
         };
     },
     components: {
-        StripeCheckout
+        StripeCheckout,
     },
 
     props: [],
@@ -468,10 +466,9 @@ export default {
             if (this.orders.length == 0) {
                 return false;
             }
-            
-            this.stripe.active = true;
+
             e.target.setAttribute("disabled", true);
-            
+
             this.cart_items.forEach((elem) => {
                 if (this.orders.includes(elem.id)) {
                     this.stripe.lineItems.push({
@@ -480,7 +477,7 @@ export default {
                     });
                 }
             });
-            
+
             this.$refs.checkoutRef.redirectToCheckout();
 
             // const AuthStr = "Bearer ".concat(userStore().access_token);
