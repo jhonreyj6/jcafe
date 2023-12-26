@@ -248,15 +248,17 @@
             </div>
         </div>
 
-        <stripe-checkout
-            ref="checkoutRef"
-            mode="payment"
-            :pk="stripe.key"
-            :line-items="stripe.lineItems"
-            :success-url="stripe.successURL"
-            :cancel-url="stripe.cancelURL"
-            @loading="v => loading = v"
-        />
+        <div v-if="stripe.active">
+            <stripe-checkout
+                ref="checkoutRef"
+                mode="payment"
+                :pk="stripe.key"
+                :line-items="stripe.lineItems"
+                :success-url="stripe.successURL"
+                :cancel-url="stripe.cancelURL"
+                @loading="v => loading = v"
+            />
+        </div>
     </div>
 </template>
 <script>
@@ -270,16 +272,13 @@ export default {
             orders: [],
             subtotal: "",
             stripe: {
+                active: false,
                 key: import.meta.env.VITE_STRIPE_PK,
                 lineItems: [
                     // {
                     //   price: 'price_1N5u4PEcY1OBCePNf2mXqkdp',
                     //   quantity: 1,
                     // },
-                    // {
-                    //   price: 'price_1N5u2qEcY1OBCePNSKyIiJkS',
-                    //   quantity: 1,
-                    // }
                 ],
                 successURL:  `${window.location.origin}/payment/stripe/success`,
                 cancelURL: `${window.location.origin}/payment/stripe/cancel`,
@@ -469,8 +468,10 @@ export default {
             if (this.orders.length == 0) {
                 return false;
             }
-
+            
+            this.stripe.active = true;
             e.target.setAttribute("disabled", true);
+            
             this.cart_items.forEach((elem) => {
                 if (this.orders.includes(elem.id)) {
                     this.stripe.lineItems.push({

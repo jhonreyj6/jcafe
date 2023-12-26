@@ -7,7 +7,6 @@ import "./helpers/axios";
 import "./helpers/pusher";
 import App from "./App.vue";
 import router from "./router";
-import { StripePlugin } from '@vue-stripe/vue-stripe';
 
 const app = createApp(App);
 

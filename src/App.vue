@@ -4,7 +4,7 @@
         <router-view></router-view>
         <Footer v-if="$route.name == 'Intro' || $route.name == 'Login' || $route.name == 'Rules'" />
         
-        <ChatBox v-if="currentUser" />
+        <ChatBox v-if="currentUser && $route.name != 'Rules'" />
     </div>
 </template>
 <script>

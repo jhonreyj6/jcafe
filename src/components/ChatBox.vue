@@ -214,6 +214,7 @@ export default {
 
 .w-chat {
     width: 450px !important;
+    z-index: 999;
 }
 
 .h-chat {
