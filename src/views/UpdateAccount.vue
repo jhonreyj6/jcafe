@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="space-intro">
-      <div class="container">
+      <div class="container mb-5">
         <div class="container-xl px-4 mt-4">
           <div class="row">
             <div class="col-xl-4">

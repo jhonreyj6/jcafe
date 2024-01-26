@@ -49,7 +49,9 @@
                                     to="/cart"
                                     class="nav-link position-relative"
                                 >
-                                    <i class="fa fa-shopping-cart fa-lg me-1"></i>
+                                    <i
+                                        class="fa fa-shopping-cart fa-lg me-1"
+                                    ></i>
                                     <span
                                         class="badge bg-info"
                                         id="cart_count"
@@ -67,11 +69,6 @@
                                         <i class="fa fa-cog fa-lg"></i>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end">
-                                        <!-- <li>
-                      <router-link to="/timeline" class="dropdown-item" href="#"
-                        >My Timeline</router-link
-                      >
-                    </li> -->
                                         <li>
                                             <router-link
                                                 to="/account/update"
@@ -124,6 +121,7 @@
                         </template>
                     </ul>
                 </div>
+                
             </div>
         </nav>
     </div>
@@ -147,11 +145,10 @@ export default {
         currentUser: () => {
             return userStore().user;
         },
-        
+
         cartCount() {
-            return userStore().cart_count;  
+            return userStore().cart_count;
         },
-        
     },
 
     methods: {

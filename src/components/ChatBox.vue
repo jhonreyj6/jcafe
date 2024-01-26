@@ -12,7 +12,7 @@
                     </div>
                 </div>
 
-                <div ref="chat_body">
+                <div ref="chat_body" class="d-none">
                     <div class="card-body relative h-chat overflow-auto">
                         <div v-for="chat in chats" :key="chat.id">
                             <div
@@ -80,7 +80,7 @@ export default {
             },
             chats: "",
             currentRoom: "",
-            chatbox_toggle: true,
+            chatbox_toggle: false,
         };
     },
     components: {},
@@ -178,12 +178,12 @@ export default {
     },
 
     watch: {
-        $data: {
-            handler: function (val, oldVal) {
-                console.log("watcher: ", val);
-            },
-            deep: true,
-        },
+        // $data: {
+        //     handler: function (val, oldVal) {
+        //         console.log("watcher: ", val);
+        //     },
+        //     deep: true,
+        // },
         
         currentRoom: function (val, oldVal) {
             this.loadNewMessages();
@@ -213,8 +213,14 @@ export default {
 }
 
 .w-chat {
-    width: 450px !important;
+    width: 450px;
     z-index: 999;
+}
+
+@media (max-width: 576px) {
+    .w-chat {
+        width: 100% !important;
+    }
 }
 
 .h-chat {

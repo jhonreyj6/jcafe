@@ -2,7 +2,7 @@
     <div>
         <Nav />
         <router-view></router-view>
-        <Footer v-if="$route.name == 'Intro' || $route.name == 'Login' || $route.name == 'Rules'" />
+        <Footer v-if="$route.name == 'Intro'" />
         
         <ChatBox v-if="currentUser && $route.name != 'Rules'" />
     </div>

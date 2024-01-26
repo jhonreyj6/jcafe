@@ -343,14 +343,14 @@ export default {
     },
   },
 
-  watch: {
-    $data: {
-      handler: function (val, oldVal) {
-        console.log("watcher: ", val);
-      },
-      deep: true,
-    },
-  },
+  // watch: {
+  //   $data: {
+  //     handler: function (val, oldVal) {
+  //       console.log("watcher: ", val);
+  //     },
+  //     deep: true,
+  //   },
+  // },
 
   created() {
     window.addEventListener("scroll", this.handleScroll);

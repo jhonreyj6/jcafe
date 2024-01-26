@@ -74,7 +74,7 @@
       </div>
 
       <div class="container">
-        <div class="d-flex">
+        <div class="d-flex flex-column flex-md-row">
           <div class="p-4 bg-info flex-fill text-white text-center">
             <div class="card">
               <div class="card-header">

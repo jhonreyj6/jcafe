@@ -1,0 +1,5 @@
+
+
+
+navbar dropdown on mobile toggle
+stripe issue from store to other page

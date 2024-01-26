@@ -98,24 +98,24 @@ export default {
 
     },
 
-    watch: {
-        $data: {
-            handler: function(val, oldVal) {
-                console.log('watcher: ',val);
-            },
-            deep: true
-        },
+    // watch: {
+    //     $data: {
+    //         handler: function(val, oldVal) {
+    //             console.log('watcher: ',val);
+    //         },
+    //         deep: true
+    //     },
 
-        $props: {
-            handler: function(val, oldVal) {
-                console.log('watcher: ',val);
-            },
-            deep: true
-        },
-        some_prop: function() {
-            //do something if some_prop updated
-        },
-    },
+    //     $props: {
+    //         handler: function(val, oldVal) {
+    //             console.log('watcher: ',val);
+    //         },
+    //         deep: true
+    //     },
+    //     some_prop: function() {
+    //         //do something if some_prop updated
+    //     },
+    // },
 
     deactivated() {
         this.$destroy();
