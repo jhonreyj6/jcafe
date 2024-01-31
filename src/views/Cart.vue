@@ -247,16 +247,6 @@
                 </div>
             </div>
         </div>
-
-        <stripe-checkout
-            ref="checkoutRef"
-            mode="payment"
-            :pk="stripe.key"
-            :line-items="stripe.lineItems"
-            :success-url="stripe.successURL"
-            :cancel-url="stripe.cancelURL"
-            @loading="(v) => (stripe.loading = v)"
-        />
     </div>
 </template>
 <script>
@@ -269,18 +259,6 @@ export default {
             cart_items: "",
             orders: [],
             subtotal: "",
-            stripe: {
-                key: import.meta.env.VITE_STRIPE_PK,
-                lineItems: [
-                    // {
-                    //   price: 'price_1N5u4PEcY1OBCePNf2mXqkdp',
-                    //   quantity: 1,
-                    // },
-                ],
-                successURL: `${window.location.origin}/payment/stripe/success`,
-                cancelURL: `${window.location.origin}/payment/stripe/cancel`,
-                loading: false,
-            },
         };
     },
     components: {
@@ -469,36 +447,25 @@ export default {
 
             e.target.setAttribute("disabled", true);
 
-            this.cart_items.forEach((elem) => {
-                if (this.orders.includes(elem.id)) {
-                    this.stripe.lineItems.push({
-                        price: elem.product_variant_details.stripe_api_id,
-                        quantity: elem.quantity,
+            const AuthStr = "Bearer ".concat(userStore().access_token);
+            axios({
+                method: "post",
+                data: { id: this.orders },
+                url: `/api/orders`,
+                headers: { Authorization: AuthStr },
+            })
+                .then((res) => {
+                    e.target.removeAttribute("disabled");
+                    this.cart_items.forEach((item, index) => {
+                        if (this.orders.includes(item.id)) {
+                            this.cart_items.splice(index, 1);
+                        }
                     });
-                }
-            });
-
-            this.$refs.checkoutRef.redirectToCheckout();
-
-            // const AuthStr = "Bearer ".concat(userStore().access_token);
-            // axios({
-            //     method: "post",
-            //     data: { id: this.orders },
-            //     url: `/api/orders`,
-            //     headers: { Authorization: AuthStr },
-            // })
-            //     .then((res) => {
-            //         e.target.removeAttribute("disabled");
-            //         this.orders = [];
-            //         this.cart_items.forEach((item, index) => {
-            //             if (this.orders.includes(item.id)) {
-            //                 this.cart_items.splice(index, 1);
-            //             }
-            //         });
-            //     })
-            //     .catch((err) => {
-            //         console.log(err.response.data.message);
-            //     });
+                    this.orders = [];
+                })
+                .catch((err) => {
+                    console.log(err.response.data.message);
+                });
         },
 
         getCartITems() {
@@ -515,14 +482,14 @@ export default {
         },
     },
 
-    watch: {
-        $data: {
-            handler: function (val, oldVal) {
-                console.log("watcher: ", val);
-            },
-            deep: true,
-        },
-    },
+    // watch: {
+    //     $data: {
+    //         handler: function (val, oldVal) {
+    //             console.log("watcher: ", val);
+    //         },
+    //         deep: true,
+    //     },
+    // },
 
     updated() {},
 

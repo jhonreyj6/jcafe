@@ -43,7 +43,7 @@
 
                   <template v-else>
                     <button
-                      class="btn btn-danger"
+                      class="btn btn-danger me-2"
                       type="button"
                       @click="cancelUpload"
                     >

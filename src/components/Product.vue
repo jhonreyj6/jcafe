@@ -188,6 +188,23 @@ export default {
             data.default_stocks = size.stock;
         },
     },
+    
+    watch: {
+        $data: {
+            handler: function(val, oldVal) {
+                console.log('watcher: ',val);
+            },
+            deep: true
+        },
+
+        $props: {
+            handler: function(val, oldVal) {
+                console.log('watcher: ',val);
+            },
+            deep: true
+        },
+    },
+    
     updated() {},
 
     mounted() {},
@@ -199,3 +216,4 @@ export default {
     height: 190px;
 }
 </style>
+
