@@ -251,7 +251,6 @@
 </template>
 <script>
 import { userStore } from "../stores/userStore";
-import { StripeCheckout } from "@vue-stripe/vue-stripe";
 
 export default {
     data() {
@@ -262,7 +261,7 @@ export default {
         };
     },
     components: {
-        StripeCheckout,
+        
     },
 
     props: [],
