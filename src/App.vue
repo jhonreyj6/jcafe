@@ -31,7 +31,7 @@ export default {
 
     computed: {
         currentUser() {
-            return userStore().user;
+            return userStore().access_token;
         }
     },
 
@@ -67,7 +67,7 @@ export default {
     },
 
     mounted() {
-
+        
     },
 }
 </script>

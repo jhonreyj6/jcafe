@@ -224,7 +224,7 @@
                                 href=""
                                 class="dropdown-toggle"
                                 data-bs-toggle="dropdown"
-                                >Latest Comments</a
+                                >Sort comments</a
                             >
                             <ul class="dropdown-menu">
                                 <li>
@@ -389,12 +389,6 @@ export default {
             this.$parent.edit_post.message = data.message;
             this.$parent.edit_post.attachment_remove = [];
         },
-
-        // getFileFormat(fileName) {
-        //     var re = /(?:\.([^.]+))?$/;
-        //     var ext = re.exec(fileName)[1];
-        //     return ext.trim();
-        // },
     },
 
     watch: {

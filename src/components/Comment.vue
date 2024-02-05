@@ -21,18 +21,21 @@
                         }}</span>
                         <pre class="comment-text">{{ comment.message }}</pre>
                         <div class="d-flex flex-row align-items-center">
-                            <a
-                                role="button"
-                                class="me-2"
-                                :class="
-                                    comment.authLikes
-                                        ? 'text-primary'
-                                        : 'text-secondary'
-                                "
-                                @click="likeComment(comment)"
-                            >
-                                Like
-                            </a>
+                            <div>
+                                <span :class="comment.authLikes ? 'text-primary' : ''">{{ comment.get_likes.length }}</span>
+                                <a
+                                    role="button"
+                                    class="me-2"
+                                    :class="
+                                        comment.authLikes
+                                            ? 'text-primary'
+                                            : 'text-secondary'
+                                    "
+                                    @click="likeComment(comment)"
+                                >
+                                    Like
+                                </a>
+                            </div>
                             <a role="button" class="me-2 text-secondary"
                                 >Reply</a
                             >
@@ -199,6 +202,7 @@ export default {
 
         likeComment(data) {
             data.authLikes = !data.authLikes;
+
             const AuthStr = "Bearer ".concat(userStore().access_token);
             axios({
                 method: "post",
@@ -206,7 +210,15 @@ export default {
                 headers: { Authorization: AuthStr },
             })
                 .then((res) => {
-                    // needed to finish this
+                    if (res.data.message == "like") {
+                        data.get_likes.unshift(res.data.data);
+                    } else {
+                        data.get_likes.forEach((elem, index) => {
+                            if (elem.comment_id == data.id) {
+                                data.get_likes.splice(index, 1);
+                            }
+                        });
+                    }
                 })
                 .catch((err) => {});
         },

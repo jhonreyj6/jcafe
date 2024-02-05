@@ -1,5 +1,4 @@
 
-
-
-navbar dropdown on mobile toggle
-stripe issue from store to other page
+chatbox message pagination error positioning and cant paginate when reach on top
+stripe
+sending

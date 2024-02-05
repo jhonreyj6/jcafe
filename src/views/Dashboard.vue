@@ -3,7 +3,9 @@
     <div class="container space-intro">
       <div class="row d-flex">
         <div class="col-lg-8">
-          <Post :datas="posts" />
+          <div>
+            <Post :datas="posts" />
+          </div>
         </div>
 
         <div class="col-lg-4">
