@@ -41,7 +41,7 @@
                                         >
                                             <div class="card-body">
                                                 <div class="row">
-                                                    <div class="col-sm-2 mb-2">
+                                                    <div class="col-md-2 mb-2">
                                                         <label
                                                             :for="
                                                                 'label_' +

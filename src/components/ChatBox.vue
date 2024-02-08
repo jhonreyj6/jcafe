@@ -34,7 +34,10 @@
                                     {{ chat.message }}
                                 </div>
 
-                                <div class="ms-auto text-sm text-secondary opacity-75" v-if="chat.sending">
+                                <div
+                                    class="ms-auto text-sm text-secondary opacity-75"
+                                    v-if="chat.sending"
+                                >
                                     <i class="fa fa-circle-o-notch fa-spin"></i>
                                 </div>
                             </div>
@@ -97,7 +100,7 @@ export default {
             },
             chatbox_state: false,
             sms_counter: -1,
-            sms_state: '',
+            sms_state: "",
         };
     },
     components: {},
@@ -119,7 +122,7 @@ export default {
             ) {
                 this.pagination.state = true;
                 let last_scrollT = this.$refs.chat_div.scrollTop;
-                
+
                 const AuthStr = "Bearer ".concat(userStore().access_token);
                 axios({
                     method: "get",
@@ -139,11 +142,10 @@ export default {
                         });
                         this.chats.next_page_url = res.data.next_page_url;
                         this.pagination.state = false;
-                        
                         this.$refs.chat_div.scrollTop = last_scrollT;
                     })
                     .catch((err) => {
-                        console.log(err.response.data.message);
+                        console.log(err.response);
                     });
             }
         },
@@ -182,7 +184,7 @@ export default {
                     this.chatbox_state = true;
                 })
                 .catch((err) => {
-                    console.log(err.response.data.message);
+                    console.log(err.response);
                 });
         },
 
@@ -197,7 +199,7 @@ export default {
                     this.currentRoom = res.data.id;
                 })
                 .catch((err) => {
-                    console.log(err.response.data.message);
+                    console.log(err.response);
                 });
         },
 
@@ -226,6 +228,7 @@ export default {
 
         sendMessage() {
             this.sms_state = true;
+
             this.chats.data.push({
                 id: this.sms_counter,
                 message: this.form.message.trim(),
@@ -235,6 +238,7 @@ export default {
                 updated_at: null,
                 sending: true,
             });
+
             this.$refs.chatbox.textContent = "";
             let temp_counter = this.sms_counter;
             let temp_msg = this.form.message;
@@ -250,28 +254,29 @@ export default {
             })
                 .then((res) => {
                     this.chats.data.forEach((data, index) => {
-                        if(data.id == temp_counter) {
+                        if (data.id == temp_counter) {
                             data.id = res.data.id;
                             data.created_at = res.data.created_at;
                             data.updated_at = res.data.updated_at;
                             data.sending = false;
                         }
                     });
+
                     this.sms_state = false;
                 })
                 .catch((err) => {
-                    console.log(err.response.data.message);
+                    console.log(err.response);
                 });
         },
     },
 
     watch: {
-        // $data: {
-        //     handler: function (val, oldVal) {
-        //         console.log("watcher: ", val);
-        //     },
-        //     deep: true,
-        // },
+        $data: {
+            handler: function (val, oldVal) {
+                console.log("watcher: ", val);
+            },
+            deep: true,
+        },
 
         currentRoom: function (val, oldVal) {
             window.Echo.connector.options.auth.headers.Authorization =
@@ -281,7 +286,7 @@ export default {
     },
 
     updated() {
-        if(this.sms_state) {
+        if (this.sms_state) {
             this.$refs.chat_div.scrollTop = this.$refs.chat_div.scrollHeight;
         }
     },

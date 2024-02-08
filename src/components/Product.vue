@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div
-                        class="col-lg-12 col-md-7 col-xl-3 border-sm-start-none border-start"
+                        class="col-lg-12 col-md-7 col-xl-3 border-sm-start-none"
                     >
                         <h4 class="mb-1 text-center" :id="`price_` + data.id">
                             ₱{{ data.default_price }}
