@@ -1,23 +1,27 @@
 <template>
     <div>
         <Nav />
-        <router-view></router-view>
+
+        <router-view v-slot="{ Component }">
+            <keep-alive include="Dashboard">
+                <component :is="Component" />
+            </keep-alive>
+        </router-view>
+
         <Footer v-if="$route.name == 'Intro'" />
-        
+
         <ChatBox v-if="currentUser && $route.name != 'Rules'" />
     </div>
 </template>
 <script>
-import ChatBox from './components/ChatBox.vue';
-import Footer from './components/Footer.vue';
-import Nav from './components/Nav.vue'
-import { userStore } from './stores/userStore';
+import ChatBox from "./components/ChatBox.vue";
+import Footer from "./components/Footer.vue";
+import Nav from "./components/Nav.vue";
+import { userStore } from "./stores/userStore";
 
 export default {
     data() {
-        return {
-            
-        }
+        return {};
     },
     components: {
         Nav,
@@ -25,53 +29,40 @@ export default {
         ChatBox,
     },
 
-    props: {
-
-    },
+    props: {},
 
     computed: {
         currentUser() {
             return userStore().access_token;
-        }
+        },
     },
 
-    methods: {
-
-    },
+    methods: {},
 
     watch: {
         $data: {
-            handler: function(val, oldVal) {
-                console.log('watcher: ',val);
+            handler: function (val, oldVal) {
+                console.log("watcher: ", val);
             },
-            deep: true
+            deep: true,
         },
 
         $props: {
-            handler: function(val, oldVal) {
-                console.log('watcher: ',val);
+            handler: function (val, oldVal) {
+                console.log("watcher: ", val);
             },
-            deep: true
+            deep: true,
         },
-        some_prop: function() {
-            
-        },
+        some_prop: function () {},
     },
 
-    updated() {
+    updated() {},
 
-    },
+    beforeMounted() {},
 
-    beforeMounted() {
-
-    },
-
-    mounted() {
-        
-    },
-}
+    mounted() {},
+};
 </script>
 
 <style scoped>
-
 </style>

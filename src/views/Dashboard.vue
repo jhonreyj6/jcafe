@@ -151,6 +151,7 @@ import Post from "../components/Post.vue";
 import { userStore } from "../stores/userStore";
 
 export default {
+    name: 'Dashboard',
     data() {
         return {
             image: [],

@@ -412,7 +412,7 @@ export default {
 }
 
 .attach_image {
-    height: 300px;
+    height: 500px;
 }
 
 .btn-outline-secondary:hover {
