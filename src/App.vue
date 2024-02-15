@@ -20,6 +20,8 @@ import Nav from "./components/Nav.vue";
 import { userStore } from "./stores/userStore";
 
 export default {
+    
+        
     data() {
         return {};
     },
