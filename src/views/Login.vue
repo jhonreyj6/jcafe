@@ -13,6 +13,23 @@
                         />
                     </div>
                     <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+                        <div class="mb-4 d-flex flex-row gap-2">
+                            <button
+                                type="button"
+                                class="btn btn-primary w-100"
+                                @click="socialiteLogin('facebook')"
+                            >
+                                Facebook
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-danger w-100"
+                                @click="socialiteLogin('google')" 
+                            >
+                                Button
+                            </button>
+                        </div>
+                    
                         <form @submit.prevent="authenticate">
                             <!-- Email input -->
                             <div class="form-outline mb-4">
@@ -82,6 +99,10 @@ export default {
     computed: {},
 
     methods: {
+        socialiteLogin(provider) {
+            window.location.href = `${import.meta.env.VITE_API_URL}/auth/${provider}/redirect`;
+        },
+        
         authenticate() {
             this.$refs.login_btn.setAttribute("disabled", true);
             axios({
