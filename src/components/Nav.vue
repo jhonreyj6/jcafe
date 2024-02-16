@@ -60,6 +60,14 @@
                                 </router-link>
                             </li>
                             <li class="nav-item">
+                                <router-link
+                                    to="/membership"
+                                    class="nav-link position-relative"
+                                >
+                                    <i class="fa fa-diamond"></i>
+                                </router-link>
+                            </li>
+                            <li class="nav-item">
                                 <div class="dropdown">
                                     <a
                                         class="dropdown-toggle nav-link"
@@ -121,7 +129,6 @@
                         </template>
                     </ul>
                 </div>
-                
             </div>
         </nav>
     </div>
@@ -189,3 +196,9 @@ export default {
     },
 };
 </script>
+
+<style>
+.nav-link {
+    color: #ffffff
+}
+</style>

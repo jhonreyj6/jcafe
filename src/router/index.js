@@ -22,7 +22,7 @@ const router = createRouter({
                 import(
                     /* webpackChunkName: "Dashboard" */ "../views/Dashboard.vue"
                 ),
-            meta: { requiresAuth: true, title: 'J6 Dashboard' },
+            meta: { requiresAuth: true, title: "J6 Dashboard" },
         },
 
         {
@@ -32,7 +32,7 @@ const router = createRouter({
                 import(/* webpackChunkName: "Login" */ "../views/Login.vue"),
             meta: {
                 disableIfLoggedIn: true,
-                title: 'J6 Login',
+                title: "J6 Login",
             },
         },
 
@@ -45,7 +45,7 @@ const router = createRouter({
                 ),
             meta: {
                 disableIfLoggedIn: true,
-                title: 'Reset Password',
+                title: "Reset Password",
             },
         },
 
@@ -58,7 +58,7 @@ const router = createRouter({
                 ),
             meta: {
                 disableIfLoggedIn: true,
-                title: 'Reset password request',
+                title: "Reset password request",
             },
         },
 
@@ -70,8 +70,8 @@ const router = createRouter({
                     /* webpackChunkName: "StripeSuccess" */ "../components/stripe/StripeSuccess.vue"
                 ),
             meta: {
-                title: 'Successful Payment',
-            }
+                title: "Successful Payment",
+            },
         },
 
         {
@@ -82,8 +82,8 @@ const router = createRouter({
                     /* webpackChunkName: "StripeCancel" */ "../components/stripe/StripeCancel.vue"
                 ),
             meta: {
-                title: 'Payment cancel',
-            }
+                title: "Payment cancel",
+            },
         },
 
         {
@@ -107,9 +107,35 @@ const router = createRouter({
                 ),
             meta: {
                 disableIfLoggedIn: true,
-                title: 'Register',
+                title: "Register",
             },
         },
+
+        {
+            path: "/membership",
+            name: "Membership",
+            component: () =>
+                import(
+                    /* webpackChunkName: "Membership" */ "../views/membership/Membership.vue"
+                ),
+            meta: {
+                title: "J6 Membership",
+                requiresAuth: true,
+            },
+        },
+        
+        // {
+        //     name: 'MembershipStatus',
+        //     path: "/membership/status",
+        //     component: () =>
+        //         import(
+        //             /* webpackChunkName: "MembershipStatus" */ "../views/membership/MembershipStatus.vue"
+        //         ),
+        //     meta: {
+        //         title: "Membership Status",
+        //         requiresAuth: true,
+        //     },
+        // },
 
         {
             path: "/games",
@@ -117,7 +143,7 @@ const router = createRouter({
             component: () =>
                 import(/* webpackChunkName: "Game" */ "../views/Game.vue"),
             meta: {
-                title: 'J6 Available Games',  
+                title: "J6 Available Games",
             },
         },
 
@@ -127,8 +153,8 @@ const router = createRouter({
             component: () =>
                 import(/* webpackChunkName: "Store" */ "../views/Store.vue"),
             meta: {
-                title: 'J6 Store',
-            }
+                title: "J6 Store",
+            },
         },
 
         {
@@ -136,9 +162,7 @@ const router = createRouter({
             name: "Rules",
             component: () =>
                 import(/* webpackChunkName: "Rules" */ "../views/Rules.vue"),
-            meta: {
-                
-            }
+            meta: {},
         },
 
         {

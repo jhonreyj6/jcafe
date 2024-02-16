@@ -19,14 +19,14 @@
                                 class="btn btn-primary w-100"
                                 @click="socialiteLogin('facebook')"
                             >
-                                Facebook
+                                <i class="fa fa-facebook-f"></i> Facebook
                             </button>
                             <button
                                 type="button"
                                 class="btn btn-danger w-100"
                                 @click="socialiteLogin('google')" 
                             >
-                                Button
+                            <i class="fa fa-google"></i> Google
                             </button>
                         </div>
                     
