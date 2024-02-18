@@ -17,7 +17,7 @@
                             <button
                                 type="button"
                                 class="btn btn-primary w-100"
-                                @click="socialiteLogin('facebook')"
+                                @click="openSocialiteWindow"
                             >
                                 <i class="fa fa-facebook-f"></i> Facebook
                             </button>
@@ -90,6 +90,9 @@ export default {
                 email: "",
                 password: "",
             },
+            facebook: {
+                redirect_url: "",
+            }
         };
     },
     components: {},
@@ -99,20 +102,22 @@ export default {
     computed: {},
 
     methods: {
-        // socialiteLogin(provider) {
-        //     window.location.href = `${import.meta.env.VITE_API_URL}/auth/${provider}/redirect`;
-        // },
-
+        openSocialiteWindow() {
+            this.openWindow(this.facebook.redirect_url, "message");
+        },
+        
         socialiteLogin(provider) {
-            const newWindow = this.openWindow("", "message");
+            // const newWindow = this.openWindow('', 'message');
+            
+            
             axios({
-                method: "get",
-                url: `${
-                    import.meta.env.VITE_API_URL
-                }/auth/${provider}/redirect`,
+                method: "GET",
+                withCredentials: false,
+                url: `/auth/${provider}/redirect`,
             })
-                .then((res) => {console.log(res.data);
-                    // newWindow.location.href = response.data.url;
+                .then((res) => {
+                    this.facebook.redirect_url = res.data;
+                    // newWindow.location.href = res.data.url;
                 })
                 .catch((err) => {
                     console.log(err.response);
@@ -123,7 +128,7 @@ export default {
             if (e.origin !== window.origin || !e.data.token) {
                 return;
             }
-            console.log(e.data);
+
             userStore().$patch((state) => {
                 state.user = Object.assign({}, e.data.user, {
                     access_token: res.data.access_token,
@@ -203,6 +208,22 @@ export default {
                 });
         },
     },
+    
+    watch: {
+        $data: {
+            handler: function(val, oldVal) {
+                console.log('watcher: ',val);
+            },
+            deep: true
+        },
+
+        $props: {
+            handler: function(val, oldVal) {
+                console.log('watcher: ',val);
+            },
+            deep: true
+        },
+    },
 
     updated() {},
 
@@ -213,16 +234,8 @@ export default {
     mounted() {
         // Waiting for the callback.blade.php message... (token and username).
         window.addEventListener("message", this.onMessage, false);
-        
-        // test
-        // axios({
-        //     method: 'get',
-        //     url: `${import.meta.env.VITE_API_URL}/test`,
-        // }).then(res => {
-        
-        // }).catch(err => {
-        
-        // });
+
+        this.socialiteLogin('facebook');
     },
 };
 </script>
@@ -233,3 +246,4 @@ export default {
     max-width: 900px;
 } */
 </style>
+
