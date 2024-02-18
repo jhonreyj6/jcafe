@@ -111,9 +111,8 @@ export default {
                     import.meta.env.VITE_API_URL
                 }/auth/${provider}/redirect`,
             })
-                .then((res) => {
-                    console.log(res.data);
-                    // newWindow.location.href = response.data;
+                .then((res) => {console.log(res.data);
+                    // newWindow.location.href = response.data.url;
                 })
                 .catch((err) => {
                     console.log(err.response);

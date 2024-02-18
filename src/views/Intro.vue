@@ -217,13 +217,13 @@
         </div>
       </div>
 
-      <div class="text-center mb-4">
+      <div class="text-center">
         <h3>Our PC Setup</h3>
       </div>
 
       <div class="container mb-5">
         <div class="row">
-          <div class="col-3">
+          <div class="col-md-3 mt-4">
             <div class="card">
               <div class="card">
                 <img
@@ -244,7 +244,7 @@
             </div>
           </div>
 
-          <div class="col-3">
+          <div class="col-md-3 mt-4">
             <div class="card">
               <div class="card">
                 <img
@@ -265,7 +265,7 @@
             </div>
           </div>
 
-          <div class="col-3">
+          <div class="col-md-3 mt-4">
             <div class="card">
               <div class="card">
                 <img
@@ -286,7 +286,7 @@
             </div>
           </div>
 
-          <div class="col-3">
+          <div class="col-md-3 mt-4">
             <div class="card">
               <div class="card">
                 <img
@@ -307,7 +307,7 @@
             </div>
           </div>
 
-          <div class="col-3 mt-4">
+          <div class="col-md-3 mt-4">
             <div class="card">
               <div class="card">
                 <img
@@ -328,7 +328,7 @@
             </div>
           </div>
 
-          <div class="col-3 mt-4">
+          <div class="col-md-3 mt-4">
             <div class="card">
               <div class="card">
                 <img
@@ -349,7 +349,7 @@
             </div>
           </div>
 
-          <div class="col-3 mt-4">
+          <div class="col-md-3 mt-4">
             <div class="card">
               <div class="card">
                 <img
@@ -370,7 +370,7 @@
             </div>
           </div>
 
-          <div class="col-3 mt-4">
+          <div class="col-md-3 mt-4">
             <div class="card">
               <div class="card">
                 <img
