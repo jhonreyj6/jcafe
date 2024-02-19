@@ -5,7 +5,7 @@
                 <div
                     class="row d-flex align-items-center justify-content-center h-100"
                 >
-                    <div class="col-md-8 col-lg-7 col-xl-6">
+                    <div class="col-md-8 col-lg-7 col-xl-6 mb-4">
                         <img
                             src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
                             class="img-fluid"
@@ -17,7 +17,7 @@
                             <button
                                 type="button"
                                 class="btn btn-primary w-100"
-                                @click="openSocialiteWindow"
+                                @click="socialiteLogin('facebook')"
                             >
                                 <i class="fa fa-facebook-f"></i> Facebook
                             </button>
@@ -30,7 +30,7 @@
                             </button>
                         </div>
 
-                        <form @submit.prevent="authenticate">
+                        <form @submit.prevent="authenticate" class="mb-4">
                             <!-- Email input -->
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="form1Example13"
@@ -57,23 +57,23 @@
                                 />
                             </div>
 
-                            <div
-                                class="d-flex justify-content-around align-items-center mb-4"
-                            >
-                                <router-link to="/reset/password/request"
-                                    >Forgot password?</router-link
-                                >
-                            </div>
-
                             <!-- Submit button -->
                             <button
                                 type="submit"
                                 ref="login_btn"
-                                class="btn btn-primary bg-gradient btn-lg btn-block"
+                                class="btn btn-primary w-100 bg-gradient btn-lg btn-block"
                             >
-                                Sign in
+                                Sign In
                             </button>
                         </form>
+
+                        <div
+                            class="d-flex justify-content-around align-items-center mb-4"
+                        >
+                            <router-link to="/reset/password/request"
+                                >Forgot password?</router-link
+                            >
+                        </div>
                     </div>
                 </div>
             </div>
@@ -90,9 +90,6 @@ export default {
                 email: "",
                 password: "",
             },
-            facebook: {
-                redirect_url: "",
-            }
         };
     },
     components: {},
@@ -102,22 +99,16 @@ export default {
     computed: {},
 
     methods: {
-        openSocialiteWindow() {
-            this.openWindow(this.facebook.redirect_url, "message");
-        },
-        
         socialiteLogin(provider) {
-            // const newWindow = this.openWindow('', 'message');
-            
-            
+            const newWindow = this.openWindow('', 'message');
+
             axios({
                 method: "GET",
-                withCredentials: false,
-                url: `/auth/${provider}/redirect`,
+                url: `/api/auth/${provider}/redirect`,
             })
                 .then((res) => {
-                    this.facebook.redirect_url = res.data;
-                    // newWindow.location.href = res.data.url;
+                    console.log(res.data);
+                    newWindow.location.href = res.data;
                 })
                 .catch((err) => {
                     console.log(err.response);
@@ -208,20 +199,20 @@ export default {
                 });
         },
     },
-    
+
     watch: {
         $data: {
-            handler: function(val, oldVal) {
-                console.log('watcher: ',val);
+            handler: function (val, oldVal) {
+                console.log("watcher: ", val);
             },
-            deep: true
+            deep: true,
         },
 
         $props: {
-            handler: function(val, oldVal) {
-                console.log('watcher: ',val);
+            handler: function (val, oldVal) {
+                console.log("watcher: ", val);
             },
-            deep: true
+            deep: true,
         },
     },
 
@@ -234,8 +225,6 @@ export default {
     mounted() {
         // Waiting for the callback.blade.php message... (token and username).
         window.addEventListener("message", this.onMessage, false);
-
-        this.socialiteLogin('facebook');
     },
 };
 </script>

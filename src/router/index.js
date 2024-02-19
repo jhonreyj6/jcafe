@@ -144,6 +144,7 @@ const router = createRouter({
                 import(/* webpackChunkName: "Game" */ "../views/Game.vue"),
             meta: {
                 title: "J6 Available Games",
+                requiresAuth: true,
             },
         },
 
@@ -154,6 +155,7 @@ const router = createRouter({
                 import(/* webpackChunkName: "Store" */ "../views/Store.vue"),
             meta: {
                 title: "J6 Store",
+                requiresAuth: true,
             },
         },
 

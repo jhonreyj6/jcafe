@@ -18,7 +18,7 @@
 
                 <div class="collapse navbar-collapse" id="collapsibleNavId">
                     <ul class="navbar-nav me-auto mt-lg-0">
-                        <li class="nav-item">
+                        <li class="nav-item" v-if="currentUser">
                             <router-link to="/games" class="nav-link">
                                 Games
                             </router-link>
@@ -28,7 +28,7 @@
                                 Rules
                             </router-link>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" v-if="currentUser">
                             <router-link to="/store" class="nav-link">
                                 Store
                             </router-link>

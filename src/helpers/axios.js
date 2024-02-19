@@ -1,6 +1,7 @@
 import axios from 'axios'
 window.axios = axios;
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+
 import { userStore } from '../stores/userStore';
 
 axios.interceptors.request.use(function (config) {
