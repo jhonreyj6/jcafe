@@ -18,7 +18,7 @@
 
                 <div class="collapse navbar-collapse" id="collapsibleNavId">
                     <ul class="navbar-nav me-auto mt-lg-0">
-                        <li class="nav-item" v-if="currentUser">
+                        <li class="nav-item">
                             <router-link to="/games" class="nav-link">
                                 Games
                             </router-link>
@@ -37,13 +37,6 @@
 
                     <ul class="navbar-nav mt-lg-0">
                         <template v-if="tokenExist">
-                            <li class="nav-item">
-                                <a class="nav-link hide-sm" role="button">
-                                    {{ currentUser.first_name }}
-                                    {{ currentUser.last_name }}
-                                </a>
-                            </li>
-
                             <li class="nav-item">
                                 <router-link
                                     to="/cart"

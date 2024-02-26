@@ -9,13 +9,7 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <!-- <Adsense
-            data-ad-client="ca-pub-5828491790124517"
-            data-ad-slot="8704391451"
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          >
-          </Adsense> -->
+                    <Ads />
                 </div>
             </div>
         </div>
@@ -149,9 +143,10 @@
 <script>
 import Post from "../components/Post.vue";
 import { userStore } from "../stores/userStore";
+import Ads from '../components/Ads.vue'
 
 export default {
-    name: 'Dashboard',
+    name: "Dashboard",
     data() {
         return {
             image: [],
@@ -177,6 +172,7 @@ export default {
 
     components: {
         Post,
+        Ads,
     },
 
     props: {},

@@ -271,12 +271,12 @@ export default {
     },
 
     watch: {
-        $data: {
-            handler: function (val, oldVal) {
-                console.log("watcher: ", val);
-            },
-            deep: true,
-        },
+        // $data: {
+        //     handler: function (val, oldVal) {
+        //         console.log("watcher: ", val);
+        //     },
+        //     deep: true,
+        // },
 
         currentRoom: function (val, oldVal) {
             window.Echo.connector.options.auth.headers.Authorization =

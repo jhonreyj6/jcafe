@@ -2,7 +2,7 @@
   <div class="space-intro">
     <div class="container">
       <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-8">
 
 
           <div class="accordion" id="accordionPanelsStayOpenExample">
@@ -104,17 +104,23 @@
 
 
         </div>
-        <div class="col-md-3">s</div>
+        <div class="col-md-4">
+            <Ads />
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import Ads from "../components/Ads.vue"
+
 export default {
   data() {
     return {};
   },
-  components: {},
+  components: {
+    Ads,
+  },
 
   props: {},
 

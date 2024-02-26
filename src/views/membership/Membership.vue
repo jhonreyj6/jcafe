@@ -30,43 +30,43 @@
                             Account No Limit
                         </div>
                         <div class="d-flex align-items-center py-1">
-                            <i class="fa fa-times me-2"></i>
+                            <i class="fa fa-times text-danger me-2"></i>
                             Christmas Event
                         </div>
                         <div class="d-flex align-items-center py-1">
-                            <i class="fa fa-times me-2"></i>
+                            <i class="fa fa-times text-danger me-2"></i>
                             Price Promo
                         </div>
                         <div class="d-flex align-items-center py-1">
-                            <i class="fa fa-times me-2"></i>
+                            <i class="fa fa-times text-danger me-2"></i>
                             Reservations Online
                         </div>
                         <div class="d-flex align-items-center py-1">
-                            <i class="fa fa-times me-2"></i>
+                            <i class="fa fa-times text-danger me-2"></i>
                             Tournament Reservation
                         </div>
                         <div class="d-flex align-items-center py-1">
-                            <i class="fa fa-times me-2"></i>
+                            <i class="fa fa-times text-danger me-2"></i>
                             Tournament Priority
                         </div>
                         <div class="d-flex align-items-center py-1">
-                            <i class="fa fa-times me-2"></i>
+                            <i class="fa fa-times text-danger me-2"></i>
                             Membership Bonus
                         </div>
                         <div class="d-flex align-items-center py-1">
-                            <i class="fa fa-times me-2"></i>
+                            <i class="fa fa-times text-danger me-2"></i>
                             Email / Call Support
                         </div>
                         <div class="d-flex align-items-center py-1">
-                            <i class="fa fa-times me-2"></i>
+                            <i class="fa fa-times text-danger me-2"></i>
                             SMS Notification
                         </div>
                         <div class="d-flex align-items-center py-1">
-                            <i class="fa fa-times me-2"></i>
+                            <i class="fa fa-times text-danger me-2"></i>
                             Membership Loyalty Christmas Gift
                         </div>
                         <div class="d-flex align-items-center py-1">
-                            <i class="fa fa-times me-2"></i>
+                            <i class="fa fa-times text-danger me-2"></i>
                             VIP Units Access
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                             Regular
                         </h3>
                         <div class="text-center">
-                            <h3>₱250 / month</h3>
+                            <h3>₱500 / month</h3>
                         </div>
                     </div>
                     <div class="px-4 my-4 h6">
@@ -123,27 +123,27 @@
                             Price Promo
                         </div>
                         <div class="d-flex align-items-center py-1">
-                            <i class="fa fa-times me-2"></i>
+                            <i class="fa fa-times text-danger me-2"></i>
                             Reservations Online
                         </div>
                         <div class="d-flex align-items-center py-1">
-                            <i class="fa fa-times me-2"></i>
+                            <i class="fa fa-times text-danger me-2"></i>
                             Tournament Reservation
                         </div>
                         <div class="d-flex align-items-center py-1">
-                            <i class="fa fa-times me-2"></i>
+                            <i class="fa fa-times text-danger me-2"></i>
                             Tournament Priority
                         </div>
                         <div class="d-flex align-items-center py-1">
-                            <i class="fa fa-times me-2"></i>
+                            <i class="fa fa-times text-danger me-2"></i>
                             Membership Bonus
                         </div>
                         <div class="d-flex align-items-center py-1">
-                            <i class="fa fa-times me-2"></i>
+                            <i class="fa fa-times text-danger me-2"></i>
                             Email / Call Support
                         </div>
                         <div class="d-flex align-items-center py-1">
-                            <i class="fa fa-times me-2"></i>
+                            <i class="fa fa-times text-danger me-2"></i>
                             SMS Notification
                         </div>
                     </div>
@@ -164,7 +164,7 @@
                             Pro
                         </h3>
                         <div class="text-center">
-                            <h3>₱250 / month</h3>
+                            <h3>₱750 / month</h3>
                         </div>
                     </div>
                     <div class="px-4 my-4 h6">

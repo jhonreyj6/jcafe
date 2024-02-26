@@ -11,9 +11,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <div class="card">
-
-                        </div>
+                        <Ads />
                     </div>
 
                 </div>
@@ -25,6 +23,7 @@
 import Product from '../components/Product.vue'
 import PaginateButton from '../components/PaginateButton.vue'
 import { userStore } from '../stores/userStore'
+import Ads from '../components/Ads.vue'
 
 export default {
     data() {
@@ -35,6 +34,7 @@ export default {
     components: {
         Product,
         PaginateButton,
+        Ads,
     },
 
     props: [],
