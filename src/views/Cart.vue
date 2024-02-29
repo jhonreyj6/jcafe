@@ -202,7 +202,7 @@
                                 <div class="card shadow">
                                     <div class="card-body p-4">
                                         <h3>Summary</h3>
-                                        <hr />
+                                        <hr />                                        
                                         <div class="mt-4">
                                             <div class="d-flex">
                                                 <div class="h5">Products</div>
@@ -218,7 +218,6 @@
                                                 <div class="h5">Discount</div>
                                                 <div class="ms-auto">0</div>
                                             </div>
-                                            <hr />
 
                                             <div class="d-flex mb-2">
                                                 <div class="h5">Total</div>
@@ -229,6 +228,10 @@
                                                     }}</span>
                                                 </div>
                                             </div>
+                                            
+                                            <hr />
+                                            
+                                            <div id="stripe-card-element" class="mb-4"></div>
 
                                             <div class="text-center">
                                                 <button
@@ -251,6 +254,7 @@
 </template>
 <script>
 import { userStore } from "../stores/userStore";
+import { loadStripe } from "@stripe/stripe-js";
 
 export default {
     data() {
@@ -258,11 +262,14 @@ export default {
             cart_items: "",
             orders: [],
             subtotal: "",
+            stripe: {
+                loadStripe: {},
+                cardElement: {},
+                paymentProcessing: false,
+            },
         };
     },
-    components: {
-        
-    },
+    components: {},
 
     props: [],
 
@@ -439,32 +446,87 @@ export default {
             }
         },
 
-        submitOrder(e) {
-            if (this.orders.length == 0) {
-                return false;
-            }
+        async submitOrder(e) {
+            // if (this.orders.length == 0) {
+            //     return false;
+            // }
 
-            e.target.setAttribute("disabled", true);
+            // e.target.setAttribute("disabled", true);
 
-            const AuthStr = "Bearer ".concat(userStore().access_token);
-            axios({
-                method: "post",
-                data: { id: this.orders },
-                url: `/api/orders`,
-                headers: { Authorization: AuthStr },
-            })
-                .then((res) => {
-                    e.target.removeAttribute("disabled");
-                    this.cart_items.forEach((item, index) => {
-                        if (this.orders.includes(item.id)) {
-                            this.cart_items.splice(index, 1);
+            // const AuthStr = "Bearer ".concat(userStore().access_token);
+            // axios({
+            //     method: "post",
+            //     data: { id: this.orders },
+            //     url: `/api/orders`,
+            //     headers: { Authorization: AuthStr },
+            // })
+            //     .then((res) => {
+            //         e.target.removeAttribute("disabled");
+            //         this.cart_items.forEach((item, index) => {
+            //             if (this.orders.includes(item.id)) {
+            //                 this.cart_items.splice(index, 1);
+            //             }
+            //         });
+            //         this.orders = [];
+            //     })
+            //     .catch((err) => {
+            //         console.log(err.response.data.message);
+            //     });
+            
+            this.stripe.paymentProcessing = true;
+
+                const { paymentMethod, error } = await this.stripe.loadStripe.createPaymentMethod(
+                    'card', this.stripe.cardElement, {
+                        billing_details: {
+                            name: userStore().user.first_name + ' ' + userStore().user.last_name,
+                            email: userStore().user.email,
+                            address: {
+                                line1: '',
+                                city: '',
+                                state: '',
+                                postal_code: 8105
+                            }
                         }
+                    }
+                );
+
+                if (error) {console.error(error);
+                    this.stripe.paymentProcessing = false;
+                    
+                } else {console.log(paymentMethod);
+                    let data = {
+                        payment_method_id: paymentMethod.id,
+                        orders: this.orders,
+                    };
+                    
+                    // this.customer.payment_method_id = paymentMethod.id;
+                    
+                    // this.customer.amount = this.$store.state.cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+                    // this.customer.cart = JSON.stringify(this.$store.state.cart);
+                    
+                    const AuthStr = 'Bearer '.concat(userStore().access_token);
+                    axios({
+                        method: 'POST',
+                        params: data,
+                        url: `/api/orders`,
+                        headers: {Authorization: AuthStr}
+                    }).then(res => {
+                        console.log(res.data);
+                    }).catch(err => {
+                        console.log(err.response);
                     });
-                    this.orders = [];
-                })
-                .catch((err) => {
-                    console.log(err.response.data.message);
-                });
+                    
+                    // axios.post('/api/orders', this.customer)
+                    //     .then((response) => {
+                    //         this.paymentProcessing = false;
+                    //         console.log(response);
+
+                    //     })
+                    //     .catch((error) => {
+                    //         this.paymentProcessing = false;
+                    //         console.error(error);
+                    //     });
+                }
         },
 
         getCartITems() {
@@ -481,19 +543,29 @@ export default {
         },
     },
 
-    // watch: {
-    //     $data: {
-    //         handler: function (val, oldVal) {
-    //             console.log("watcher: ", val);
-    //         },
-    //         deep: true,
-    //     },
-    // },
+    watch: {
+        $data: {
+            handler: function (val, oldVal) {
+                console.log("watcher: ", val);
+            },
+            deep: true,
+        },
+    },
 
     updated() {},
 
-    mounted() {
+     async mounted() {
         this.getCartITems();
+
+        this.stripe.loadStripe = await loadStripe(import.meta.env.VITE_STRIPE_PK);
+        const elements = this.stripe.loadStripe.elements();
+        this.stripe.cardElement = elements.create("card", {
+            classes: {
+                base: "rounded border border-primary p-4",
+            },
+        });
+
+        this.stripe.cardElement.mount("#stripe-card-element");
     },
 };
 </script>
