@@ -1,6 +1,6 @@
 <template>
     <div class="space-intro container">
-        <div class="d-flex flex-row gap-4">
+        <div class="d-flex flex-lg-row flex-sm-column gap-4">
             <div class="card w-100">
                 <div class="card-body p-0 h-75">
                     <div class="bg-success bg-gradient py-4 text-white">

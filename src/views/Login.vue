@@ -200,21 +200,21 @@ export default {
         },
     },
 
-    watch: {
-        $data: {
-            handler: function (val, oldVal) {
-                console.log("watcher: ", val);
-            },
-            deep: true,
-        },
+    // watch: {
+    //     $data: {
+    //         handler: function (val, oldVal) {
+    //             console.log("watcher: ", val);
+    //         },
+    //         deep: true,
+    //     },
 
-        $props: {
-            handler: function (val, oldVal) {
-                console.log("watcher: ", val);
-            },
-            deep: true,
-        },
-    },
+    //     $props: {
+    //         handler: function (val, oldVal) {
+    //             console.log("watcher: ", val);
+    //         },
+    //         deep: true,
+    //     },
+    // },
 
     updated() {},
 

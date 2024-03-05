@@ -166,15 +166,15 @@ const router = createRouter({
             meta: {},
         },
 
-        {
-            path: "/timeline",
-            name: "Timeline",
-            meta: { requiresAuth: true },
-            component: () =>
-                import(
-                    /* webpackChunkName: "Timeline" */ "../views/Timeline.vue"
-                ),
-        },
+        // {
+        //     path: "/timeline",
+        //     name: "Timeline",
+        //     meta: { requiresAuth: true },
+        //     component: () =>
+        //         import(
+        //             /* webpackChunkName: "Timeline" */ "../views/Timeline.vue"
+        //         ),
+        // },
 
         {
             path: "/cart",
@@ -182,6 +182,15 @@ const router = createRouter({
             meta: { requiresAuth: true },
             component: () =>
                 import(/* webpackChunkName: "Cart" */ "../views/Cart.vue"),
+            // components: () => defineAsyncComponent(() => import('../views/Cart.vue')),
+        },
+        
+        {
+            path: "/order",
+            name: "Order",
+            meta: { requiresAuth: true },
+            component: () =>
+                import(/* webpackChunkName: "Order" */ "../views/Order.vue"),
             // components: () => defineAsyncComponent(() => import('../views/Cart.vue')),
         },
 

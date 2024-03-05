@@ -94,6 +94,14 @@
                                                 >My Saves</router-link
                                             >
                                         </li>
+                                        <li>
+                                            <router-link
+                                                to="/order"
+                                                class="dropdown-item"
+                                                href="#"
+                                                >My Order</router-link
+                                            >
+                                        </li>
                                         <li><hr class="dropdown-divider" /></li>
                                         <li>
                                             <a
@@ -131,7 +139,9 @@ import { userStore } from "../stores/userStore";
 
 export default {
     data() {
-        return {};
+        return {
+            
+        };
     },
     components: {},
 
@@ -169,9 +179,7 @@ export default {
         },
     },
 
-    updated() {},
-
-    mounted() {
+    updated() {
         if (this.currentUser) {
             const AuthStr = "Bearer ".concat(userStore().access_token);
             axios({
@@ -187,11 +195,13 @@ export default {
                 .catch((err) => {});
         }
     },
+
+    mounted() {},
 };
 </script>
 
 <style scoped>
 .nav-link {
-    color: #ffffff
+    color: #ffffff;
 }
 </style>
