@@ -2,11 +2,11 @@
     <div>
         <div class="space-intro">
             <div class="container">
-                <div class="card shadow bg-primary">
+                <div class="mb-2" v-if="!stripe.state">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-8">
-                                <div class="card shadow mb-4">
+                                <div class="card mb-4">
                                     <div class="card-body p-4">
                                         <div
                                             class="h5"
@@ -35,7 +35,7 @@
                                         </div>
 
                                         <div
-                                            class="card shadow mb-3"
+                                            class="card mb-3"
                                             v-for="(item, index) in cart_items"
                                             :key="index"
                                         >
@@ -199,7 +199,7 @@
                             </div>
 
                             <div class="col-lg-4">
-                                <div class="card shadow">
+                                <div class="card">
                                     <div class="card-body p-4">
                                         <h3>Summary</h3>
                                         <hr />
@@ -232,7 +232,7 @@
 
                                             <div class="text-center">
                                                 <button
-                                                    @click="submitOrder"
+                                                    @click="stripe.state = true"
                                                     class="btn btn-primary w-100"
                                                 >
                                                     Checkout
@@ -245,12 +245,23 @@
                         </div>
                     </div>
                 </div>
+
+                <div id="card-element"></div>
+
+                <div class="p-2 w-full">
+                    <button
+                        class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+                        @click="processPayment"
+                        v-text="stripe.processing ? 'Processing' : 'Pay Now'"
+                    ></button>
+                </div>
             </div>
         </div>
     </div>
 </template>
 <script>
 import { userStore } from "../stores/userStore";
+import { loadStripe } from "@stripe/stripe-js";
 
 export default {
     data() {
@@ -259,6 +270,17 @@ export default {
             orders: [],
             subtotal: "",
             // event: null,
+            stripe: {
+                state: false,
+                processing: false,
+                load_stripe: '',
+                card_element: '',
+                form: {
+                    name: '',
+                    address: '',
+                    payment_method_id: '',
+                }
+            },
         };
     },
     components: {},
@@ -474,7 +496,50 @@ export default {
                 .catch((err) => {});
         },
 
-        
+        async processPayment() {
+            this.stripe.processing = true;
+
+            const { paymentMethod, error } =
+                await this.stripe.load_stripe.createPaymentMethod(
+                    "card",
+                    this.stripe.card_element,
+                    {
+                        billing_details: {
+                            name: userStore().user.first_name + userStore().user.last_name,
+                            email: userStore().user.email,
+                            // address: {
+                            //     line1: this.customer.address,
+                            //     city: this.customer.city,
+                            //     state: this.customer.state,
+                            //     postal_code: this.customer.zip_code,
+                            // },
+                            address: userStore().user.address,
+                        },
+                    }
+                );
+
+            if (error) {
+                this.paymentProcessing = false;
+                console.error(error);
+            } else {
+                this.stripe.form.payment_method_id = paymentMethod.id;
+                
+                const AuthStr = 'Bearer '.concat(userStore().accessToken);
+                axios({
+                    method: 'POST',
+                    params: {
+                        orders: this.orders,
+                        payment_method_id: this.stripe.form.payment_method_id,
+                    },
+                    url: `/api/orders`,
+                    headers: {Authorization: AuthStr}
+                }).then(res => {
+                    console.log(res.data);
+                }).catch(err => {
+                
+                });
+            }
+        },
     },
 
     watch: {
@@ -486,16 +551,21 @@ export default {
         },
     },
 
-    updated() {
-        
-    },
+    updated() {},
 
-    beforeCreate() {
+    beforeCreate() {},
 
-    },
-
-    mounted() {
+    async mounted() {
         this.getCartITems();
+
+        this.stripe.load_stripe = await loadStripe(import.meta.env.VITE_STRIPE_PK);
+        this.stripe.card_element = this.stripe.load_stripe.elements().create("card", {
+            classes: {
+                base: "bg-gray-100 rounded border border-gray-300 focus:border-indigo-500 text-base outline-none text-gray-700 p-3 leading-8 transition-colors duration-200 ease-in-out",
+            },
+        });
+
+        this.stripe.card_element.mount("#card-element");
     },
 };
 </script>
