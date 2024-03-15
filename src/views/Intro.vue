@@ -283,7 +283,7 @@
 
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3 mt-4">
+                    <div class="col-lg-3 mt-4">
                         <div class="card">
                             <div class="card">
                                 <img
@@ -292,23 +292,21 @@
                                     alt="pcbundle"
                                 />
                                 <div class="card-body">
-                                    <h5 class="card-title">
-                                        Ryzen 5 5600 / Rx 6600
-                                    </h5>
+                                    <h5 class="card-title">Ryzen 5 5600</h5>
                                     <div class="card-text mb-2">
                                         <div>Motherboard: A320m MSI</div>
                                         <div>Ram: 2x8gb DDR4 3200mhz</div>
                                         <div>Monitor: Lenovo 24" IPS</div>
                                     </div>
                                     <a href="#" class="btn btn-primary"
-                                        >View full specs</a
+                                        >Details</a
                                     >
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-3 mt-4">
+                    <div class="col-lg-3 mt-4">
                         <div class="card">
                             <div class="card">
                                 <img
@@ -317,23 +315,21 @@
                                     alt="pcbundle"
                                 />
                                 <div class="card-body">
-                                    <h5 class="card-title">
-                                        Ryzen 5 5500 / Rx 580 8gb
-                                    </h5>
+                                    <h5 class="card-title">Ryzen 5 5500</h5>
                                     <div class="card-text mb-2">
                                         <div>Motherboard: A320m Gigabyte</div>
                                         <div>Ram: 2x8gb DDR4 3200mhz</div>
                                         <div>Monitor: BenQ 24" IPS</div>
                                     </div>
                                     <a href="#" class="btn btn-primary"
-                                        >View full specs</a
+                                        >Details</a
                                     >
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-3 mt-4">
+                    <div class="col-lg-3 mt-4">
                         <div class="card">
                             <div class="card">
                                 <img
@@ -342,23 +338,21 @@
                                     alt="pcbundle"
                                 />
                                 <div class="card-body">
-                                    <h5 class="card-title">
-                                        I3 9100F / Rx 5500XT 8gb
-                                    </h5>
+                                    <h5 class="card-title">I3 9100F</h5>
                                     <div class="card-text mb-2">
                                         <div>Motherboard: A320m MSI</div>
                                         <div>Ram: 2x8gb DDR4 3200mhz</div>
                                         <div>Monitor: Lenovo 24" IPS</div>
                                     </div>
                                     <a href="#" class="btn btn-primary"
-                                        >View full specs</a
+                                        >Details</a
                                     >
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-3 mt-4">
+                    <div class="col-lg-3 mt-4">
                         <div class="card">
                             <div class="card">
                                 <img
@@ -367,23 +361,21 @@
                                     alt="pcbundle"
                                 />
                                 <div class="card-body">
-                                    <h5 class="card-title">
-                                        Ryzen 5 3400G / Vega 11
-                                    </h5>
+                                    <h5 class="card-title">Ryzen 5 3400G</h5>
                                     <div class="card-text mb-2">
                                         <div>Motherboard: A320m Asus</div>
                                         <div>Ram: 2x8gb DDR4 3200mhz</div>
                                         <div>Monitor: Lenovo 24" IPS</div>
                                     </div>
                                     <a href="#" class="btn btn-primary"
-                                        >View full specs</a
+                                        >Details</a
                                     >
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-3 mt-4">
+                    <div class="col-lg-3 mt-4">
                         <div class="card">
                             <div class="card">
                                 <img
@@ -392,23 +384,21 @@
                                     alt="pcbundle"
                                 />
                                 <div class="card-body">
-                                    <h5 class="card-title">
-                                        Ryzen 5 2400G / Vega 7
-                                    </h5>
+                                    <h5 class="card-title">Ryzen 5 2400G</h5>
                                     <div class="card-text mb-2">
                                         <div>Motherboard: A320m Asus</div>
                                         <div>Ram: 2x8gb DDR4 3200mhz</div>
                                         <div>Monitor: Lenovo 24" IPS</div>
                                     </div>
                                     <a href="#" class="btn btn-primary"
-                                        >View full specs</a
+                                        >Details</a
                                     >
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-3 mt-4">
+                    <div class="col-lg-3 mt-4">
                         <div class="card">
                             <div class="card">
                                 <img
@@ -417,23 +407,21 @@
                                     alt="pcbundle"
                                 />
                                 <div class="card-body">
-                                    <h5 class="card-title">
-                                        Ryzen 3 3200G / Vega 8
-                                    </h5>
+                                    <h5 class="card-title">Ryzen 3 3200G</h5>
                                     <div class="card-text mb-2">
                                         <div>Motherboard: A320m Asus</div>
                                         <div>Ram: 2x8gb DDR4 3200mhz</div>
                                         <div>Monitor: Lenovo 24" IPS</div>
                                     </div>
                                     <a href="#" class="btn btn-primary"
-                                        >View full specs</a
+                                        >Details</a
                                     >
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-3 mt-4">
+                    <div class="col-lg-3 mt-4">
                         <div class="card">
                             <div class="card">
                                 <img
@@ -442,23 +430,21 @@
                                     alt="pcbundle"
                                 />
                                 <div class="card-body">
-                                    <h5 class="card-title">
-                                        Ryzen 5 2200G / Vega 8
-                                    </h5>
+                                    <h5 class="card-title">Ryzen 5 2200G</h5>
                                     <div class="card-text mb-2">
                                         <div>Motherboard: A320m Asus</div>
                                         <div>Ram: 2x8gb DDR4 3200mhz</div>
                                         <div>Monitor: Lenovo 24" IPS</div>
                                     </div>
                                     <a href="#" class="btn btn-primary"
-                                        >View full specs</a
+                                        >Details</a
                                     >
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-3 mt-4">
+                    <div class="col-lg-3 mt-4">
                         <div class="card">
                             <div class="card">
                                 <img
@@ -467,16 +453,14 @@
                                     alt="pcbundle"
                                 />
                                 <div class="card-body">
-                                    <h5 class="card-title">
-                                        Athlon 3000G / Vega 3
-                                    </h5>
+                                    <h5 class="card-title">Athlon 3000G</h5>
                                     <div class="card-text mb-2">
                                         <div>Motherboard: A320m Asus</div>
                                         <div>Ram: 2x8gb DDR4 3200mhz</div>
                                         <div>Monitor: Lenovo 24" IPS</div>
                                     </div>
                                     <a href="#" class="btn btn-primary"
-                                        >View full specs</a
+                                        >Details</a
                                     >
                                 </div>
                             </div>
@@ -539,68 +523,13 @@
                                         </p>
                                     </div>
                                 </div>
-                                <div class="rating mt-3 text-success">
+                                <div class="rating mt-3">
                                     <div class="lc-block">
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
                                     </div>
                                 </div>
                             </div>
@@ -650,66 +579,11 @@
                                 </div>
                                 <div class="rating mt-3 text-success">
                                     <div class="lc-block">
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
                                     </div>
                                 </div>
                             </div>
@@ -756,66 +630,11 @@
                                 </div>
                                 <div class="rating mt-3 text-success">
                                     <div class="lc-block">
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
                                     </div>
                                 </div>
                             </div>
@@ -864,66 +683,11 @@
                                 </div>
                                 <div class="rating mt-3 text-success">
                                     <div class="lc-block">
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
                                     </div>
                                 </div>
                             </div>
@@ -971,66 +735,11 @@
                                 </div>
                                 <div class="rating mt-3 text-success">
                                     <div class="lc-block">
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
                                     </div>
                                 </div>
                             </div>
@@ -1075,66 +784,11 @@
                                 </div>
                                 <div class="rating mt-3 text-success">
                                     <div class="lc-block">
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
-                                        <svg
-                                            width="1em"
-                                            height="1em"
-                                            viewBox="0 0 16 16"
-                                            fill="currentColor"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            lc-helper="svg-icon"
-                                        >
-                                            <path
-                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                                            ></path>
-                                        </svg>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
                                     </div>
                                 </div>
                             </div>
@@ -1166,14 +820,33 @@ export default {
     height: 600px;
 }
 
+.card-text {
+    height: 90px;
+    overflow-y: hidden;
+}
+
+.fa-star {
+    color: #dde016;
+}
+
 .review-message {
-  height: 100px;
-  text-overflow: ellipsis;
-  overflow-y: hidden;
+    height: 100px;
+    text-overflow: ellipsis;
+    overflow-y: hidden;
 }
 
 #carouselintro {
     margin-top: 26px;
+}
+
+.card-img-top {
+    height: 300px;
+}
+
+@media (max-width: 991px) {
+    .card-img-top {
+        height: 360px;
+    }
 }
 </style>
 

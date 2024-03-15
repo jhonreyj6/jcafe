@@ -5,6 +5,7 @@ export const userStore = defineStore('user', {
       user: null,
       access_token : null,
       cart_count: 0,
+      subscription: false,
     }),
 
     getters: {

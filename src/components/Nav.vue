@@ -28,7 +28,7 @@
                                 Rules
                             </router-link>
                         </li>
-                        <li class="nav-item" v-if="currentUser">
+                        <li class="nav-item" v-if="currentUser.user">
                             <router-link to="/store" class="nav-link">
                                 Store
                             </router-link>
@@ -139,9 +139,7 @@ import { userStore } from "../stores/userStore";
 
 export default {
     data() {
-        return {
-            
-        };
+        return {};
     },
     components: {},
 
@@ -153,7 +151,7 @@ export default {
         },
 
         currentUser: () => {
-            return userStore().user;
+            return userStore();
         },
 
         cartCount() {
@@ -180,7 +178,7 @@ export default {
     },
 
     updated() {
-        if (this.currentUser) {
+        if (this.currentUser.user) {
             const AuthStr = "Bearer ".concat(userStore().access_token);
             axios({
                 method: "get",

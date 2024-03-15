@@ -3,14 +3,14 @@
         <div class="space-intro">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-lg-8">
                         <Product :datas="products"/>
                         <div class="float-end mt-2">
                             <PaginateButton :paginate_data="products"/>
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <Ads />
                     </div>
 

@@ -121,6 +121,7 @@ const router = createRouter({
             meta: {
                 title: "J6 Membership",
                 requiresAuth: true,
+                disableIfSubscribed: true,
             },
         },
         
@@ -134,6 +135,7 @@ const router = createRouter({
         //     meta: {
         //         title: "Membership Status",
         //         requiresAuth: true,
+        //         requiresSubscribe: true,
         //     },
         // },
 
@@ -237,6 +239,20 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title ?? "Welcome to J6 Cafe";
 
+    if (to.matched.some((record) => record.meta.disableIfSubscribed)) {
+        if (userStore().subscription) {
+            next({ path: "/dashboard", query: { redirect: to.fullPath } });
+            return false;
+        }
+    }
+    
+    // if (to.matched.some((record) => record.meta.requiresSubscribe)) {
+    //     if (!userStore().subscription) {
+    //         next({ path: "/dashboard", query: { redirect: to.fullPath } });
+    //         return false;
+    //     }
+    // }
+
     if (to.matched.some((record) => record.meta.requiresAuth)) {
         if (!userStore().access_token) {
             userStore().$reset();
@@ -251,6 +267,8 @@ router.beforeEach((to, from, next) => {
             return false;
         }
     }
+    
+    
 
     next();
 });

@@ -191,6 +191,7 @@ export default {
                             access_token: res.data.access_token,
                         });
                         state.access_token = res.data.access_token;
+                        state.subscription = res.data.subscription;
                     });
                     this.$router.push("/dashboard");
                 })

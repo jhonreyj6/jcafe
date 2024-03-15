@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "../jcafe_api"
+		},
+		{
+			"path": "../jcafe_admin"
 		}
 	],
 	"settings": {}

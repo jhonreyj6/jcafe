@@ -7,7 +7,7 @@
         >
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-12 col-lg-12 col-xl-3 mb-2">
+                    <div class="col-3">
                         <div
                             class="bg-image hover-zoom ripple rounded ripple-surface"
                         >
@@ -17,12 +17,12 @@
                             />
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-12 col-xl-6">
+                    <div class="col-6">
                         <h5>{{ data.name }}</h5>
                         <div class="d-flex flex-row mb-2">
                             <Star :rating="data.rating" />
                         </div>
-                        <p class="text-truncate mb-2">
+                        <p class="mb-2 product-description">
                             {{ data.description }}
                         </p>
                         <h6>Size:</h6>
@@ -38,7 +38,7 @@
                                     :value="data.default_variant"
                                 />
                                 <button
-                                    class="btn btn-sm me-1"
+                                    class="btn btn-sm me-1 text-white"
                                     :class="
                                         data.default_variant == size.value
                                             ? 'btn-info'
@@ -52,13 +52,13 @@
                         </div>
                     </div>
                     <div
-                        class="col-lg-12 col-md-7 col-xl-3 border-sm-start-none"
+                        class="col-3 border-sm-start-none"
                     >
-                        <h4 class="mb-1 text-center" :id="`price_` + data.id">
+                        <!-- <h4 class="mb-1 text-center" :id="`price_` + data.id">
                             ₱{{ data.default_price }}
-                        </h4>
-                        <div class="text-center mt-2">
-                            <div class="input-group mb-1">
+                        </h4> -->
+                        <div class="text-center">
+                            <!-- <div class="input-group mb-1">
                                 <button
                                     class="btn btn-primary btn-sm"
                                     type="button"
@@ -82,17 +82,13 @@
                                 >
                                     <i class="fa fa-plus"></i>
                                 </button>
-                            </div>
-
-                            <div class="text-muted">
-                                {{ data.default_stocks }} stocks left
-                            </div>
+                            </div> -->
 
                             <button
                                 type="button"
                                 @click="addToCart(data)"
                                 v-if="currentUser"
-                                class="btn btn-outline-primary btn-sm mt-2"
+                                class="btn btn-outline-primary mb-2 my-auto"
                             >
                                 Add to cart
                             </button>
@@ -100,10 +96,15 @@
                             <router-link
                                 v-else
                                 to="/login"
-                                class="btn btn-outline-primary btn-sm mt-2"
+                                class="btn btn-outline-primary mb-2 my-auto"
                             >
                                 Add to cart
                             </router-link>
+                            
+                            <div class="text-muted">
+                                {{ data.default_stocks }} stocks left
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -138,7 +139,7 @@ export default {
                 method: "POST",
                 data: {
                     product_id: data.id,
-                    quantity: document.getElementById("input_" + data.id).value,
+                    quantity: 1,
                     product_variant_id: data.default_product_variant_id,
                 },
                 url: `/api/cart`,
@@ -213,7 +214,13 @@ export default {
 
 <style scoped>
 .product-img {
-    height: 190px;
+    height: 220px;
 }
+
+.product-description {
+    height: 94px;
+    overflow-y: hidden;
+}
+
 </style>
 
