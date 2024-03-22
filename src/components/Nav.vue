@@ -3,7 +3,7 @@
         <nav
             class="navbar navbar-expand-sm navbar-dark bg-primary bg-gradient fixed-top"
         >
-            <div class="container">
+            <div class="container-lg container-fluid">
                 <router-link to="/"
                     ><a class="navbar-brand" href="#!">Jcafe</a></router-link
                 >

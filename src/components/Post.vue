@@ -16,35 +16,6 @@
                         <small class="text-mute">{{ data.created_time }}</small>
                     </div>
                 </div>
-                <div class="ms-auto mt-1 dropdown dropdown-menu-end" v-if="currentUser.id == data.user_id">
-                    <a
-                        role="button"
-                        class="p-2 text-secondary"
-                        data-bs-toggle="dropdown"
-                        ><i class="fa fa-ellipsis-h"></i
-                    ></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a
-                                role="button"
-                                class="dropdown-item"
-                                data-bs-toggle="modal"
-                                @click="updateParentEditPost(data)"
-                                data-bs-target="#editModal"
-                                >Edit</a
-                            >
-                        </li>
-                        <li class="dropdown-divider"></li>
-                        <li>
-                            <a
-                                class="dropdown-item"
-                                role="button"
-                                @click="deletePost(data)"
-                                >Delete</a
-                            >
-                        </li>
-                    </ul>
-                </div>
             </div>
 
             <div class="px-3 mb-2">
@@ -60,13 +31,23 @@
                         v-for="(file, index) in data.get_post_attachment_images"
                         :key="index"
                     >
-                        <router-link
-                            :to="`/post/${data.id}`"
-                        >
+                        <router-link :to="`/post/${data.id}?item=${index}`">
                             <img
+                                v-if="
+                                    file.file_type == 'png' ||
+                                    file.file_type == 'jpg' ||
+                                    !file.file_type
+                                "
                                 :src="file.image_url"
-                                class="w-100 attach_image"
+                                class="w-100"
+                                height="350"
                             />
+                            <video v-else class="w-100 h-100" controls>
+                                <source
+                                    :src="file.image_url"
+                                    :type="`video/${file.file_type}`"
+                                />
+                            </video>
                         </router-link>
                     </div>
                 </div>
@@ -80,13 +61,23 @@
                         v-for="(file, index) in data.get_post_attachment_images"
                         :key="index"
                     >
-                        <router-link
-                            :to="`/post/${data.id}`"
-                        >
+                        <router-link :to="`/post/${data.id}?item=${index}`">
                             <img
+                                v-if="
+                                    file.file_type == 'png' ||
+                                    file.file_type == 'jpg' ||
+                                    !file.file_type
+                                "
                                 :src="file.image_url"
-                                class="w-100 attach_image"
+                                class="w-100"
+                                height="320"
                             />
+                            <video v-else class="w-100 h-100" controls>
+                                <source
+                                    :src="file.image_url"
+                                    :type="`video/${file.file_type}`"
+                                />
+                            </video>
                         </router-link>
                     </div>
                 </div>
@@ -103,13 +94,23 @@
                             :key="index"
                         >
                             <div class="bg-dark h-100">
-                                <router-link
-                                    :to="`/post/${data.id}`"
-                                >
+                                <router-link :to="`/post/${data.id}?item=${index}`">
                                     <img
+                                        v-if="
+                                            file.file_type == 'png' ||
+                                            file.file_type == 'jpg' ||
+                                            !file.file_type
+                                        "
                                         :src="file.image_url"
-                                        class="w-100 attach_image"
+                                        class="w-100"
+                                        height="280"
                                     />
+                                    <video v-else class="w-100 h-100" controls>
+                                        <source
+                                            :src="file.image_url"
+                                            :type="`video/${file.file_type}`"
+                                        />
+                                    </video>
                                 </router-link>
                             </div>
                         </div>
@@ -126,13 +127,23 @@
                             :key="index"
                         >
                             <div class="bg-dark h-100">
-                                <router-link
-                                    :to="`/post/${data.id}`"
-                                >
+                                <router-link :to="`/post/${data.id}?item=${index}`">
                                     <img
+                                        v-if="
+                                            file.file_type == 'png' ||
+                                            file.file_type == 'jpg' ||
+                                            !file.file_type
+                                        "
                                         :src="file.image_url"
-                                        class="w-100 attach_image"
+                                        class="w-100"
+                                        height="240"
                                     />
+                                    <video v-else class="w-100 h-100" controls>
+                                        <source
+                                            :src="file.image_url"
+                                            :type="`video/${file.file_type}`"
+                                        />
+                                    </video>
                                 </router-link>
                             </div>
                         </div>
@@ -150,17 +161,27 @@
                             :key="index"
                         >
                             <div class="bg-dark h-100">
-                                <router-link
-                                    :to="`/post/${data.id}`"
-                                >
+                                <router-link :to="`/post/${data.id}?item=${index}`">
                                     <img
+                                        v-if="
+                                            file.file_type == 'png' ||
+                                            file.file_type == 'jpg' ||
+                                            !file.file_type
+                                        "
                                         :class="index == 3 ? 'opacity-25' : ''"
                                         :src="file.image_url"
-                                        class="w-100 attach_image"
+                                        class="w-100"
+                                        height="240"
                                     />
+                                    <video v-else class="w-100 h-100" controls>
+                                        <source
+                                            :src="file.image_url"
+                                            :type="`video/${file.file_type}`"
+                                        />
+                                    </video>
                                     <div
-                                        class="position-absolute center text-white"
-                                        v-show="index == 3"
+                                        class="position-absolute end-50 top-50 text-white"
+                                        v-if="index == 3"
                                     >
                                         <i class="fa fa-plus-square"></i>
                                     </div>
@@ -172,12 +193,12 @@
             </div>
 
             <div
-                class="card px-4 rounded-5 mx-3 mb-2"
+                class="card px-4 rounded-1 py-1 mx-3 mb-2"
                 v-for="file in data.get_post_attachment_files"
                 :key="file.id"
             >
                 <div class="d-flex flex-row justify-content-between">
-                    <div>
+                    <div class="text-primary">
                         {{ file.name }}
                     </div>
                     <div class="text-primary">
@@ -286,7 +307,7 @@ export default {
     computed: {
         currentUser() {
             return userStore().user;
-        }
+        },
     },
 
     methods: {
@@ -354,26 +375,6 @@ export default {
                 .catch((err) => {});
         },
 
-        deletePost(data) {
-            const AuthStr = "Bearer ".concat(userStore().access_token);
-            axios({
-                method: "delete",
-                params: {
-                    id: data.id,
-                },
-                url: `/api/posts`,
-                headers: { Authorization: AuthStr },
-            })
-                .then((res) => {
-                    this.datas.data.forEach((elem, index) => {
-                        if (elem.id == data.id) {
-                            this.datas.data.splice(index, 1);
-                        }
-                    });
-                })
-                .catch((err) => {});
-        },
-
         latestComments(data) {
             this.data_pass.sort = "latest";
             this.data_pass.sort_id = data.id;
@@ -409,10 +410,6 @@ export default {
 <style scoped>
 .border-post {
     border: 1px solid #e1e1e1;
-}
-
-.attach_image {
-    height: 500px;
 }
 
 .btn-outline-secondary:hover {
