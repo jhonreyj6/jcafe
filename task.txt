@@ -1,4 +1,0 @@
-
-chatbox message pagination error positioning and cant paginate when reach on top
-stripe
-sending
