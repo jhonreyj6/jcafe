@@ -214,11 +214,11 @@ export default {
 
 <style scoped>
 .product-img {
-    height: 220px;
+    height: 170px;
 }
 
 .product-description {
-    height: 94px;
+    max-height: 100px;
     overflow-y: hidden;
 }
 
