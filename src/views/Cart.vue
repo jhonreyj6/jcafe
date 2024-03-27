@@ -7,7 +7,7 @@
                         <div class="col-lg-8">
                             <div class="card mb-4">
                                 <div class="card-body p-4">
-                                    <div class="h5" v-if="cart_items.length">
+                                    <div class="h5" v-if="cart_items">
                                         Shopping Cart
                                     </div>
                                     <div v-else class="h5">
@@ -18,7 +18,7 @@
                                     <div class="d-flex flex-row justify-content-between align-items-center mb-4">
                                         <div
                                             class="form-check"
-                                            v-if="cart_items.length"
+                                            v-if="cart_items"
                                         >
                                             <label class="form-check-label fs-5">
                                                 <input
@@ -630,14 +630,14 @@ export default {
         },
     },
 
-    watch: {
-        $data: {
-            handler: function (val, oldVal) {
-                console.log("watcher: ", val);
-            },
-            deep: true,
-        },
-    },
+    // watch: {
+    //     $data: {
+    //         handler: function (val, oldVal) {
+    //             console.log("watcher: ", val);
+    //         },
+    //         deep: true,
+    //     },
+    // },
 
     updated() {},
 
