@@ -108,6 +108,8 @@ export default {
 
     methods: {
         handleSdkInit({ FB, scope }) {
+            console.log(FB);
+            console.log(scope);
             this.FB = FB;
             this.scope = scope;
         },
