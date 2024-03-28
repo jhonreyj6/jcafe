@@ -115,10 +115,10 @@ export default {
         },
 
         onMessage(e) {
-            if (e.origin !== window.origin || !e.data.token) {
+            if (e.origin !== window.origin || !e.data.access_token) {
                 return;
             }
-
+            console.log(e);
             userStore().$patch((state) => {
                 state.user = Object.assign({}, e.data.user, {
                     access_token: res.data.access_token,
