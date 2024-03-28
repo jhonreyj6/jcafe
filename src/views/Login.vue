@@ -29,8 +29,11 @@
                                 <i class="fa fa-google"></i> Google
                             </button>
                         </div> -->
-                        
-                        <v-facebook-login app-id="1443404723250100"></v-facebook-login>
+
+                        <v-facebook-login
+                            app-id="1443404723250100"
+                            @sdk-init="handleSdkInit"
+                        ></v-facebook-login>
 
                         <form @submit.prevent="authenticate" class="mb-4">
                             <!-- Email input -->
@@ -84,7 +87,7 @@
 </template>
 <script>
 import { userStore } from "../stores/userStore";
-import VFacebookLogin from 'vue-facebook-login-component-next'
+import VFacebookLogin from "vue-facebook-login-component-next";
 
 export default {
     data() {
@@ -104,6 +107,11 @@ export default {
     computed: {},
 
     methods: {
+        handleSdkInit({ FB, scope }) {
+            this.FB = FB;
+            this.scope = scope;
+        },
+
         socialiteLogin(provider) {
             // const newWindow = this.openWindow('', 'message');
 
@@ -125,7 +133,7 @@ export default {
         //     if (e.origin !== window.origin || !e.data.access_token) {
         //         return;
         //     }
-            
+
         //     userStore().$patch((state) => {
         //         state.user = Object.assign({}, e.data.user, {
         //             access_token: res.data.access_token,
