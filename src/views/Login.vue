@@ -100,15 +100,14 @@ export default {
 
     methods: {
         socialiteLogin(provider) {
-            // const newWindow = this.openWindow('', 'message');
+            const newWindow = this.openWindow('', 'message');
 
             axios({
                 method: "GET",
                 url: `/api/auth/${provider}/redirect`,
             })
                 .then((res) => {
-                    console.log(res.data);
-                    // newWindow.location.href = res.data;
+                    newWindow.location.href = res.data;
                 })
                 .catch((err) => {
                     console.log(err.response);
