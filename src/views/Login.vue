@@ -13,7 +13,7 @@
                         />
                     </div>
                     <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-                        <div class="mb-4 d-flex flex-row gap-2">
+                        <!-- <div class="mb-4 d-flex flex-row gap-2">
                             <button
                                 type="button"
                                 class="btn btn-primary w-100"
@@ -28,7 +28,9 @@
                             >
                                 <i class="fa fa-google"></i> Google
                             </button>
-                        </div>
+                        </div> -->
+                        
+                        <v-facebook-login app-id="1443404723250100"></v-facebook-login>
 
                         <form @submit.prevent="authenticate" class="mb-4">
                             <!-- Email input -->
@@ -82,6 +84,7 @@
 </template>
 <script>
 import { userStore } from "../stores/userStore";
+import VFacebookLogin from 'vue-facebook-login-component-next'
 
 export default {
     data() {
@@ -92,7 +95,9 @@ export default {
             },
         };
     },
-    components: {},
+    components: {
+        VFacebookLogin,
+    },
 
     props: [],
 
