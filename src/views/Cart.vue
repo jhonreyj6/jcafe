@@ -30,7 +30,7 @@
                                                 Select All
                                             </label>
                                         </div>
-                                        <div>
+                                        <div v-if="cart_items">
                                             <a 
                                                 role="button"
                                                 class="text-danger fs-5"
@@ -467,28 +467,7 @@ export default {
                 });
         },
 
-        deleteCartItem() {
-            // // delete the v-for cart item
-            // this.cart_items.forEach((elem, index) => {
-            //     if (elem == item) {
-            //         this.cart_items.splice(index, 1);
-            //     }
-            // });
-
-            // // remove orders array value
-            // if (this.orders) {
-            //     this.orders.forEach((elem, index) => {
-            //         if (elem == item.id) {
-            //             this.orders.splice(index, 1);
-            //             this.$refs.subtotal.innerText =
-            //                 parseInt(this.$refs.subtotal.innerText) -
-            //                 item.product_variant_details.price *
-            //                     +document.getElementById("input_" + item.id)
-            //                         .value;
-            //         }
-            //     });
-            // }
-            
+        deleteCartItem() {            
             const AuthStr = "Bearer ".concat(userStore().access_token);
             axios
                 .delete(`/api/cart`, {

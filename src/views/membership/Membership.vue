@@ -393,8 +393,7 @@ export default {
                 );
 
             if (error) {
-                this.paymentProcessing = false;
-                console.error(error);
+                this.stripe.processing = false;
             } else {
                 this.stripe.form.payment_method_id = paymentMethod.id;
 
@@ -420,11 +419,14 @@ export default {
 
                         userStore().$patch((state) => {
                             state.cart_count -= cart_count_deduct;
+                            state.subscription = true;
                         });
-                        window.location.reload();
+                        
+                        this.$router.push("/dashboard");
                     })
                     .catch((err) => {
                         e.target.disabled = false;
+                        this.stripe.processing = false;
                     });
             }
         },

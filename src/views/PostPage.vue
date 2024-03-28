@@ -185,14 +185,14 @@ export default {
         },
     },
 
-    watch: {
-        $data: {
-            handler: function (val, oldVal) {
-                console.log("Watch PostPage: ", val);
-            },
-            deep: true,
-        },
-    },
+    // watch: {
+    //     $data: {
+    //         handler: function (val, oldVal) {
+    //             console.log("Watch PostPage: ", val);
+    //         },
+    //         deep: true,
+    //     },
+    // },
 
     updated() {},
 
