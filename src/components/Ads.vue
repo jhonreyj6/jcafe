@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="card mb-4">
         <img
             class="card-img-top"
             src="../assets/img/ads.jpg"

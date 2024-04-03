@@ -16,7 +16,9 @@
                     <div
                         class="card-body relative h-chat overflow-auto"
                         ref="chat_div"
+                        v-if="drag.state == false"
                         @scroll="paginateMessage"
+                        @dragenter="drag.state = true"
                     >
                         <div v-for="chat in chats.data" :key="chat.id">
                             <div
@@ -33,7 +35,6 @@
                                 <div class="border p-2 rounded">
                                     {{ chat.message }}
                                 </div>
-
                                 <div
                                     class="ms-auto text-sm text-secondary opacity-75"
                                     v-if="chat.sending"
@@ -41,7 +42,6 @@
                                     <i class="fa fa-circle-o-notch fa-spin"></i>
                                 </div>
                             </div>
-
                             <div
                                 class="d-flex flex-row-reverse gap-2 mb-2"
                                 v-if="chat.user_id != currentUser.id"
@@ -59,22 +59,60 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer bg-white">
+
+                    <div
+                        v-else
+                        class="bg-gray h-chat w-100 d-flex"
+                        @dragleave="drag.state = false"
+                        @drop="dropInit"
+                    >
+                        <div class="m-auto">Drop your files</div>
+                    </div>
+
+                    <div class="card-footer px-2 bg-white">
+                        <div class="mb-2 d-flex gap-2" v-if="addAttach">
+                            <button
+                                type="button"
+                                class="btn btn-outline-primary"
+                            >
+                                <i class="fa fa-smile-o fa-lg"></i>
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-outline-primary"
+                            >
+                                <i class="fa fa-image fa-lg"></i>
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-outline-primary"
+                            >
+                                <i class="fa fa-phone fa-lg"></i>
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-outline-primary"
+                            >
+                                <i class="fa fa-video-camera fa-lg"></i>
+                            </button>
+                        </div>
+
                         <div class="d-flex gap-1">
-                            <span
+                            <button
+                                type="button"
+                                class="btn btn-outline-primary"
+                                @click="addAttach = !addAttach"
+                            >
+                                <i class="fa fa-plus"></i>
+                            </button>
+                            <input
+                                type="text"
                                 id="content-span"
-                                class="border rounded p-2 w-100 d-inline-block"
+                                class="border rounded py-1 px-2 w-100 d-inline-block"
                                 contentEditable="true"
                                 @keyup="updateFormMessage"
                                 ref="chatbox"
-                            >
-                            </span>
-                            <button
-                                class="btn text-primary"
-                                @click="sendMessage"
-                            >
-                                <i class="fa fa-send"></i>
-                            </button>
+                            />
                         </div>
                     </div>
                 </div>
@@ -90,7 +128,9 @@ export default {
         return {
             form: {
                 message: "",
+                drop_file: "",
             },
+            addAttach: false,
             chats: "",
             currentRoom: "",
             chatbox_toggle: false,
@@ -101,6 +141,9 @@ export default {
             chatbox_state: false,
             sms_counter: -1,
             sms_state: "",
+            drag: {
+                state: false,
+            },
         };
     },
     components: {},
@@ -114,6 +157,11 @@ export default {
     },
 
     methods: {
+        dropInit(e) {
+            this.form.drop_file = e.dataTransfer.files;
+            this.drag.state = false;
+        },
+
         paginateMessage(e) {
             if (
                 e.target.scrollTop < 100 &&
@@ -207,7 +255,7 @@ export default {
             if (e.keyCode == 13) {
                 this.sendMessage();
             } else {
-                this.form.message = e.target.innerText.trim();
+                this.form.message = e.target.value.trim();
             }
         },
 
@@ -239,16 +287,20 @@ export default {
                 sending: true,
             });
 
-            this.$refs.chatbox.textContent = "";
+            this.$refs.chatbox.value = "";
             let temp_counter = this.sms_counter;
             let temp_msg = this.form.message;
             this.form.message = "";
             this.sms_counter = this.sms_counter - 1;
 
+            const formData = new FormData();
+            formData.append("message", temp_msg);
+            // formData.append("file", this.form.drop_file);
+
             const AuthStr = "Bearer ".concat(userStore().access_token);
             axios({
                 method: "post",
-                params: { message: temp_msg },
+                data: formData,
                 url: `/api/chat`,
                 headers: { Authorization: AuthStr },
             })
@@ -295,6 +347,23 @@ export default {
 
     mounted() {
         this.getChatRoom();
+
+        window.addEventListener(
+            "dragover",
+            function (e) {
+                e = e || event;
+                e.preventDefault();
+            },
+            false
+        );
+        window.addEventListener(
+            "drop",
+            function (e) {
+                e = e || event;
+                e.preventDefault();
+            },
+            false
+        );
     },
 
     beforeUnmount() {
@@ -336,5 +405,9 @@ export default {
 
 #content-span:focus {
     outline: none;
+}
+
+.bg-gray {
+    background: #f5f5f5;
 }
 </style>

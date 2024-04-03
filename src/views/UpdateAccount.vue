@@ -1,23 +1,33 @@
 <template>
     <div>
         <div class="space-intro">
-            <div class="container mt-4">
+            <div class="container">
                 <div class="row">
-                    <div class="col-3">
-                        <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <router-link class="nav-link active" to="/account/update">Account</router-link>
+                    <div class="col-md-3 col-12 mb-2">
+                        <ul
+                            class="nav flex-md-column justify-content-center flex-row w-100 mb-3"
+                        >
+                            <li class="nav-item w-auto">
+                                <router-link
+                                    class="nav-link active"
+                                    to="/account/update"
+                                    >Account</router-link
+                                >
                             </li>
-                            <li class="nav-item">
-                                <router-link class="nav-link" to="/account/payment/setting">Payment Setting</router-link>
+                            <li class="nav-item w-auto">
+                                <router-link
+                                    class="nav-link"
+                                    to="/account/payment/setting"
+                                    >Payment Setting</router-link
+                                >
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item w-auto">
                                 <a class="nav-link" href="#">Setting</a>
                             </li>
                         </ul>
                     </div>
 
-                    <div class="col-9">
+                    <div class="col-9 mb-5 max-screen-mobile">
                         <!-- Profile picture card-->
                         <div class="card mb-4">
                             <div class="card-header">Profile Picture</div>
@@ -347,11 +357,20 @@ export default {
 
 <style scoped>
 .nav-link:hover {
-  background: #f7f7f7;
+    background: #f7f7f7;
 }
 
 .container {
-  max-width: 1024px;
+    max-width: 1024px;
 }
 
+@media (max-width: 576px) {
+    .max-screen-mobile {
+        width: 100% !important;
+    }
+}
+
+.space-intro {
+    margin-top: 80px;
+}
 </style>

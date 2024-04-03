@@ -7,9 +7,9 @@
         >
             <div class="card-body">
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-md-3 col-12">
                         <div
-                            class="bg-image hover-zoom ripple rounded ripple-surface"
+                            class="bg-image hover-zoom ripple rounded mb-3 ripple-surface"
                         >
                             <img
                                 :src="data.image_url"
@@ -17,7 +17,7 @@
                             />
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6 col-7">
                         <h5>{{ data.name }}</h5>
                         <div class="d-flex flex-row mb-2">
                             <Star :rating="data.rating" />
@@ -51,9 +51,7 @@
                             </span>
                         </div>
                     </div>
-                    <div
-                        class="col-3 border-sm-start-none"
-                    >
+                    <div class="col-md-3 col-5 border-sm-start-none">
                         <!-- <h4 class="mb-1 text-center" :id="`price_` + data.id">
                             ₱{{ data.default_price }}
                         </h4> -->
@@ -100,11 +98,10 @@
                             >
                                 Add to cart
                             </router-link>
-                            
+
                             <div class="text-muted">
                                 {{ data.default_stocks }} stocks left
                             </div>
-                            
                         </div>
                     </div>
                 </div>
@@ -189,7 +186,7 @@ export default {
             data.default_stocks = size.stock;
         },
     },
-    
+
     // watch: {
     //     $data: {
     //         handler: function(val, oldVal) {
@@ -205,7 +202,7 @@ export default {
     //         deep: true
     //     },
     // },
-    
+
     updated() {},
 
     mounted() {},
@@ -221,6 +218,5 @@ export default {
     max-height: 100px;
     overflow-y: hidden;
 }
-
 </style>
 

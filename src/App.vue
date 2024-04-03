@@ -10,7 +10,7 @@
 
         <Footer v-if="$route.name == 'Intro'" />
 
-        <ChatBox v-if="currentUser && $route.name != 'Rules'" />
+        <ChatBox v-if="currentUser" />
     </div>
 </template>
 <script>
@@ -20,8 +20,6 @@ import Nav from "./components/Nav.vue";
 import { userStore } from "./stores/userStore";
 
 export default {
-    
-        
     data() {
         return {};
     },
