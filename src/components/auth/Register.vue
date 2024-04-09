@@ -163,7 +163,6 @@
 </template>
 <script>
 import { userStore } from "../../stores/userStore";
-
 export default {
     data() {
         return {
@@ -238,9 +237,7 @@ export default {
                     });
                     this.$router.push("/dashboard");
                 })
-                .catch((err) => {
-
-                });
+                .catch((err) => {});
         },
     },
 
@@ -282,5 +279,4 @@ export default {
 .space-intro {
     margin-top: 55px;
 }
-
 </style>
