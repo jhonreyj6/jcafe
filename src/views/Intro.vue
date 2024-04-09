@@ -110,7 +110,7 @@
                                     style="font-size: 100px"
                                 ></i>
                             </div>
-                            <div class="card-body text-dark">
+                            <div class="card-body">
                                 Ut Lorem eiusmod aliquip deserunt proident
                                 mollit. Ipsum tempor ad ea reprehenderit qui
                                 amet occaecat adipisicing veniam fugiat.
@@ -138,7 +138,7 @@
                                     style="font-size: 100px"
                                 ></i>
                             </div>
-                            <div class="card-body text-dark">
+                            <div class="card-body">
                                 Ut Lorem eiusmod aliquip deserunt proident
                                 mollit. Ipsum tempor ad ea reprehenderit qui
                                 amet occaecat adipisicing veniam fugiat.
@@ -168,7 +168,7 @@
                                     style="font-size: 100px"
                                 ></i>
                             </div>
-                            <div class="card-body text-dark">
+                            <div class="card-body">
                                 Ut Lorem eiusmod aliquip deserunt proident
                                 mollit. Ipsum tempor ad ea reprehenderit qui
                                 amet occaecat adipisicing veniam fugiat.

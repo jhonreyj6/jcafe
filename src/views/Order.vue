@@ -1,66 +1,9 @@
 <template>
-    <div class="space-intro">
-        Order
-    </div>
+    <div class="space-intro">Order</div>
 </template>
 <script>
-
-
-export default {
-    data() {
-        return {
-            
-        }
-    },
-    components: {
-        
-    },
-
-    props: {
-
-    },
-
-    computed: {
-
-    },
-
-    methods: {
-
-    },
-
-    watch: {
-        $data: {
-            handler: function(val, oldVal) {
-                console.log('watcher: ',val);
-            },
-            deep: true
-        },
-
-        $props: {
-            handler: function(val, oldVal) {
-                console.log('watcher: ',val);
-            },
-            deep: true
-        },
-        some_prop: function() {
-            //do something if some_prop updated
-        },
-    },
-
-    updated() {
-
-    },
-
-    beforeMounted() {
-
-    },
-
-    mounted() {
-
-    },
-}
+import { ref, onMounted } from "vue";
 </script>
 
 <style scoped>
-
 </style>

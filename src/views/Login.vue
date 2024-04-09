@@ -92,15 +92,13 @@ export default {
             },
         };
     },
-    components: {
-    },
+    components: {},
 
     props: [],
 
     computed: {},
 
     methods: {
-
         socialiteLogin(provider) {
             // const newWindow = this.openWindow('', 'message');
 
@@ -117,7 +115,7 @@ export default {
                 });
         },
 
-        authenticate() {
+        async authenticate() {
             this.$refs.login_btn.setAttribute("disabled", true);
             axios({
                 method: "post",
@@ -162,12 +160,9 @@ export default {
 
     updated() {},
 
-    beforeUnmount() {
-    },
+    beforeUnmount() {},
 
-    mounted() {
-        
-    },
+    mounted() {},
 };
 </script>
 
