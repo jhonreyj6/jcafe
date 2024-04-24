@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        <div
+        <!-- <div
             class="modal fade"
             id="editModal"
             tabindex="-1"
@@ -136,270 +136,346 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
-<script>
+<script setup>
 import Post from "../components/Post.vue";
 import { userStore } from "../stores/userStore";
-import Ads from '../components/Ads.vue'
+import Ads from "../components/Ads.vue";
+import { onBeforeMount, onMounted, ref } from "vue";
 
-export default {
-    name: "Dashboard",
-    data() {
-        return {
-            image: [],
-            attach_exist: false,
-            attach: {
-                files: [],
-                file_type: [],
-            },
-            form_data: "",
-            posts: "",
-            edit_post: {
-                attachment_remove: [],
-                data: "",
-                message: "",
-            },
-            post: {
-                currentPage: 1,
-                timeout: 0,
-                collection: [],
-            },
-        };
-    },
+const posts = ref([]);
+// const edit_post = ref({
+//     attachment_remove: [],
+//     data: "",
+//     message: "",
+// });
 
-    components: {
-        Post,
-        Ads,
-    },
+const post = ref({
+    currentPage: 1,
+    timeout: 0,
+    collection: [],
+});
 
-    props: {},
-
-    computed: {
-        // currentUser() {
-        //   return this.$store.getters.currentUser;
-        // },
-    },
-
-    methods: {
-        getFileFormat(fileName) {
-            var re = /(?:\.([^.]+))?$/;
-            var ext = re.exec(fileName)[1];
-            return ext.trim();
-        },
-
-        uploadTriggerInput(e) {
-            var elem = this.$refs.input_upload;
-            if (elem && document.createEvent) {
-                var evt = document.createEvent("MouseEvents");
-                evt.initEvent("click", true, false);
-                elem.dispatchEvent(evt);
-            }
-        },
-
-        inputTriggerButton(id) {
-            document.getElementById(id).click();
-        },
-
-        createPost(e) {
-            if (document.getElementById("editable").innerText.length > 1000) {
-                this.$parent.notification.message.push(
-                    "Message is too long. Only 1000 characters allow"
-                );
-                return false;
-            }
-
-            if (
-                document.getElementById("editable").innerText.length ||
-                this.form_data
-            ) {
-                e.target.setAttribute("disabled", true);
-                const AuthStr = "Bearer ".concat(userStore().access_token);
-                axios({
-                    method: "POST",
-                    params: {
-                        message: document.getElementById("editable").innerText,
-                        files: this.form_data,
-                    },
-                    data: this.form_data,
-                    url: `/api/posts`,
-                    headers: {
-                        Authorization: AuthStr,
-                    },
-                })
-                    .then((res) => {
-                        e.target.removeAttribute("disabled");
-                        this.attach_exist = false;
-                        this.form_data = "";
-                        document.getElementById("editable").innerHTML = "";
-                        this.posts = res.data;
-                        this.post.currentPage = 1;
-                    })
-                    .catch((err) => {
-                        e.target.removeAttribute("disabled");
-                    });
-            }
-        },
-
-        attachFile(e) {
-            if (this.$refs.input_upload.files.length <= 6) {
-                this.attach_exist = true;
-                this.attach.files = [];
-                this.attach.file_type = [];
-                let formData = new FormData();
-                for (
-                    let index = 0;
-                    index < this.$refs.input_upload.files.length;
-                    index++
-                ) {
-                    this.attach.files.push(
-                        URL.createObjectURL(
-                            this.$refs.input_upload.files[index]
-                        )
-                    );
-                    this.attach.file_type.push(
-                        this.$refs.input_upload.files[index].type
-                    );
-                    formData.append(
-                        "files[]",
-                        this.$refs.input_upload.files[index]
-                    );
-                }
-                this.form_data = formData;
-            } else {
-                this.$parent.notification.message.push(
-                    "Too many files!. Only 6 files can be uploaded."
-                );
-            }
-        },
-
-        removeAttachInPost(file) {
-            var exist = this.attach.files.indexOf(file);
-            if (exist > -1) {
-                this.attach.files.splice(exist, 1);
-                this.attach.file_type.splice(exist, 1);
-            }
-        },
-
-        updatePost() {
-            const AuthStr = "Bearer ".concat(userStore().access_token);
+const getPost = () => {
+    if (userStore().user && post.value.currentPage) {
+        const AuthStr = "Bearer ".concat(userStore().access_token);
+        return new Promise((resolve, reject) => {
             axios({
-                method: "patch",
-                params: {
-                    id: this.edit_post.data.id,
-                    message: this.edit_post.message,
-                    files: this.edit_post.attachment_remove,
-                },
-                url: `/api/posts`,
+                method: "get",
+                url: `/api/posts?page=${post.value.currentPage}`,
                 headers: { Authorization: AuthStr },
             })
                 .then((res) => {
-                    document.getElementById(
-                        `post_message_${this.edit_post.data.id}`
-                    ).innerText = this.edit_post.message;
+                    post.value.timeout = 1;
+                    if (post.value.currentPage == 1) {
+                        posts.value = res.data;
+                        resolve(
+                            res.data.data.forEach((data) => {
+                                post.value.collection.push(data.id);
+                            })
+                        );
+                    } else {
+                        resolve(
+                            res.data.data.forEach((data) => {
+                                if (!post.value.collection.includes(data.id)) {
+                                    posts.value.data.push(data);
+                                    post.value.collection.push(data.id);
+                                }
+                            })
+                        );
+                    }
                 })
-                .catch((err) => {});
-        },
-
-        updateEditPostMessage(e) {
-            this.edit_post.message = e.target.innerText;
-        },
-
-        removeAttachInEditPost(file) {
-            this.edit_post.attachment_remove.push(file.id);
-            this.edit_post.data.get_attach_files.forEach((elem, index) => {
-                if (elem.id == file.id) {
-                    this.edit_post.data.get_attach_files.splice(index, 1);
-                }
-            });
-        },
-
-        computedPostFile(file_link) {
-            return `/storage/post/file/${file_link}`;
-        },
-
-        getPost() {
-            if (userStore().user && this.post.currentPage) {
-                const AuthStr = "Bearer ".concat(userStore().access_token);
-                return new Promise((resolve, reject) => {
-                    axios({
-                        method: "get",
-                        url: `/api/posts?page=${this.post.currentPage}`,
-                        headers: { Authorization: AuthStr },
-                    })
-                        .then((res) => {
-                            this.post.timeout = 1;
-                            if (this.post.currentPage == 1) {
-                                this.posts = res.data;
-                                resolve(
-                                    res.data.data.forEach((data) => {
-                                        this.post.collection.push(data.id);
-                                    })
-                                );
-                            } else {
-                                resolve(
-                                    res.data.data.forEach((data) => {
-                                        if (
-                                            !this.post.collection.includes(
-                                                data.id
-                                            )
-                                        ) {
-                                            this.posts.data.push(data);
-                                            this.post.collection.push(data.id);
-                                        }
-                                    })
-                                );
-                            }
-                        })
-                        .catch((err) => {
-                            console.log(err.response);
-                            reject(err);
-                        });
+                .catch((err) => {
+                    console.log(err.response);
+                    reject(err);
                 });
-            }
-        },
-
-        handleScroll(event) {
-            if (
-                window.scrollY + 200 >
-                document.documentElement.scrollHeight -
-                    document.documentElement.clientHeight
-            ) {
-                if (
-                    this.posts.last_page != this.post.currentPage &&
-                    this.post.timeout
-                ) {
-                    this.post.timeout = 0;
-                    this.post.currentPage++;
-                    this.getPost();
-                }
-            }
-        },
-    },
-
-    // watch: {
-    //   $data: {
-    //     handler: function (val, oldVal) {
-    //       console.log("watcher: ", val);
-    //     },
-    //     deep: true,
-    //   },
-    // },
-
-    created() {
-        window.addEventListener("scroll", this.handleScroll);
-    },
-
-    updated() {},
-
-    beforeMount() {},
-
-    mounted() {
-        this.getPost();
-    },
+        });
+    }
 };
+
+const handleScroll = (event) => {
+    if (
+        window.scrollY + 200 >
+        document.documentElement.scrollHeight -
+            document.documentElement.clientHeight
+    ) {
+        if (
+            posts.value.last_page != post.value.currentPage &&
+            post.value.timeout
+        ) {
+            post.value.timeout = 0;
+            post.value.currentPage++;
+            getPost();
+        }
+    }
+};
+
+onMounted(() => {
+    getPost();
+});
+
+onBeforeMount(() => {
+    window.addEventListener("scroll", handleScroll);
+});
+
+// export default {
+//     name: "Dashboard",
+//     data() {
+//         return {
+//             image: [],
+//             attach_exist: false,
+//             attach: {
+//                 files: [],
+//                 file_type: [],
+//             },
+//             form_data: "",
+//             posts: "",
+//             edit_post: {
+//                 attachment_remove: [],
+//                 data: "",
+//                 message: "",
+//             },
+//             post: {
+//                 currentPage: 1,
+//                 timeout: 0,
+//                 collection: [],
+//             },
+//         };
+//     },
+
+//     components: {
+//         Post,
+//         Ads,
+//     },
+
+//     props: {},
+
+//     computed: {
+//         // currentUser() {
+//         //   return this.$store.getters.currentUser;
+//         // },
+//     },
+
+//     methods: {
+//         getFileFormat(fileName) {
+//             var re = /(?:\.([^.]+))?$/;
+//             var ext = re.exec(fileName)[1];
+//             return ext.trim();
+//         },
+
+//         uploadTriggerInput(e) {
+//             var elem = this.$refs.input_upload;
+//             if (elem && document.createEvent) {
+//                 var evt = document.createEvent("MouseEvents");
+//                 evt.initEvent("click", true, false);
+//                 elem.dispatchEvent(evt);
+//             }
+//         },
+
+//         inputTriggerButton(id) {
+//             document.getElementById(id).click();
+//         },
+
+//         createPost(e) {
+//             if (document.getElementById("editable").innerText.length > 1000) {
+//                 this.$parent.notification.message.push(
+//                     "Message is too long. Only 1000 characters allow"
+//                 );
+//                 return false;
+//             }
+
+//             if (
+//                 document.getElementById("editable").innerText.length ||
+//                 this.form_data
+//             ) {
+//                 e.target.setAttribute("disabled", true);
+//                 const AuthStr = "Bearer ".concat(userStore().access_token);
+//                 axios({
+//                     method: "POST",
+//                     params: {
+//                         message: document.getElementById("editable").innerText,
+//                         files: this.form_data,
+//                     },
+//                     data: this.form_data,
+//                     url: `/api/posts`,
+//                     headers: {
+//                         Authorization: AuthStr,
+//                     },
+//                 })
+//                     .then((res) => {
+//                         e.target.removeAttribute("disabled");
+//                         this.attach_exist = false;
+//                         this.form_data = "";
+//                         document.getElementById("editable").innerHTML = "";
+//                         this.posts = res.data;
+//                         this.post.currentPage = 1;
+//                     })
+//                     .catch((err) => {
+//                         e.target.removeAttribute("disabled");
+//                     });
+//             }
+//         },
+
+//         attachFile(e) {
+//             if (this.$refs.input_upload.files.length <= 6) {
+//                 this.attach_exist = true;
+//                 this.attach.files = [];
+//                 this.attach.file_type = [];
+//                 let formData = new FormData();
+//                 for (
+//                     let index = 0;
+//                     index < this.$refs.input_upload.files.length;
+//                     index++
+//                 ) {
+//                     this.attach.files.push(
+//                         URL.createObjectURL(
+//                             this.$refs.input_upload.files[index]
+//                         )
+//                     );
+//                     this.attach.file_type.push(
+//                         this.$refs.input_upload.files[index].type
+//                     );
+//                     formData.append(
+//                         "files[]",
+//                         this.$refs.input_upload.files[index]
+//                     );
+//                 }
+//                 this.form_data = formData;
+//             } else {
+//                 this.$parent.notification.message.push(
+//                     "Too many files!. Only 6 files can be uploaded."
+//                 );
+//             }
+//         },
+
+//         removeAttachInPost(file) {
+//             var exist = this.attach.files.indexOf(file);
+//             if (exist > -1) {
+//                 this.attach.files.splice(exist, 1);
+//                 this.attach.file_type.splice(exist, 1);
+//             }
+//         },
+
+//         updatePost() {
+//             const AuthStr = "Bearer ".concat(userStore().access_token);
+//             axios({
+//                 method: "patch",
+//                 params: {
+//                     id: this.edit_post.data.id,
+//                     message: this.edit_post.message,
+//                     files: this.edit_post.attachment_remove,
+//                 },
+//                 url: `/api/posts`,
+//                 headers: { Authorization: AuthStr },
+//             })
+//                 .then((res) => {
+//                     document.getElementById(
+//                         `post_message_${this.edit_post.data.id}`
+//                     ).innerText = this.edit_post.message;
+//                 })
+//                 .catch((err) => {});
+//         },
+
+//         updateEditPostMessage(e) {
+//             this.edit_post.message = e.target.innerText;
+//         },
+
+//         removeAttachInEditPost(file) {
+//             this.edit_post.attachment_remove.push(file.id);
+//             this.edit_post.data.get_attach_files.forEach((elem, index) => {
+//                 if (elem.id == file.id) {
+//                     this.edit_post.data.get_attach_files.splice(index, 1);
+//                 }
+//             });
+//         },
+
+//         computedPostFile(file_link) {
+//             return `/storage/post/file/${file_link}`;
+//         },
+
+//         getPost() {
+//             if (userStore().user && this.post.currentPage) {
+//                 const AuthStr = "Bearer ".concat(userStore().access_token);
+//                 return new Promise((resolve, reject) => {
+//                     axios({
+//                         method: "get",
+//                         url: `/api/posts?page=${this.post.currentPage}`,
+//                         headers: { Authorization: AuthStr },
+//                     })
+//                         .then((res) => {
+//                             this.post.timeout = 1;
+//                             if (this.post.currentPage == 1) {
+//                                 this.posts = res.data;
+//                                 resolve(
+//                                     res.data.data.forEach((data) => {
+//                                         this.post.collection.push(data.id);
+//                                     })
+//                                 );
+//                             } else {
+//                                 resolve(
+//                                     res.data.data.forEach((data) => {
+//                                         if (
+//                                             !this.post.collection.includes(
+//                                                 data.id
+//                                             )
+//                                         ) {
+//                                             this.posts.data.push(data);
+//                                             this.post.collection.push(data.id);
+//                                         }
+//                                     })
+//                                 );
+//                             }
+//                         })
+//                         .catch((err) => {
+//                             console.log(err.response);
+//                             reject(err);
+//                         });
+//                 });
+//             }
+//         },
+
+//         handleScroll(event) {
+//             if (
+//                 window.scrollY + 200 >
+//                 document.documentElement.scrollHeight -
+//                     document.documentElement.clientHeight
+//             ) {
+//                 if (
+//                     this.posts.last_page != this.post.currentPage &&
+//                     this.post.timeout
+//                 ) {
+//                     this.post.timeout = 0;
+//                     this.post.currentPage++;
+//                     this.getPost();
+//                 }
+//             }
+//         },
+//     },
+
+//     // watch: {
+//     //   $data: {
+//     //     handler: function (val, oldVal) {
+//     //       console.log("watcher: ", val);
+//     //     },
+//     //     deep: true,
+//     //   },
+//     // },
+
+//     created() {
+//         window.addEventListener("scroll", this.handleScroll);
+//     },
+
+//     updated() {},
+
+//     beforeMount() {},
+
+//     mounted() {
+//         this.getPost();
+//     },
+// };
 </script>
 
 <style scoped>

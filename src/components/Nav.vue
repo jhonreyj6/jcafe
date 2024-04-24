@@ -134,68 +134,57 @@
         </nav>
     </div>
 </template>
-<script>
+<script setup>
+import { computed, onUpdated } from "vue";
+import { useRouter } from "vue-router";
 import { userStore } from "../stores/userStore";
 
-export default {
-    data() {
-        return {};
-    },
-    components: {},
+const router = useRouter();
 
-    props: [],
+const tokenExist = computed(() => {
+    return userStore().access_token ? true : false;
+});
 
-    computed: {
-        tokenExist() {
-            return userStore().access_token ? true : false;
-        },
+const currentUser = computed(() => {
+    return userStore();
+});
 
-        currentUser: () => {
-            return userStore();
-        },
+const cartCount = computed(() => {
+    return userStore().cart_count;
+});
 
-        cartCount() {
-            return userStore().cart_count;
-        },
-    },
-
-    methods: {
-        logout() {
-            const AuthStr = "Bearer ".concat(userStore().authUser.access_token);
-            axios({
-                method: "post",
-                url: `${import.meta.env.VITE_API_URL}/api/auth/logout`,
-                headers: { Authorization: AuthStr },
-            })
-                .then((res) => {
-                    userStore().$reset();
-                    this.$router.push("/");
-                })
-                .catch((err) => {
-                    console.log(err.response);
-                });
-        },
-    },
-
-    updated() {
-        if (this.currentUser.user) {
-            const AuthStr = "Bearer ".concat(userStore().access_token);
-            axios({
-                method: "get",
-                url: `/api/cart`,
-                headers: { Authorization: AuthStr },
-            })
-                .then((res) => {
-                    userStore().$patch((state) => {
-                        state.cart_count = res.data.cart_count;
-                    });
-                })
-                .catch((err) => {});
-        }
-    },
-
-    mounted() {},
+const logout = () => {
+    const AuthStr = "Bearer ".concat(userStore().authUser.access_token);
+    axios({
+        method: "post",
+        url: `${import.meta.env.VITE_API_URL}/api/auth/logout`,
+        headers: { Authorization: AuthStr },
+    })
+        .then((res) => {
+            router.push("/login");
+            userStore().$reset();
+        })
+        .catch((err) => {
+            console.log(err.response);
+        });
 };
+
+onUpdated(() => {
+    if (currentUser.user) {
+        const AuthStr = "Bearer ".concat(userStore().access_token);
+        axios({
+            method: "get",
+            url: `/api/cart`,
+            headers: { Authorization: AuthStr },
+        })
+            .then((res) => {
+                userStore().$patch((state) => {
+                    state.cart_count = res.data.cart_count;
+                });
+            })
+            .catch((err) => {});
+    }
+});
 </script>
 
 <style scoped>

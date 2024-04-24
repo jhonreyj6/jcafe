@@ -1,0 +1,11 @@
+Jcafe:
+patch store when item in cart is deleted
+sorting comments from a post affect all comments from other post
+
+
+
+
+
+
+
+

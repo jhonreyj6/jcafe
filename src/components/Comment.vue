@@ -22,7 +22,12 @@
                         <pre class="comment-text">{{ comment.message }}</pre>
                         <div class="d-flex flex-row align-items-center">
                             <div>
-                                <span :class="comment.authLikes ? 'text-primary' : ''">{{ comment.get_likes.length }}</span>
+                                <span
+                                    :class="
+                                        comment.authLikes ? 'text-primary' : ''
+                                    "
+                                    >{{ comment.get_likes.length }}</span
+                                >
                                 <a
                                     role="button"
                                     class="me-2"
@@ -64,7 +69,7 @@
                             <a
                                 class="dropdown-item"
                                 role="button"
-                                @click="initEditComment(comment, post_id)"
+                                @click="initEditComment(comment, props.post_id)"
                                 >Edit</a
                             >
                             <div class="dropdown-divider"></div>
@@ -93,7 +98,7 @@
                         <div
                             class="p-2 flex-fill bg-white"
                             contenteditable="true"
-                            :id="`content_${post_id}`"
+                            :id="`content_${props.post_id}`"
                         ></div>
                     </div>
                 </div>
@@ -103,7 +108,7 @@
                 <button
                     v-if="!edit.comment"
                     type="button"
-                    @click="storeComment(post_id)"
+                    @click="storeComment(props.post_id)"
                     class="btn btn-primary btn-sm bg-gradient"
                 >
                     Post comment
@@ -112,14 +117,14 @@
                 <button
                     v-if="edit.comment"
                     type="button"
-                    @click="editComment(post_id)"
+                    @click="editComment(props.post_id)"
                     class="btn btn-primary btn-sm me-1"
                 >
                     Edit comment
                 </button>
                 <button
                     v-if="edit.comment"
-                    @click="cancelEditComment(post_id)"
+                    @click="cancelEditComment(props.post_id)"
                     type="button"
                     class="btn btn-danger btn-sm"
                 >
@@ -129,236 +134,427 @@
         </div>
     </div>
 </template>
-<script>
+<script setup>
 import { userStore } from "../stores/userStore";
-const user_store = userStore();
+import { computed, onMounted, ref, watch } from "vue";
 
-export default {
-    data() {
-        return {
-            comments: "",
-            edit: {
-                comment: "",
-            },
-            comment: {
-                collection: [],
-            },
-        };
+const comments = ref([]);
+const edit = ref({
+    comment: "",
+});
+const comment = ref({
+    collection: [],
+});
+
+const props = defineProps({
+    post_id: {
+        type: Number,
     },
-    components: {},
-
-    props: {
-        post_id: {
-            type: Number,
-        },
-        sort: {
-            type: String,
-        },
-        sort_id: {
-            type: Number,
-        },
-        display: {
-            type: Array,
-        },
+    sort: {
+        type: String,
     },
-
-    computed: {
-        currentUser() {
-            return userStore().user;
-        },
+    sort_id: {
+        type: Number,
     },
-
-    methods: {
-        computedUserAvatar(data) {
-            if (data.user_details.image_url) {
-                return data.user_details.image_url;
-            } else {
-                return "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
-            }
-        },
-
-        storeComment(post_id) {
-            const AuthStr = "Bearer ".concat(userStore().access_token);
-            axios({
-                method: "post",
-                params: {
-                    post_id: this.post_id,
-                    message: document.getElementById(`content_${post_id}`)
-                        .innerText,
-                },
-                url: `/api/posts/${this.post_id}/comment`,
-                headers: { Authorization: AuthStr },
-            })
-                .then((res) => {
-                    document.getElementById(`content_${post_id}`).innerText =
-                        "";
-                    this.comments.data.push(res.data);
-                    // this.comments = res.data;
-                })
-                .catch((err) => {
-                    console.log(err.response.data.message);
-                });
-        },
-
-        likeComment(data) {
-            data.authLikes = !data.authLikes;
-
-            const AuthStr = "Bearer ".concat(userStore().access_token);
-            axios({
-                method: "post",
-                url: `/api/posts/${data.post_id}/comment/${data.id}/like`,
-                headers: { Authorization: AuthStr },
-            })
-                .then((res) => {
-                    if (res.data.message == "like") {
-                        data.get_likes.unshift(res.data.data);
-                    } else {
-                        data.get_likes.forEach((elem, index) => {
-                            if (elem.comment_id == data.id) {
-                                data.get_likes.splice(index, 1);
-                            }
-                        });
-                    }
-                })
-                .catch((err) => {});
-        },
-
-        deleteComment(comment) {
-            const AuthStr = "Bearer ".concat(userStore().access_token);
-            axios({
-                method: "delete",
-                url: `/api/posts/${comment.post_id}/comment`,
-                params: {
-                    comment_id: comment.id,
-                },
-                headers: { Authorization: AuthStr },
-            })
-                .then((res) => {
-                    this.comments.data.forEach((elem, index) => {
-                        if (elem.id == comment.id) {
-                            this.comments.data.splice(index, 1);
-                        }
-                    });
-                })
-                .catch((err) => {
-                    console.log(err.response.data.message);
-                });
-        },
-
-        editComment(post_id) {
-            const AuthStr = "Bearer ".concat(userStore().access_token);
-            axios({
-                method: "patch",
-                params: {
-                    message: document.getElementById(`content_${post_id}`)
-                        .innerText,
-                    comment_id: this.edit.comment.id,
-                },
-                url: `/api/posts/${this.edit.comment.post_id}/comment`,
-                headers: { Authorization: AuthStr },
-            })
-                .then((res) => {
-                    this.comments.data.forEach((elem, index) => {
-                        if (elem == this.edit.comment) {
-                            this.comments.data[index].message =
-                                document.getElementById(
-                                    `content_${post_id}`
-                                ).innerText;
-                        }
-                    });
-                    this.edit.comment = "";
-                    document.getElementById(`content_${post_id}`).innerText =
-                        "";
-                })
-                .catch((err) => {});
-        },
-
-        initEditComment(comment, post_id) {
-            this.edit.comment = comment;
-            comment.edit_mode = 1;
-            document.getElementById(`content_${post_id}`).innerText =
-                comment.message;
-        },
-
-        cancelEditComment(post_id) {
-            document.getElementById(`content_${post_id}`).innerText = "";
-            this.edit.comment = "";
-        },
-
-        getComments(page) {
-            if (page) {
-                var url = this.comments.next_page_url;
-            } else {
-                var url = `/api/posts/${this.post_id}/comment?page=1`;
-            }
-
-            const AuthStr = "Bearer ".concat(userStore().access_token);
-            axios({
-                method: "get",
-                params: {
-                    post_id: this.post_id,
-                    sort: this.sort,
-                },
-                url: url,
-                headers: { Authorization: AuthStr },
-            })
-                .then((res) => {
-                    if (!this.comments) {
-                        this.comments = res.data;
-                        res.data.data.forEach((data) => {
-                            this.comment.collection.push(data.id);
-                        });
-                    } else {
-                        res.data.data.forEach((data) => {
-                            if (!this.comment.collection.includes(data.id)) {
-                                this.comments.data.push(data);
-                                this.comment.collection.push(data.id);
-                            }
-                        });
-                        this.comments.next_page_url = res.data.next_page_url;
-                    }
-                })
-                .catch((err) => {
-                    console.log(err.response.data.message);
-                });
-        },
-
-        loadMoreComment() {
-            if (this.comments.last_page != this.comments.current_page) {
-                this.comments.current_page++;
-                this.getComments(this.comments.next_page_url);
-            }
-        },
+    display: {
+        type: Array,
     },
+});
 
-    watch: {
-        // $data: {
-        //     handler: function (val, oldVal) {
-        //         console.log("comment:", val);
-        //     },
-        //     deep: true,
-        // },
+const currentUser = computed(() => {
+    return userStore().user;
+});
 
-        $props: {
-            handler: function (val, oldVal) {
-                this.comments = "";
-                this.comment.collection = [];
-                this.getComments();
-            },
-            deep: true,
-        },
-    },
-
-    // watch: {
-    //
-    // },
-
-    updated() {},
-
-    mounted() {
-        this.getComments();
-    },
+const computedUserAvatar = (data) => {
+    if (data.user_details.image_url) {
+        return data.user_details.image_url;
+    } else {
+        return "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
+    }
 };
+
+const storeComment = (post_id) => {
+    const AuthStr = "Bearer ".concat(userStore().access_token);
+    axios({
+        method: "post",
+        params: {
+            post_id: post_id.value,
+            message: document.getElementById(`content_${post_id}`).innerText,
+        },
+        url: `/api/posts/${post_id}/comment`,
+        headers: { Authorization: AuthStr },
+    })
+        .then((res) => {
+            document.getElementById(`content_${post_id}`).innerText = "";
+            comments.value.data.push(res.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
+
+const likeComment = (data) => {
+    data.authLikes = !data.authLikes;
+
+    const AuthStr = "Bearer ".concat(userStore().access_token);
+    axios({
+        method: "post",
+        url: `/api/posts/${data.post_id}/comment/${data.id}/like`,
+        headers: { Authorization: AuthStr },
+    })
+        .then((res) => {
+            if (res.data.message == "like") {
+                data.get_likes.unshift(res.data.data);
+            } else {
+                data.get_likes.forEach((elem, index) => {
+                    if (elem.comment_id == data.id) {
+                        data.get_likes.splice(index, 1);
+                    }
+                });
+            }
+        })
+        .catch((err) => {});
+};
+
+const deleteComment = (comment) => {
+    const AuthStr = "Bearer ".concat(userStore().access_token);
+    axios({
+        method: "delete",
+        url: `/api/posts/${comment.post_id}/comment`,
+        params: {
+            comment_id: comment.id,
+        },
+        headers: { Authorization: AuthStr },
+    })
+        .then((res) => {
+            comments.value.data.forEach((elem, index) => {
+                if (elem.id == comment.id) {
+                    comments.value.data.splice(index, 1);
+                }
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
+
+const editComment = (post_id) => {
+    const AuthStr = "Bearer ".concat(userStore().access_token);
+    axios({
+        method: "patch",
+        params: {
+            message: document.getElementById(`content_${post_id}`).innerText,
+            comment_id: edit.value.comment.id,
+        },
+        url: `/api/posts/${edit.value.comment.post_id}/comment`,
+        headers: { Authorization: AuthStr },
+    })
+        .then((res) => {
+            comments.value.data.forEach((elem, index) => {
+                if (elem == edit.value.comment) {
+                    comments.value.data[index].message =
+                        document.getElementById(`content_${post_id}`).innerText;
+                }
+            });
+            edit.value.comment = "";
+            document.getElementById(`content_${post_id}`).innerText = "";
+        })
+        .catch((err) => {});
+};
+
+const initEditComment = (comment, post_id) => {
+    edit.value.comment = comment;
+    comment.edit_mode = 1;
+    document.getElementById(`content_${post_id}`).innerText = comment.message;
+};
+
+const cancelEditComment = (post_id) => {
+    document.getElementById(`content_${post_id}`).innerText = "";
+    edit.value.comment = "";
+};
+
+const getComments = (page) => {
+    if (page) {
+        var url = comments.value.next_page_url;
+    } else {
+        var url = `/api/posts/${props.post_id}/comment?page=1`;
+    }
+
+    const AuthStr = "Bearer ".concat(userStore().access_token);
+    axios({
+        method: "get",
+        params: {
+            post_id: props.post_id,
+            sort: props.sort,
+        },
+        url: url,
+        headers: { Authorization: AuthStr },
+    })
+        .then((res) => {
+            if (!comments.value.length) {
+                comments.value = res.data;
+                res.data.data.forEach((data) => {
+                    comment.value.collection.push(data.id);
+                });
+            } else {
+                res.data.data.forEach((data) => {
+                    if (!comment.value.collection.includes(data.id)) {
+                        comments.value.data.push(data);
+                        comment.value.collection.push(data.id);
+                    }
+                });
+                comments.value.next_page_url = res.data.next_page_url;
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
+
+const loadMoreComment = () => {
+    if (comments.value.last_page != comments.value.current_page) {
+        comments.value.current_page++;
+        getComments(comments.value.next_page_url);
+    }
+};
+
+watch(props, async () => {
+    console.log("call");
+    getComments();
+    comments.value = "";
+    comment.value.collection = [];
+});
+
+onMounted(() => {
+    getComments();
+});
+
+// export default {
+//     data() {
+//         return {
+//             comments: "",
+//             edit: {
+//                 comment: "",
+//             },
+//             comment: {
+//                 collection: [],
+//             },
+//         };
+//     },
+//     components: {},
+
+//     props: {
+//         post_id: {
+//             type: Number,
+//         },
+//         sort: {
+//             type: String,
+//         },
+//         sort_id: {
+//             type: Number,
+//         },
+//         display: {
+//             type: Array,
+//         },
+//     },
+
+//     computed: {
+//         currentUser() {
+//             return userStore().user;
+//         },
+//     },
+
+//     methods: {
+//         computedUserAvatar(data) {
+//             if (data.user_details.image_url) {
+//                 return data.user_details.image_url;
+//             } else {
+//                 return "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
+//             }
+//         },
+
+//         storeComment(post_id) {
+//             const AuthStr = "Bearer ".concat(userStore().access_token);
+//             axios({
+//                 method: "post",
+//                 params: {
+//                     post_id: this.post_id,
+//                     message: document.getElementById(`content_${post_id}`)
+//                         .innerText,
+//                 },
+//                 url: `/api/posts/${this.post_id}/comment`,
+//                 headers: { Authorization: AuthStr },
+//             })
+//                 .then((res) => {
+//                     document.getElementById(`content_${post_id}`).innerText =
+//                         "";
+//                     this.comments.data.push(res.data);
+//                     // this.comments = res.data;
+//                 })
+//                 .catch((err) => {
+//                     console.log(err.response.data.message);
+//                 });
+//         },
+
+//         likeComment(data) {
+//             data.authLikes = !data.authLikes;
+
+//             const AuthStr = "Bearer ".concat(userStore().access_token);
+//             axios({
+//                 method: "post",
+//                 url: `/api/posts/${data.post_id}/comment/${data.id}/like`,
+//                 headers: { Authorization: AuthStr },
+//             })
+//                 .then((res) => {
+//                     if (res.data.message == "like") {
+//                         data.get_likes.unshift(res.data.data);
+//                     } else {
+//                         data.get_likes.forEach((elem, index) => {
+//                             if (elem.comment_id == data.id) {
+//                                 data.get_likes.splice(index, 1);
+//                             }
+//                         });
+//                     }
+//                 })
+//                 .catch((err) => {});
+//         },
+
+//         deleteComment(comment) {
+//             const AuthStr = "Bearer ".concat(userStore().access_token);
+//             axios({
+//                 method: "delete",
+//                 url: `/api/posts/${comment.post_id}/comment`,
+//                 params: {
+//                     comment_id: comment.id,
+//                 },
+//                 headers: { Authorization: AuthStr },
+//             })
+//                 .then((res) => {
+//                     this.comments.data.forEach((elem, index) => {
+//                         if (elem.id == comment.id) {
+//                             this.comments.data.splice(index, 1);
+//                         }
+//                     });
+//                 })
+//                 .catch((err) => {
+//                     console.log(err.response.data.message);
+//                 });
+//         },
+
+//         editComment(post_id) {
+//             const AuthStr = "Bearer ".concat(userStore().access_token);
+//             axios({
+//                 method: "patch",
+//                 params: {
+//                     message: document.getElementById(`content_${post_id}`)
+//                         .innerText,
+//                     comment_id: this.edit.comment.id,
+//                 },
+//                 url: `/api/posts/${this.edit.comment.post_id}/comment`,
+//                 headers: { Authorization: AuthStr },
+//             })
+//                 .then((res) => {
+//                     this.comments.data.forEach((elem, index) => {
+//                         if (elem == this.edit.comment) {
+//                             this.comments.data[index].message =
+//                                 document.getElementById(
+//                                     `content_${post_id}`
+//                                 ).innerText;
+//                         }
+//                     });
+//                     this.edit.comment = "";
+//                     document.getElementById(`content_${post_id}`).innerText =
+//                         "";
+//                 })
+//                 .catch((err) => {});
+//         },
+
+//         initEditComment(comment, post_id) {
+//             this.edit.comment = comment;
+//             comment.edit_mode = 1;
+//             document.getElementById(`content_${post_id}`).innerText =
+//                 comment.message;
+//         },
+
+//         cancelEditComment(post_id) {
+//             document.getElementById(`content_${post_id}`).innerText = "";
+//             this.edit.comment = "";
+//         },
+
+//         getComments(page) {
+//             if (page) {
+//                 var url = this.comments.next_page_url;
+//             } else {
+//                 var url = `/api/posts/${this.post_id}/comment?page=1`;
+//             }
+
+//             const AuthStr = "Bearer ".concat(userStore().access_token);
+//             axios({
+//                 method: "get",
+//                 params: {
+//                     post_id: this.post_id,
+//                     sort: this.sort,
+//                 },
+//                 url: url,
+//                 headers: { Authorization: AuthStr },
+//             })
+//                 .then((res) => {
+//                     if (!this.comments) {
+//                         this.comments = res.data;
+//                         res.data.data.forEach((data) => {
+//                             this.comment.collection.push(data.id);
+//                         });
+//                     } else {
+//                         res.data.data.forEach((data) => {
+//                             if (!this.comment.collection.includes(data.id)) {
+//                                 this.comments.data.push(data);
+//                                 this.comment.collection.push(data.id);
+//                             }
+//                         });
+//                         this.comments.next_page_url = res.data.next_page_url;
+//                     }
+//                 })
+//                 .catch((err) => {
+//                     console.log(err.response.data.message);
+//                 });
+//         },
+
+//         loadMoreComment() {
+//             if (this.comments.last_page != this.comments.current_page) {
+//                 this.comments.current_page++;
+//                 this.getComments(this.comments.next_page_url);
+//             }
+//         },
+//     },
+
+//     watch: {
+//         // $data: {
+//         //     handler: function (val, oldVal) {
+//         //         console.log("comment:", val);
+//         //     },
+//         //     deep: true,
+//         // },
+
+//         $props: {
+//             handler: function (val, oldVal) {
+//                 this.comments = "";
+//                 this.comment.collection = [];
+//                 this.getComments();
+//             },
+//             deep: true,
+//         },
+//     },
+
+//     // watch: {
+//     //
+//     // },
+
+//     updated() {},
+
+//     mounted() {
+//         this.getComments();
+//     },
+// };
 </script>
 
 <style scoped>

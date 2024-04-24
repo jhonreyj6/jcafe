@@ -15,7 +15,7 @@
                                         Create an account
                                     </h2>
                                     <form @submit.prevent="register">
-                                        <div class="form-outline mb-4">
+                                        <div class="form-outline mb-2">
                                             <label
                                                 class="form-label"
                                                 for="form3Example1cg"
@@ -24,9 +24,8 @@
                                             <input
                                                 type="text"
                                                 id="form3Example1cg"
-                                                v-model="form.fname"
+                                                v-model="fname"
                                                 class="form-control form-control-lg"
-                                                required
                                             />
                                             <span
                                                 class="text-danger"
@@ -38,7 +37,7 @@
                                             >
                                         </div>
 
-                                        <div class="form-outline mb-4">
+                                        <div class="form-outline mb-2">
                                             <label
                                                 class="form-label"
                                                 for="form4Example1cg"
@@ -47,9 +46,8 @@
                                             <input
                                                 type="text"
                                                 id="form4Example1cg"
-                                                v-model="form.lname"
+                                                v-model="lname"
                                                 class="form-control form-control-lg"
-                                                required
                                             />
                                             <span
                                                 class="text-danger"
@@ -61,7 +59,7 @@
                                             >
                                         </div>
 
-                                        <div class="form-outline mb-4">
+                                        <div class="form-outline mb-2">
                                             <label
                                                 class="form-label"
                                                 for="form3Example3cg"
@@ -70,9 +68,8 @@
                                             <input
                                                 type="email"
                                                 id="form3Example3cg"
-                                                v-model="form.email"
+                                                v-model="email"
                                                 class="form-control form-control-lg"
-                                                required
                                             />
                                             <span
                                                 class="text-danger"
@@ -84,7 +81,7 @@
                                             >
                                         </div>
 
-                                        <div class="form-outline mb-4">
+                                        <div class="form-outline mb-2">
                                             <label
                                                 class="form-label"
                                                 for="form3Example4cg"
@@ -93,7 +90,7 @@
                                             <input
                                                 type="password"
                                                 id="form3Example4cg"
-                                                v-model="form.password"
+                                                v-model="password"
                                                 class="form-control form-control-lg"
                                                 required
                                             />
@@ -107,7 +104,7 @@
                                             >
                                         </div>
 
-                                        <div class="form-outline mb-4">
+                                        <div class="form-outline mb-2">
                                             <label
                                                 class="form-label"
                                                 for="form3Example4cdg"
@@ -116,9 +113,8 @@
                                             <input
                                                 type="password"
                                                 id="form3Example4cdg"
-                                                v-model="form.confirm"
+                                                v-model="confirm"
                                                 class="form-control form-control-lg"
-                                                required
                                             />
                                             <span
                                                 class="text-danger"
@@ -161,98 +157,47 @@
         </div>
     </div>
 </template>
-<script>
-import { userStore } from "../../stores/userStore";
-export default {
-    data() {
-        return {
-            form: {
-                fname: null,
-                lname: null,
-                email: null,
-                password: null,
-                confirm: null,
-            },
+<script setup>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+const fname = ref();
+const lname = ref();
+const email = ref();
+const password = ref();
+const confirm = ref();
+const error = ref({
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    confirm: "",
+});
 
-            error: {
-                first_name: "",
-                last_name: "",
-                email: "",
-                password: "",
-                confirm: "",
-            },
-        };
-    },
-    components: {},
+const router = useRouter();
 
-    props: [],
-
-    computed: {},
-
-    methods: {
-        register() {
-            return new Promise((resolve, reject) => {
-                axios({
-                    method: "post",
-                    params: {
-                        first_name: this.form.fname,
-                        last_name: this.form.lname,
-                        email: this.form.email,
-                        password: this.form.password,
-                        confirm: this.form.confirm,
-                    },
-                    url: `/api/auth/register`,
-                })
-                    .then((res) => {
-                        this.authenticate();
-                        // this.$router.push("/login");
-                    })
-                    .catch((err) => {
-                        console.log(err.response.data.message);
-                        this.error.first_name = err.response.data.first_name;
-                        this.error.last_name = err.response.data.last_name;
-                        this.error.email = err.response.data.email;
-                        this.error.password = err.response.data.password;
-                        this.error.confirm = err.response.data.confirm;
-                        reject(err);
-                    });
-            });
+const register = () => {
+    axios({
+        method: "post",
+        params: {
+            first_name: fname.value,
+            last_name: lname.value,
+            email: email.value,
+            password: password.value,
+            confirm: confirm.value,
         },
-
-        authenticate() {
-            axios({
-                method: "post",
-                params: {
-                    email: this.form.email,
-                    password: this.form.password,
-                },
-                url: `/api/auth/login`,
-            })
-                .then((res) => {
-                    userStore().$patch((state) => {
-                        state.user = Object.assign({}, res.data.user, {
-                            access_token: res.data.access_token,
-                        });
-                        state.access_token = res.data.access_token;
-                    });
-                    this.$router.push("/dashboard");
-                })
-                .catch((err) => {});
-        },
-    },
-
-    // watch: {
-    //   $data: {
-    //     handler: function (val, oldVal) {
-    //       console.log("watcher: ", val);
-    //     },
-    //     deep: true,
-    //   },
-    // },
-
-    updated() {},
-
-    mounted() {},
+        url: `/api/auth/register`,
+    })
+        .then((res) => {
+            router.push("/login");
+        })
+        .catch((err) => {
+            error.value.first_name = err.response.data.first_name;
+            error.value.last_name = err.response.data.last_name;
+            error.value.email = err.response.data.email;
+            error.value.password = err.response.data.password;
+            error.value.confirm = err.response.data.confirm;
+            console.log(err);
+        });
 };
 </script>
 

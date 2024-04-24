@@ -1,6 +1,10 @@
 <template>
     <div>
-        <div class="card mb-3" v-for="(data, index) in datas.data" :key="index">
+        <div
+            class="card mb-3"
+            v-for="(data, index) in props.datas.data"
+            :key="index"
+        >
             <div class="d-flex p-2 px-3">
                 <div class="d-flex flex-row align-items-center">
                     <img
@@ -94,7 +98,9 @@
                             :key="index"
                         >
                             <div class="bg-dark h-100">
-                                <router-link :to="`/post/${data.id}?item=${index}`">
+                                <router-link
+                                    :to="`/post/${data.id}?item=${index}`"
+                                >
                                     <img
                                         v-if="
                                             file.file_type == 'png' ||
@@ -127,7 +133,9 @@
                             :key="index"
                         >
                             <div class="bg-dark h-100">
-                                <router-link :to="`/post/${data.id}?item=${index}`">
+                                <router-link
+                                    :to="`/post/${data.id}?item=${index}`"
+                                >
                                     <img
                                         v-if="
                                             file.file_type == 'png' ||
@@ -161,7 +169,9 @@
                             :key="index"
                         >
                             <div class="bg-dark h-100">
-                                <router-link :to="`/post/${data.id}?item=${index}`">
+                                <router-link
+                                    :to="`/post/${data.id}?item=${index}`"
+                                >
                                     <img
                                         v-if="
                                             file.file_type == 'png' ||
@@ -283,128 +293,210 @@
         </div>
     </div>
 </template>
-<script>
+<script setup>
 import Comment from "./Comment.vue";
 import { userStore } from "../stores/userStore";
+import { ref } from "vue";
 
-export default {
-    data() {
-        return {
-            // datas: '',
-            data_pass: {
-                sort: "",
-                sort_id: null,
-                isShow: [],
-            },
-        };
-    },
-    components: {
-        Comment,
-    },
+const props = defineProps(["datas"]);
+const data_pass = ref({
+    sort: "",
+    sort_id: null,
+    isShow: [],
+});
 
-    props: ["datas"],
-
-    computed: {
-        currentUser() {
-            return userStore().user;
+const download = (data) => {
+    const AuthStr = "Bearer ".concat(userStore().access_token);
+    axios({
+        method: "get",
+        params: {
+            id: data.id,
         },
-    },
-
-    methods: {
-        download(data) {
-            const AuthStr = "Bearer ".concat(userStore().access_token);
-            axios({
-                method: "get",
-                params: {
-                    id: data.id,
-                },
-                url: `/api/posts/attachment/download`,
-                headers: { Authorization: AuthStr },
-            })
-                .then((res) => {
-                    window.open(res.data, "_blank").focus();
-                })
-                .catch((err) => {
-                    console.log(err.response.data.message);
-                });
-        },
-
-        hideComments(e, post_id) {
-            if (this.data_pass.isShow.includes(post_id)) {
-                e.target.classList.remove("text-primary");
-                this.data_pass.isShow = this.data_pass.isShow.filter((data) => {
-                    return data !== post_id;
-                });
-            } else {
-                e.target.classList.add("text-primary");
-                this.data_pass.isShow.push(post_id);
-            }
-        },
-
-        computedUserAvatar(data) {
-            if (data.get_user_details.profile_img) {
-                return data.get_user_details.image_url;
-            } else {
-                return "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
-            }
-        },
-
-        likePost(e, data) {
-            data.authLikes = !data.authLikes;
-
-            const AuthStr = "Bearer ".concat(userStore().access_token);
-            axios({
-                method: "post",
-                params: {
-                    id: data.id,
-                },
-                url: `/api/posts/${data.id}/like`,
-                headers: { Authorization: AuthStr },
-            })
-                .then((res) => {
-                    if (res.data.message == "like") {
-                        data.get_likes.push(res.data.data);
-                    } else {
-                        data.get_likes.forEach((elem, index) => {
-                            if (elem.user_id == userStore().user.id) {
-                                data.get_likes.splice(index, 1);
-                            }
-                        });
-                    }
-                })
-                .catch((err) => {});
-        },
-
-        latestComments(data) {
-            this.data_pass.sort = "latest";
-            this.data_pass.sort_id = data.id;
-        },
-
-        oldComments(data) {
-            this.data_pass.sort = "oldest";
-            this.data_pass.sort_id = data.id;
-        },
-
-        updateParentEditPost(data) {
-            this.$parent.edit_post.data = data;
-            this.$parent.edit_post.message = data.message;
-            this.$parent.edit_post.attachment_remove = [];
-        },
-    },
-
-    watch: {
-        $data: {
-            handler: function (val, oldVal) {
-                console.log("watcher: ", val);
-            },
-            deep: true,
-        },
-    },
-
-    updated() {},
-
-    mounted() {},
+        url: `/api/posts/attachment/download`,
+        headers: { Authorization: AuthStr },
+    })
+        .then((res) => {
+            window.open(res.data, "_blank").focus();
+        })
+        .catch((err) => {
+            console.log(err.response.data.message);
+        });
 };
+
+const hideComments = (e, post_id) => {
+    if (data_pass.value.isShow.includes(post_id)) {
+        e.target.classList.remove("text-primary");
+        data_pass.value.isShow = data_pass.value.isShow.filter((data) => {
+            return data !== post_id;
+        });
+    } else {
+        e.target.classList.add("text-primary");
+        data_pass.value.isShow.push(post_id);
+    }
+};
+
+const computedUserAvatar = (data) => {
+    if (data.get_user_details.profile_img) {
+        return data.get_user_details.image_url;
+    } else {
+        return "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
+    }
+};
+
+const likePost = (e, data) => {
+    data.authLikes = !data.authLikes;
+
+    const AuthStr = "Bearer ".concat(userStore().access_token);
+    axios({
+        method: "post",
+        params: {
+            id: data.id,
+        },
+        url: `/api/posts/${data.id}/like`,
+        headers: { Authorization: AuthStr },
+    })
+        .then((res) => {
+            if (res.data.message == "like") {
+                data.get_likes.push(res.data.data);
+            } else {
+                data.get_likes.forEach((elem, index) => {
+                    if (elem.user_id == userStore().user.id) {
+                        data.get_likes.splice(index, 1);
+                    }
+                });
+            }
+        })
+        .catch((err) => {});
+};
+
+const latestComments = (data) => {
+    data_pass.value.sort = "latest";
+    data_pass.value.sort_id = data.id;
+};
+
+const oldComments = (data) => {
+    data_pass.value.sort = "oldest";
+    data_pass.value.sort_id = data.id;
+};
+
+// export default {
+//     data() {
+//         return {
+//             // datas: '',
+//             data_pass: {
+//                 sort: "",
+//                 sort_id: null,
+//                 isShow: [],
+//             },
+//         };
+//     },
+//     components: {
+//         Comment,
+//     },
+
+//     props: ["datas"],
+
+//     computed: {
+//         currentUser() {
+//             return userStore().user;
+//         },
+//     },
+
+//     methods: {
+//         download(data) {
+//             const AuthStr = "Bearer ".concat(userStore().access_token);
+//             axios({
+//                 method: "get",
+//                 params: {
+//                     id: data.id,
+//                 },
+//                 url: `/api/posts/attachment/download`,
+//                 headers: { Authorization: AuthStr },
+//             })
+//                 .then((res) => {
+//                     window.open(res.data, "_blank").focus();
+//                 })
+//                 .catch((err) => {
+//                     console.log(err.response.data.message);
+//                 });
+//         },
+
+//         hideComments(e, post_id) {
+//             if (this.data_pass.isShow.includes(post_id)) {
+//                 e.target.classList.remove("text-primary");
+//                 this.data_pass.isShow = this.data_pass.isShow.filter((data) => {
+//                     return data !== post_id;
+//                 });
+//             } else {
+//                 e.target.classList.add("text-primary");
+//                 this.data_pass.isShow.push(post_id);
+//             }
+//         },
+
+//         computedUserAvatar(data) {
+//             if (data.get_user_details.profile_img) {
+//                 return data.get_user_details.image_url;
+//             } else {
+//                 return "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
+//             }
+//         },
+
+//         likePost(e, data) {
+//             data.authLikes = !data.authLikes;
+
+//             const AuthStr = "Bearer ".concat(userStore().access_token);
+//             axios({
+//                 method: "post",
+//                 params: {
+//                     id: data.id,
+//                 },
+//                 url: `/api/posts/${data.id}/like`,
+//                 headers: { Authorization: AuthStr },
+//             })
+//                 .then((res) => {
+//                     if (res.data.message == "like") {
+//                         data.get_likes.push(res.data.data);
+//                     } else {
+//                         data.get_likes.forEach((elem, index) => {
+//                             if (elem.user_id == userStore().user.id) {
+//                                 data.get_likes.splice(index, 1);
+//                             }
+//                         });
+//                     }
+//                 })
+//                 .catch((err) => {});
+//         },
+
+//         latestComments(data) {
+//             this.data_pass.sort = "latest";
+//             this.data_pass.sort_id = data.id;
+//         },
+
+//         oldComments(data) {
+//             this.data_pass.sort = "oldest";
+//             this.data_pass.sort_id = data.id;
+//         },
+
+//         updateParentEditPost(data) {
+//             this.$parent.edit_post.data = data;
+//             this.$parent.edit_post.message = data.message;
+//             this.$parent.edit_post.attachment_remove = [];
+//         },
+//     },
+
+//     watch: {
+//         $data: {
+//             handler: function (val, oldVal) {
+//                 console.log("watcher: ", val);
+//             },
+//             deep: true,
+//         },
+//     },
+
+//     updated() {},
+
+//     mounted() {},
+// };
 </script>
 
 <style scoped>

@@ -124,7 +124,7 @@ const router = createRouter({
                 disableIfSubscribed: true,
             },
         },
-        
+
         // {
         //     name: 'MembershipStatus',
         //     path: "/membership/status",
@@ -186,7 +186,7 @@ const router = createRouter({
                 import(/* webpackChunkName: "Cart" */ "../views/Cart.vue"),
             // components: () => defineAsyncComponent(() => import('../views/Cart.vue')),
         },
-        
+
         {
             path: "/order",
             name: "Order",
@@ -226,6 +226,13 @@ const router = createRouter({
         },
 
         {
+            path: "/test",
+            name: "Test",
+            component: () =>
+                import(/* webpackChunkName: "PostPage" */ "../views/Test.vue"),
+        },
+
+        {
             path: "/:catchAll(.*)",
             name: "PageNotFound",
             component: () =>
@@ -245,7 +252,7 @@ router.beforeEach((to, from, next) => {
             return false;
         }
     }
-    
+
     // if (to.matched.some((record) => record.meta.requiresSubscribe)) {
     //     if (!userStore().subscription) {
     //         next({ path: "/dashboard", query: { redirect: to.fullPath } });
@@ -267,8 +274,6 @@ router.beforeEach((to, from, next) => {
             return false;
         }
     }
-    
-    
 
     next();
 });

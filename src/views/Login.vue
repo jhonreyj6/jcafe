@@ -30,7 +30,7 @@
                             </button>
                         </div> -->
 
-                        <form @submit.prevent="authenticate" class="mb-4">
+                        <div class="mb-4">
                             <!-- Email input -->
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="form1Example13"
@@ -38,7 +38,7 @@
                                 >
                                 <input
                                     type="email"
-                                    v-model="form.email"
+                                    v-model="email"
                                     id="form1Example13"
                                     class="form-control form-control-lg"
                                 />
@@ -51,7 +51,7 @@
                                 >
                                 <input
                                     type="password"
-                                    v-model="form.password"
+                                    v-model="password"
                                     id="form1Example23"
                                     class="form-control form-control-lg"
                                 />
@@ -59,13 +59,13 @@
 
                             <!-- Submit button -->
                             <button
-                                type="submit"
-                                ref="login_btn"
+                                type="button"
+                                @click="authenticate"
                                 class="btn btn-primary w-100 bg-gradient btn-lg btn-block"
                             >
                                 Sign In
                             </button>
-                        </form>
+                        </div>
 
                         <div
                             class="d-flex justify-content-around align-items-center mb-4"
@@ -80,96 +80,42 @@
         </section>
     </div>
 </template>
-<script>
+<script setup>
+import { ref } from "vue";
 import { userStore } from "../stores/userStore";
+import { useRouter } from "vue-router";
 
-export default {
-    data() {
-        return {
-            form: {
-                email: "",
-                password: "",
-            },
-        };
-    },
-    components: {},
+const email = ref();
+const password = ref();
+const router = useRouter();
 
-    props: [],
-
-    computed: {},
-
-    methods: {
-        socialiteLogin(provider) {
-            // const newWindow = this.openWindow('', 'message');
-
-            axios({
-                method: "GET",
-                url: `/api/auth/${provider}/redirect`,
-            })
-                .then((res) => {
-                    window.open(res.data, "", "width=1000,height=750");
-                    // newWindow.location.href = res.data;
-                })
-                .catch((err) => {
-                    console.log(err.response);
-                });
+const authenticate = async (e) => {
+    e.target.setAttribute("disabled", true);
+    axios({
+        method: "post",
+        params: {
+            email: email.value,
+            password: password.value,
         },
-
-        async authenticate() {
-            this.$refs.login_btn.setAttribute("disabled", true);
-            axios({
-                method: "post",
-                params: {
-                    email: this.form.email,
-                    password: this.form.password,
-                },
-                url: `/api/auth/login`,
-            })
-                .then((res) => {
-                    this.$refs.login_btn.removeAttribute("disabled");
-                    userStore().$patch((state) => {
-                        state.user = Object.assign({}, res.data.user, {
-                            access_token: res.data.access_token,
-                        });
-                        state.access_token = res.data.access_token;
-                        state.subscription = res.data.subscription;
-                    });
-                    this.$router.push("/dashboard");
-                })
-                .catch((err) => {
-                    this.$refs.login_btn.removeAttribute("disabled");
+        url: `/api/auth/login`,
+    })
+        .then((res) => {
+            e.target.removeAttribute("disabled");
+            userStore().$patch((state) => {
+                state.user = Object.assign({}, res.data.user, {
+                    access_token: res.data.access_token,
                 });
-        },
-    },
-
-    // watch: {
-    //     $data: {
-    //         handler: function (val, oldVal) {
-    //             console.log("watcher: ", val);
-    //         },
-    //         deep: true,
-    //     },
-
-    //     $props: {
-    //         handler: function (val, oldVal) {
-    //             console.log("watcher: ", val);
-    //         },
-    //         deep: true,
-    //     },
-    // },
-
-    updated() {},
-
-    beforeUnmount() {},
-
-    mounted() {},
+                state.access_token = res.data.access_token;
+                state.subscription = res.data.subscription;
+            });
+            router.push("/dashboard");
+        })
+        .catch((err) => {
+            e.target.removeAttribute("disabled");
+        });
 };
 </script>
 
 <style scoped>
-/* .container {
-    margin-top: 100px;
-    max-width: 900px;
-} */
 </style>
 

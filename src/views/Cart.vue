@@ -27,7 +27,7 @@
                                             >
                                                 <input
                                                     class="form-check-input"
-                                                    ref="selectAll"
+                                                    ref="select_all"
                                                     type="checkbox"
                                                     @change="selectAll($event)"
                                                 />
@@ -233,8 +233,7 @@
                                             <button
                                                 @click="
                                                     stripe.state =
-                                                        true &&
-                                                        this.orders.length
+                                                        true && orders.length
                                                 "
                                                 class="btn btn-primary w-100"
                                             >
@@ -348,331 +347,598 @@
         </div>
     </div>
 </template>
-<script>
+<script setup>
 import { userStore } from "../stores/userStore";
 import { loadStripe } from "@stripe/stripe-js";
 import Star from "../components/Star.vue";
+import { computed, onMounted, ref, watch } from "vue";
 
-export default {
-    data() {
-        return {
-            cart_items: "",
-            orders: [],
-            subtotal: "",
-            // event: null,
-            stripe: {
-                state: false,
-                processing: false,
-                load_stripe: "",
-                card_element: "",
-                form: {
-                    name: "",
-                    address: {
-                        street: "",
-                        city: "",
-                        country: "",
-                        postal_code: "",
-                    },
-                    payment_method_id: "",
-                },
+const cart_items = ref();
+const orders = ref([]);
+const subtotal = ref();
+const select_all = ref();
+const stripe = ref({
+    state: false,
+    processing: false,
+    load_stripe: "",
+    card_element: "",
+    form: {
+        name: "",
+        address: {
+            street: "",
+            city: "",
+            country: "",
+            postal_code: "",
+        },
+        payment_method_id: "",
+    },
+});
+
+const computedSubTotal = computed(() => {
+    subtotal.value = null;
+    orders.value.forEach((elem, index) => {
+        cart_items.value.forEach((item) => {
+            if (elem == item.id) {
+                subtotal.value = subtotal.value +=
+                    item.product_variant_details.price * item.quantity;
+            }
+        });
+    });
+    return subtotal.value;
+});
+
+const computedTotal = computed(() => {
+    return subtotal.value;
+});
+
+const increaseQuantity = (item) => {
+    if (item.quantity < item.product_variant_details.stock) {
+        item.quantity++;
+        userStore().$patch((state) => {
+            state.cart_count++;
+        });
+
+        const AuthStr = "Bearer ".concat(userStore().access_token);
+        axios({
+            method: "patch",
+            params: {
+                quantity: item.quantity,
             },
-        };
-    },
-    components: {
-        Star,
-    },
-
-    props: [],
-
-    computed: {
-        computedSubTotal() {
-            this.subtotal = null;
-            this.orders.forEach((elem, index) => {
-                this.cart_items.forEach((item) => {
-                    if (elem == item.id) {
-                        this.subtotal = this.subtotal +=
-                            item.product_variant_details.price * item.quantity;
-                    }
-                });
-            });
-            return this.subtotal;
-        },
-
-        computedTotal() {
-            return this.subtotal;
-        },
-    },
-
-    methods: {
-        increaseQuantity(item) {
-            if (item.quantity < item.product_variant_details.stock) {
-                item.quantity++;
-                userStore().$patch((state) => {
-                    state.cart_count++;
-                });
-
-                const AuthStr = "Bearer ".concat(userStore().access_token);
-                axios({
-                    method: "patch",
-                    params: {
-                        quantity: item.quantity,
-                    },
-                    url: `/api/cart/${item.id}`,
-                    headers: { Authorization: AuthStr },
-                })
-                    .then((res) => {})
-                    .catch((err) => {});
-            }
-        },
-
-        decreaseQuantity(item) {
-            if (item.quantity > 1) {
-                item.quantity--;
-                userStore().$patch((state) => {
-                    state.cart_count--;
-                });
-
-                const AuthStr = "Bearer ".concat(userStore().access_token);
-                axios({
-                    method: "patch",
-                    params: {
-                        quantity: item.quantity,
-                    },
-                    url: `/api/cart/${item.id}`,
-                    headers: { Authorization: AuthStr },
-                })
-                    .then((res) => {})
-                    .catch((err) => {
-                        console.log(err.response.data.message);
-                    });
-            }
-        },
-
-        changeQuantity(item) {
-            if (
-                document.getElementById("input_" + item.id).value == "" ||
-                document.getElementById("input_" + item.id).value == 0
-            ) {
-                document.getElementById("input_" + item.id).value =
-                    item.quantity;
-            }
-
-            if (
-                document.getElementById("input_" + item.id).value >
-                item.product_variant_details.stock
-            ) {
-                document.getElementById("input_" + item.id).value =
-                    item.product_variant_details.stock;
-            }
-
-            // commit mutation for cart count
-            if (
-                item.quantity >
-                +document.getElementById("input_" + item.id).value
-            ) {
-                userStore().$patch((state) => {
-                    state.cart_count -
-                        (item.quantity -
-                            +document.getElementById("input_" + item.id).value);
-                });
-            } else {
-                userStore().$patch((state) => {
-                    state.cart_count +
-                        document.getElementById("input_" + item.id).value -
-                        item.quantity;
-                });
-            }
-
-            item.quantity = +document.getElementById("input_" + item.id).value;
-
-            const AuthStr = "Bearer ".concat(userStore().access_token);
-            axios({
-                method: "patch",
-                params: {
-                    quantity: item.quantity,
-                },
-                url: `/api/cart/${item.id}`,
-                headers: { Authorization: AuthStr },
-            })
-                .then((res) => {})
-                .catch((err) => {
-                    console.log(err);
-                });
-        },
-
-        deleteCartItem() {
-            const AuthStr = "Bearer ".concat(userStore().access_token);
-            axios
-                .delete(`/api/cart`, {
-                    params: {
-                        orders: this.orders,
-                    },
-                    headers: {
-                        Authorization: AuthStr,
-                    },
-                })
-                .then((res) => {
-                    this.orders = [];
-                    this.$refs.selectAll.checked = false;
-                    // userStore().$patch((state) => {
-                    //     state.cart_count = res.data.quantity;
-                    // });
-                })
-                .catch((err) => {});
-        },
-
-        selectProduct(e, item) {
-            if (
-                this.$refs.selectAll.checked &&
-                this.orders.length < this.cart_items.length
-            ) {
-                this.$refs.selectAll.checked = false;
-            }
-
-            if (this.orders.length == this.cart_items.length) {
-                this.$refs.selectAll.checked = true;
-            }
-        },
-
-        selectAll(e) {
-            if (e.target.checked) {
-                this.orders = [];
-                this.cart_items.forEach((elem) => {
-                    this.orders.push(elem.id);
-                });
-            } else {
-                this.orders = [];
-            }
-        },
-
-        getCartITems() {
-            const AuthStr = "Bearer ".concat(userStore().access_token);
-            axios({
-                method: "get",
-                url: `/api/cart`,
-                headers: { Authorization: AuthStr },
-            })
-                .then((res) => {
-                    this.cart_items = res.data.cart_items;
-                })
-                .catch((err) => {});
-        },
-
-        // submitOrder(e) {
-        //     e.target.disabled = true;
-        //     const AuthStr = "Bearer ".concat(userStore().access_token);
-        //     axios({
-        //         method: "POST",
-        //         params: {
-        //             orders: this.orders,
-        //         },
-        //         url: `/api/orders`,
-        //         headers: { Authorization: AuthStr },
-        //     })
-        //         .then((res) => {
-        //             e.target.disabled = false;
-        //             this.cart_items.forEach((item, index) => {
-        //                 if (this.orders.includes(item.id)) {
-        //                     this.cart_items.splice(index, 1);
-        //                 }
-        //             });
-        //             this.orders = [];
-        //         })
-        //         .catch((err) => {});
-        // },
-
-        async processPayment(e) {
-            this.stripe.processing = true;
-            e.target.disabled = true;
-
-            const { paymentMethod, error } =
-                await this.stripe.load_stripe.createPaymentMethod(
-                    "card",
-                    this.stripe.card_element,
-                    {
-                        billing_details: {
-                            name: this.stripe.form.name,
-                            email: userStore().user.email,
-                            address: {
-                                line1: this.stripe.form.address.street,
-                                city: this.stripe.form.address.city,
-                                country: "PH",
-                                postal_code:
-                                    this.stripe.form.address.postal_code,
-                            },
-                        },
-                    }
-                );
-
-            if (error) {
-                this.paymentProcessing = false;
-                console.error(error);
-            } else {
-                this.stripe.form.payment_method_id = paymentMethod.id;
-
-                const AuthStr = "Bearer ".concat(userStore().accessToken);
-                axios({
-                    method: "POST",
-                    params: {
-                        orders: this.orders,
-                        payment_method_id: this.stripe.form.payment_method_id,
-                    },
-                    url: `/api/orders`,
-                    headers: { Authorization: AuthStr },
-                })
-                    .then((res) => {
-                        let cart_count_deduct = 0;
-
-                        this.cart_items.forEach((item) => {
-                            if (this.orders.includes(item.id)) {
-                                cart_count_deduct =
-                                    cart_count_deduct + item.quantity;
-                            }
-                        });
-
-                        userStore().$patch((state) => {
-                            state.cart_count -= cart_count_deduct;
-                        });
-                        window.location.reload();
-                    })
-                    .catch((err) => {
-                        e.target.disabled = false;
-                    });
-            }
-        },
-    },
-
-    // watch: {
-    //     $data: {
-    //         handler: function (val, oldVal) {
-    //             console.log("watcher: ", val);
-    //         },
-    //         deep: true,
-    //     },
-    // },
-
-    updated() {},
-
-    beforeCreate() {},
-
-    async mounted() {
-        this.getCartITems();
-
-        this.stripe.load_stripe = await loadStripe(
-            import.meta.env.VITE_STRIPE_PK
-        );
-        this.stripe.card_element = this.stripe.load_stripe
-            .elements()
-            .create("card", {
-                classes: {
-                    base: "bg-gray-100 rounded border border-gray-300 focus:border-indigo-500 text-base outline-none text-gray-700 p-3 leading-8 transition-colors duration-200 ease-in-out",
-                },
-                hidePostalCode: true,
-            });
-
-        this.stripe.card_element.mount("#card-element");
-    },
+            url: `/api/cart/${item.id}`,
+            headers: { Authorization: AuthStr },
+        })
+            .then((res) => {})
+            .catch((err) => {});
+    }
 };
+
+const decreaseQuantity = (item) => {
+    if (item.quantity > 1) {
+        item.quantity--;
+        userStore().$patch((state) => {
+            state.cart_count--;
+        });
+
+        const AuthStr = "Bearer ".concat(userStore().access_token);
+        axios({
+            method: "patch",
+            params: {
+                quantity: item.quantity,
+            },
+            url: `/api/cart/${item.id}`,
+            headers: { Authorization: AuthStr },
+        })
+            .then((res) => {})
+            .catch((err) => {
+                console.log(err.response.data.message);
+            });
+    }
+};
+
+const changeQuantity = (item) => {
+    if (
+        document.getElementById("input_" + item.id).value == "" ||
+        document.getElementById("input_" + item.id).value <= 0
+    ) {
+        document.getElementById("input_" + item.id).value = item.quantity;
+    }
+
+    if (
+        document.getElementById("input_" + item.id).value >
+        item.product_variant_details.stock
+    ) {
+        document.getElementById("input_" + item.id).value =
+            item.product_variant_details.stock;
+    }
+
+    // commit mutation for cart count
+    if (item.quantity > +document.getElementById("input_" + item.id).value) {
+        userStore().$patch((state) => {
+            state.cart_count -
+                (item.quantity -
+                    +document.getElementById("input_" + item.id).value);
+        });
+    } else {
+        userStore().$patch((state) => {
+            state.cart_count +
+                document.getElementById("input_" + item.id).value -
+                item.quantity;
+        });
+    }
+
+    item.quantity = +document.getElementById("input_" + item.id).value;
+
+    const AuthStr = "Bearer ".concat(userStore().access_token);
+    axios({
+        method: "patch",
+        params: {
+            quantity: item.quantity,
+        },
+        url: `/api/cart/${item.id}`,
+        headers: { Authorization: AuthStr },
+    })
+        .then((res) => {})
+        .catch((err) => {
+            console.log(err);
+        });
+};
+
+const deleteCartItem = () => {
+    const AuthStr = "Bearer ".concat(userStore().access_token);
+    axios
+        .delete(`/api/cart`, {
+            params: {
+                orders: orders.value,
+            },
+            headers: {
+                Authorization: AuthStr,
+            },
+        })
+        .then((res) => {
+            cart_items.value = cart_items.value.filter((item) => {
+                return !orders.value.includes(item.id);
+            });
+            orders.value = [];
+            select_all.checked = false;
+            // userStore().$patch((state) => {
+            //     state.cart_count = res.data.quantity;
+            // });
+        })
+        .catch((err) => {});
+};
+
+const selectProduct = (e, item) => {
+    if (select_all.checked && orders.value.length < cart_items.value.length) {
+        select_all.checked = false;
+    }
+
+    if (orders.value.length == cart_items.value.length) {
+        select_all.checked = true;
+    }
+};
+
+const selectAll = (e) => {
+    if (e.target.checked) {
+        orders.value = [];
+        cart_items.value.forEach((elem) => {
+            orders.value.push(elem.id);
+        });
+    } else {
+        orders.value = [];
+    }
+};
+
+const getCartITems = () => {
+    const AuthStr = "Bearer ".concat(userStore().access_token);
+    axios({
+        method: "get",
+        url: `/api/cart`,
+        headers: { Authorization: AuthStr },
+    })
+        .then((res) => {
+            cart_items.value = res.data.cart_items;
+        })
+        .catch((err) => {});
+};
+
+const processPayment = async (e) => {
+    stripe.value.processing = true;
+    e.target.disabled = true;
+
+    const { paymentMethod, error } =
+        await stripe.value.load_stripe.createPaymentMethod(
+            "card",
+            stripe.value.card_element,
+            {
+                billing_details: {
+                    name: stripe.value.form.name,
+                    email: userStore().user.email,
+                    address: {
+                        line1: stripe.value.form.address.street,
+                        city: stripe.value.form.address.city,
+                        country: "PH",
+                        postal_code: stripe.value.form.address.postal_code,
+                    },
+                },
+            }
+        );
+
+    if (error) {
+        paymentProcessing.value = false;
+        console.error(error);
+    } else {
+        stripe.value.form.payment_method_id = paymentMethod.id;
+
+        const AuthStr = "Bearer ".concat(userStore().accessToken);
+        axios({
+            method: "POST",
+            params: {
+                orders: orders.value,
+                payment_method_id: stripe.value.form.payment_method_id,
+            },
+            url: `/api/orders`,
+            headers: { Authorization: AuthStr },
+        })
+            .then((res) => {
+                let cart_count_deduct = 0;
+
+                cart_items.value.forEach((item) => {
+                    if (orders.value.includes(item.id)) {
+                        cart_count_deduct = cart_count_deduct + item.quantity;
+                    }
+                });
+
+                userStore().$patch((state) => {
+                    state.cart_count -= cart_count_deduct;
+                });
+                window.location.reload();
+            })
+            .catch((err) => {
+                e.target.disabled = false;
+            });
+    }
+};
+
+watch(orders, async (val, oldVal) => {
+    console.log(val);
+});
+
+onMounted(async () => {
+    getCartITems();
+
+    stripe.value.load_stripe = await loadStripe(import.meta.env.VITE_STRIPE_PK);
+    stripe.value.card_element = stripe.value.load_stripe
+        .elements()
+        .create("card", {
+            classes: {
+                base: "bg-gray-100 rounded border border-gray-300 focus:border-indigo-500 text-base outline-none text-gray-700 p-3 leading-8 transition-colors duration-200 ease-in-out",
+            },
+            hidePostalCode: true,
+        });
+
+    stripe.value.card_element.mount("#card-element");
+});
+
+// export default {
+//     data() {
+//         return {
+//             cart_items: "",
+//             orders: [],
+//             subtotal: "",
+//             // event: null,
+//             stripe: {
+//                 state: false,
+//                 processing: false,
+//                 load_stripe: "",
+//                 card_element: "",
+//                 form: {
+//                     name: "",
+//                     address: {
+//                         street: "",
+//                         city: "",
+//                         country: "",
+//                         postal_code: "",
+//                     },
+//                     payment_method_id: "",
+//                 },
+//             },
+//         };
+//     },
+//     components: {
+//         Star,
+//     },
+
+//     props: [],
+
+//     computed: {
+//         computedSubTotal() {
+//             this.subtotal = null;
+//             this.orders.forEach((elem, index) => {
+//                 this.cart_items.forEach((item) => {
+//                     if (elem == item.id) {
+//                         this.subtotal = this.subtotal +=
+//                             item.product_variant_details.price * item.quantity;
+//                     }
+//                 });
+//             });
+//             return this.subtotal;
+//         },
+
+//         computedTotal() {
+//             return this.subtotal;
+//         },
+//     },
+
+//     methods: {
+//         increaseQuantity(item) {
+//             if (item.quantity < item.product_variant_details.stock) {
+//                 item.quantity++;
+//                 userStore().$patch((state) => {
+//                     state.cart_count++;
+//                 });
+
+//                 const AuthStr = "Bearer ".concat(userStore().access_token);
+//                 axios({
+//                     method: "patch",
+//                     params: {
+//                         quantity: item.quantity,
+//                     },
+//                     url: `/api/cart/${item.id}`,
+//                     headers: { Authorization: AuthStr },
+//                 })
+//                     .then((res) => {})
+//                     .catch((err) => {});
+//             }
+//         },
+
+//         decreaseQuantity(item) {
+//             if (item.quantity > 1) {
+//                 item.quantity--;
+//                 userStore().$patch((state) => {
+//                     state.cart_count--;
+//                 });
+
+//                 const AuthStr = "Bearer ".concat(userStore().access_token);
+//                 axios({
+//                     method: "patch",
+//                     params: {
+//                         quantity: item.quantity,
+//                     },
+//                     url: `/api/cart/${item.id}`,
+//                     headers: { Authorization: AuthStr },
+//                 })
+//                     .then((res) => {})
+//                     .catch((err) => {
+//                         console.log(err.response.data.message);
+//                     });
+//             }
+//         },
+
+//         changeQuantity(item) {
+//             if (
+//                 document.getElementById("input_" + item.id).value == "" ||
+//                 document.getElementById("input_" + item.id).value == 0
+//             ) {
+//                 document.getElementById("input_" + item.id).value =
+//                     item.quantity;
+//             }
+
+//             if (
+//                 document.getElementById("input_" + item.id).value >
+//                 item.product_variant_details.stock
+//             ) {
+//                 document.getElementById("input_" + item.id).value =
+//                     item.product_variant_details.stock;
+//             }
+
+//             // commit mutation for cart count
+//             if (
+//                 item.quantity >
+//                 +document.getElementById("input_" + item.id).value
+//             ) {
+//                 userStore().$patch((state) => {
+//                     state.cart_count -
+//                         (item.quantity -
+//                             +document.getElementById("input_" + item.id).value);
+//                 });
+//             } else {
+//                 userStore().$patch((state) => {
+//                     state.cart_count +
+//                         document.getElementById("input_" + item.id).value -
+//                         item.quantity;
+//                 });
+//             }
+
+//             item.quantity = +document.getElementById("input_" + item.id).value;
+
+//             const AuthStr = "Bearer ".concat(userStore().access_token);
+//             axios({
+//                 method: "patch",
+//                 params: {
+//                     quantity: item.quantity,
+//                 },
+//                 url: `/api/cart/${item.id}`,
+//                 headers: { Authorization: AuthStr },
+//             })
+//                 .then((res) => {})
+//                 .catch((err) => {
+//                     console.log(err);
+//                 });
+//         },
+
+//         deleteCartItem() {
+//             const AuthStr = "Bearer ".concat(userStore().access_token);
+//             axios
+//                 .delete(`/api/cart`, {
+//                     params: {
+//                         orders: this.orders,
+//                     },
+//                     headers: {
+//                         Authorization: AuthStr,
+//                     },
+//                 })
+//                 .then((res) => {
+//                     this.orders = [];
+//                     this.$refs.selectAll.checked = false;
+//                     // userStore().$patch((state) => {
+//                     //     state.cart_count = res.data.quantity;
+//                     // });
+//                 })
+//                 .catch((err) => {});
+//         },
+
+//         selectProduct(e, item) {
+//             if (
+//                 this.$refs.selectAll.checked &&
+//                 this.orders.length < this.cart_items.length
+//             ) {
+//                 this.$refs.selectAll.checked = false;
+//             }
+
+//             if (this.orders.length == this.cart_items.length) {
+//                 this.$refs.selectAll.checked = true;
+//             }
+//         },
+
+//         selectAll(e) {
+//             if (e.target.checked) {
+//                 this.orders = [];
+//                 this.cart_items.forEach((elem) => {
+//                     this.orders.push(elem.id);
+//                 });
+//             } else {
+//                 this.orders = [];
+//             }
+//         },
+
+//         getCartITems() {
+//             const AuthStr = "Bearer ".concat(userStore().access_token);
+//             axios({
+//                 method: "get",
+//                 url: `/api/cart`,
+//                 headers: { Authorization: AuthStr },
+//             })
+//                 .then((res) => {
+//                     this.cart_items = res.data.cart_items;
+//                 })
+//                 .catch((err) => {});
+//         },
+
+//         // submitOrder(e) {
+//         //     e.target.disabled = true;
+//         //     const AuthStr = "Bearer ".concat(userStore().access_token);
+//         //     axios({
+//         //         method: "POST",
+//         //         params: {
+//         //             orders: this.orders,
+//         //         },
+//         //         url: `/api/orders`,
+//         //         headers: { Authorization: AuthStr },
+//         //     })
+//         //         .then((res) => {
+//         //             e.target.disabled = false;
+//         //             this.cart_items.forEach((item, index) => {
+//         //                 if (this.orders.includes(item.id)) {
+//         //                     this.cart_items.splice(index, 1);
+//         //                 }
+//         //             });
+//         //             this.orders = [];
+//         //         })
+//         //         .catch((err) => {});
+//         // },
+
+//         async processPayment(e) {
+//             this.stripe.processing = true;
+//             e.target.disabled = true;
+
+//             const { paymentMethod, error } =
+//                 await this.stripe.load_stripe.createPaymentMethod(
+//                     "card",
+//                     this.stripe.card_element,
+//                     {
+//                         billing_details: {
+//                             name: this.stripe.form.name,
+//                             email: userStore().user.email,
+//                             address: {
+//                                 line1: this.stripe.form.address.street,
+//                                 city: this.stripe.form.address.city,
+//                                 country: "PH",
+//                                 postal_code:
+//                                     this.stripe.form.address.postal_code,
+//                             },
+//                         },
+//                     }
+//                 );
+
+//             if (error) {
+//                 this.paymentProcessing = false;
+//                 console.error(error);
+//             } else {
+//                 this.stripe.form.payment_method_id = paymentMethod.id;
+
+//                 const AuthStr = "Bearer ".concat(userStore().accessToken);
+//                 axios({
+//                     method: "POST",
+//                     params: {
+//                         orders: this.orders,
+//                         payment_method_id: this.stripe.form.payment_method_id,
+//                     },
+//                     url: `/api/orders`,
+//                     headers: { Authorization: AuthStr },
+//                 })
+//                     .then((res) => {
+//                         let cart_count_deduct = 0;
+
+//                         this.cart_items.forEach((item) => {
+//                             if (this.orders.includes(item.id)) {
+//                                 cart_count_deduct =
+//                                     cart_count_deduct + item.quantity;
+//                             }
+//                         });
+
+//                         userStore().$patch((state) => {
+//                             state.cart_count -= cart_count_deduct;
+//                         });
+//                         window.location.reload();
+//                     })
+//                     .catch((err) => {
+//                         e.target.disabled = false;
+//                     });
+//             }
+//         },
+//     },
+
+//     // watch: {
+//     //     $data: {
+//     //         handler: function (val, oldVal) {
+//     //             console.log("watcher: ", val);
+//     //         },
+//     //         deep: true,
+//     //     },
+//     // },
+
+//     updated() {},
+
+//     beforeCreate() {},
+
+//     async mounted() {
+//         this.getCartITems();
+
+//         this.stripe.load_stripe = await loadStripe(
+//             import.meta.env.VITE_STRIPE_PK
+//         );
+//         this.stripe.card_element = this.stripe.load_stripe
+//             .elements()
+//             .create("card", {
+//                 classes: {
+//                     base: "bg-gray-100 rounded border border-gray-300 focus:border-indigo-500 text-base outline-none text-gray-700 p-3 leading-8 transition-colors duration-200 ease-in-out",
+//                 },
+//                 hidePostalCode: true,
+//             });
+
+//         this.stripe.card_element.mount("#card-element");
+//     },
+// };
 </script>
 
 <style scoped>
