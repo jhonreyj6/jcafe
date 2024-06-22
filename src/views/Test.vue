@@ -1,57 +1,62 @@
 <template>
-    <div class="space-intro">
-        <div class="container">
-            <TestChild :messages="messages" :trigger="`trigger`" />
-
-            <form>
-                <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label"
-                        >Message</label
-                    >
-                    <textarea
-                        name=""
-                        id=""
-                        cols="30"
-                        rows="6"
-                        class="form-control"
-                    ></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
+    <div v-if="editor" class="space-intro">
+        <editor-content :editor="editor" class="ms-5" />
     </div>
 </template>
-<script setup lang="ts">
-import TestChild from "../components/TestChild.vue";
-import { onMounted, ref } from "vue";
-import { userStore } from "../stores/userStore";
+  
+  <script>
+import Document from "@tiptap/extension-document";
+import Mention from "@tiptap/extension-mention";
+import Paragraph from "@tiptap/extension-paragraph";
+import Text from "@tiptap/extension-text";
+import { Editor, EditorContent } from "@tiptap/vue-3";
 
-const messages = ref();
-messages.value = [
-    {
-        id: 0,
-        author: "Maxwell",
-        message: "1st Test",
-    },
-    {
-        id: 1,
-        author: "Robert",
-        message: "Poor dad",
-    },
-];
+import suggestion from "../helpers/tiptap/suggestion";
 
-// const trigger =
-const getProducts = () => {
-    axios({
-        method: "get",
-        url: `/api/products`,
-    })
-        .then((res) => {
-            console.log(res);
-        })
-        .catch((err) => {});
+export default {
+    components: {
+        EditorContent,
+    },
+
+    data() {
+        return {
+            editor: null,
+        };
+    },
+
+    mounted() {
+        this.editor = new Editor({
+            extensions: [
+                Document,
+                Paragraph,
+                Text,
+                Mention.configure({
+                    HTMLAttributes: {
+                        class: "mention",
+                    },
+                    suggestion,
+                }),
+            ],
+            content: "",
+        });
+    },
+
+    beforeUnmount() {
+        this.editor.destroy();
+    },
 };
 </script>
-
+  
 <style scoped>
+/* Basic editor styles */
+.tiptap :first-child {
+    margin-top: 0;
+}
+.tiptap .mention {
+    background-color: var(--purple-light);
+    border-radius: 0.4rem;
+    box-decoration-break: clone;
+    color: var(--purple);
+    padding: 0.1rem 0.3rem;
+}
 </style>

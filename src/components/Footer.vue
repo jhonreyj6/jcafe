@@ -68,25 +68,7 @@
         </div>
     </footer>
 </template>
-<script>
-//import name from './
-
-export default {
-    data() {
-        return {};
-    },
-    components: {},
-
-    props: [],
-
-    computed: {},
-
-    methods: {},
-
-    updated() {},
-
-    mounted() {},
-};
+<script setup>
 </script>
 
 <style scoped>

@@ -9,6 +9,11 @@
   },
   "dependencies": {
     "@stripe/stripe-js": "^3.0.7",
+    "@tiptap/extension-mention": "^2.4.0",
+    "@tiptap/pm": "^2.4.0",
+    "@tiptap/starter-kit": "^2.4.0",
+    "@tiptap/suggestion": "^2.4.0",
+    "@tiptap/vue-3": "^2.4.0",
     "@vitejs/plugin-vue": "^5.0.4",
     "axios": "^1.6.2",
     "bootstrap": "^5.3.2",
@@ -16,6 +21,7 @@
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.0",
     "pusher-js": "^8.4.0-rc2",
+    "tippy.js": "^6.3.7",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5"
   },
