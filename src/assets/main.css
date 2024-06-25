@@ -29,3 +29,14 @@ video {
   object-fit: fill;
 } */
 
+p {
+  margin-bottom: 0 !important;
+}
+
+.mention {
+    background-color: var(--purple-light);
+    border-radius: 0.4rem;
+    box-decoration-break: clone;
+    color: rgb(65, 65, 226);
+    padding: 0.1rem 0.3rem;
+}

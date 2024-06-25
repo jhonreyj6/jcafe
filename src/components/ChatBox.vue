@@ -1,6 +1,19 @@
 <script setup>
 import { computed, onMounted, onUnmounted, onUpdated, ref, watch } from "vue";
 import { userStore } from "../stores/userStore";
+// import { actionStore } from "../stores/actionStore";
+
+// tiptap
+import Document from "@tiptap/extension-document";
+import Mention from "@tiptap/extension-mention";
+import Paragraph from "@tiptap/extension-paragraph";
+import Text from "@tiptap/extension-text";
+import { Editor, EditorContent } from "@tiptap/vue-3";
+import suggestion from "../helpers/tiptap/suggestion";
+import { NoNewLine } from "../helpers/tiptap/NoNewLine";
+import { mergeAttributes } from "@tiptap/core";
+
+const editor = ref();
 
 const addAttach = ref(false);
 const chats = ref();
@@ -12,7 +25,6 @@ const sms_state = ref("");
 const chat_body = ref();
 const chat_angle = ref();
 const chat_div = ref();
-const editable_div = ref();
 
 const form = ref({
     message: "",
@@ -121,10 +133,14 @@ const getChatRoom = async () => {
 };
 
 const sendMessage = () => {
+    if (form.value.message == "" || localStorage.getItem("mention") == 1) {
+        return false;
+    }
+
     sms_state.value = true;
     chats.value.data.push({
         id: sms_counter.value,
-        message: form.value.message.trim(),
+        message: form.value.message,
         room_id: currentRoom.value,
         user_id: currentUser.value.id,
         created_at: null,
@@ -141,7 +157,7 @@ const sendMessage = () => {
     formData.append("message", temp_msg);
     // formData.append("file", this.form.drop_file);
 
-    editable_div.value.innerHTML = "";
+    editor.value.commands.clearContent();
 
     const AuthStr = "Bearer ".concat(userStore().access_token);
     axios({
@@ -162,7 +178,6 @@ const sendMessage = () => {
 
             // reset
             form.value.message = null;
-
             sms_state.value = false;
         })
         .catch((err) => {
@@ -171,14 +186,10 @@ const sendMessage = () => {
 };
 
 const updateFormMessage = async (e) => {
+    form.value.message = e.target.innerHTML;
+
     if (e.keyCode == 13) {
-        console.log("enter is press");
-        document.execCommand("insertHTML", false, "<br/>");
-        // prevent the default behaviour of return key pressed
-        return false;
         sendMessage();
-    } else {
-        form.value.message = e.target.innerHTML.trim();
     }
 };
 
@@ -227,6 +238,34 @@ onMounted(() => {
         },
         false
     );
+
+    editor.value = new Editor({
+        extensions: [
+            Document,
+            Paragraph,
+            Text,
+            NoNewLine,
+            Mention.configure({
+                HTMLAttributes: {
+                    class: "mention",
+                },
+                renderHTML({ options, node }) {
+                    return [
+                        "a",
+                        mergeAttributes(
+                            { href: "/profile/1" },
+                            options.HTMLAttributes
+                        ),
+                        `${options.suggestion.char}${
+                            node.attrs.label ?? node.attrs.id
+                        }`,
+                    ];
+                },
+                suggestion,
+            }),
+        ],
+        content: "",
+    });
 });
 
 onUnmounted(() => {
@@ -269,9 +308,10 @@ onUnmounted(() => {
                                     class="rounded-circle"
                                     alt=""
                                 />
-                                <div class="border p-2 rounded">
-                                    {{ chat.message }}
-                                </div>
+                                <div
+                                    class="border p-2 rounded"
+                                    v-html="chat.message"
+                                ></div>
                                 <div
                                     class="ms-auto text-sm text-secondary opacity-75"
                                     v-if="chat.sending"
@@ -347,12 +387,17 @@ onUnmounted(() => {
                             <div
                                 class="w-100 border rounded px-2 py-1 position-relative d-flex align-bottom"
                             >
-                                <div
+                                <!-- <div
                                     contenteditable="true"
                                     class="w-100 me-4"
-                                    ref="editable_div"
                                     @keyup="updateFormMessage"
-                                ></div>
+                                ></div> -->
+
+                                <editor-content
+                                    :editor="editor"
+                                    class="w-100 me-4"
+                                    @keyup="updateFormMessage"
+                                />
 
                                 <div class="position-absolute end-0 me-2">
                                     <a role="button" class="text-primary">
@@ -412,5 +457,16 @@ onUnmounted(() => {
 
 .bg-gray {
     background: #f5f5f5;
+}
+
+.tiptap :first-child {
+    margin-top: 0;
+}
+.tiptap .mention {
+    background-color: var(--purple-light);
+    border-radius: 0.4rem;
+    box-decoration-break: clone;
+    color: rgb(65, 65, 226);
+    padding: 0.1rem 0.3rem;
 }
 </style>
