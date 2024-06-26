@@ -125,19 +125,19 @@ const router = createRouter({
             },
         },
 
-        // {
-        //     name: 'MembershipStatus',
-        //     path: "/membership/status",
-        //     component: () =>
-        //         import(
-        //             /* webpackChunkName: "MembershipStatus" */ "../views/membership/MembershipStatus.vue"
-        //         ),
-        //     meta: {
-        //         title: "Membership Status",
-        //         requiresAuth: true,
-        //         requiresSubscribe: true,
-        //     },
-        // },
+        {
+            name: "MembershipStatus",
+            path: "/membership/status",
+            component: () =>
+                import(
+                    /* webpackChunkName: "MembershipStatus" */ "../views/membership/MembershipStatus.vue"
+                ),
+            meta: {
+                title: "Membership Status",
+                requiresAuth: true,
+                requiresSubscribe: true,
+            },
+        },
 
         {
             path: "/games",
@@ -233,6 +233,13 @@ const router = createRouter({
         },
 
         {
+            path: "/work",
+            name: "Work",
+            component: () =>
+                import(/* webpackChunkName: "PostPage" */ "../views/Work.vue"),
+        },
+
+        {
             path: "/:catchAll(.*)",
             name: "PageNotFound",
             component: () =>
@@ -253,12 +260,12 @@ router.beforeEach((to, from, next) => {
         }
     }
 
-    // if (to.matched.some((record) => record.meta.requiresSubscribe)) {
-    //     if (!userStore().subscription) {
-    //         next({ path: "/dashboard", query: { redirect: to.fullPath } });
-    //         return false;
-    //     }
-    // }
+    if (to.matched.some((record) => record.meta.requiresSubscribe)) {
+        if (!userStore().subscription) {
+            next({ path: "/dashboard", query: { redirect: to.fullPath } });
+            return false;
+        }
+    }
 
     if (to.matched.some((record) => record.meta.requiresAuth)) {
         if (!userStore().access_token) {

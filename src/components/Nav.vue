@@ -55,6 +55,14 @@
                             <li class="nav-item">
                                 <router-link
                                     to="/membership"
+                                    v-if="!currentUser.subscription"
+                                    class="nav-link position-relative"
+                                >
+                                    <i class="fa fa-diamond"></i>
+                                </router-link>
+                                <router-link
+                                    to="/membership/status"
+                                    v-else
                                     class="nav-link position-relative"
                                 >
                                     <i class="fa fa-diamond"></i>
