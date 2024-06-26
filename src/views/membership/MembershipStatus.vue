@@ -228,17 +228,6 @@ onMounted(() => {
                                 SMS Notification
                             </div>
                         </div>
-                        <div class="m-4">
-                            <div
-                                class="btn btn-outline-primary bg-gradient w-100"
-                                @click="
-                                    stripe.state = true;
-                                    subscription_plan = 'regular';
-                                "
-                            >
-                                Subscribe
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -313,17 +302,6 @@ onMounted(() => {
                                 <i class="fa fa-check text-success me-2"></i>
                                 SMS Notification
                             </div>
-                        </div>
-                        <div class="m-4">
-                            <button
-                                class="btn btn-outline-primary bg-gradient w-100"
-                                @click="
-                                    stripe.state = true;
-                                    subscription_plan = 'loyal';
-                                "
-                            >
-                                Subscribe
-                            </button>
                         </div>
                     </div>
                 </div>

@@ -71,13 +71,11 @@
                         </div>
                     </div>
                     <div class="m-4">
-                        <!-- <div class="btn btn-primary bg-gradient w-100" @click="stripe.state = true; subscription_plan = 'visitor'" v-text="JSON.parse(auth.subscription.type).name == 'visitor' ? 'Subscribed' : 'Subscribe'">
-                            </div> -->
                         <div
                             class="btn btn-outline-primary bg-gradient w-100"
                             @click="
                                 stripe.state = true;
-                                subscription_plan = 'visitor';
+                                subscription_plan = 'Visitor';
                             "
                         >
                             Subscribe
@@ -159,7 +157,7 @@
                             class="btn btn-outline-primary bg-gradient w-100"
                             @click="
                                 stripe.state = true;
-                                subscription_plan = 'regular';
+                                subscription_plan = 'Regular';
                             "
                         >
                             Subscribe
@@ -241,7 +239,7 @@
                             class="btn btn-outline-primary bg-gradient w-100"
                             @click="
                                 stripe.state = true;
-                                subscription_plan = 'loyal';
+                                subscription_plan = 'Loyal';
                             "
                         >
                             Subscribe
@@ -402,7 +400,6 @@ const processPayment = async (e) => {
                 userStore().$patch((state) => {
                     state.subscription = true;
                 });
-
                 router.push("/membership/status");
             })
             .catch((err) => {
@@ -449,164 +446,6 @@ onBeforeMount(() => {
 onMounted(() => {
     renderStripe();
 });
-
-// export default {
-//     data() {
-//         return {
-//             auth: {
-//                 subscription: "",
-//             },
-//             stripe: {
-//                 state: false,
-//                 processing: false,
-//                 load_stripe: "",
-//                 card_element: "",
-//                 form: {
-//                     name: "",
-//                     address: {
-//                         street: "",
-//                         city: "",
-//                         country: "",
-//                         postal_code: "",
-//                     },
-//                     payment_method_id: "",
-//                 },
-//             },
-//             subscription_plan: "",
-//         };
-//     },
-//     components: {},
-
-//     props: {},
-
-//     computed: {},
-
-//     methods: {
-//         async processPayment(e) {
-//             this.stripe.processing = true;
-//             e.target.disabled = true;
-
-//             const { paymentMethod, error } =
-//                 await this.stripe.load_stripe.createPaymentMethod(
-//                     "card",
-//                     this.stripe.card_element,
-//                     {
-//                         billing_details: {
-//                             name: this.stripe.form.name,
-//                             email: userStore().user.email,
-//                             address: {
-//                                 line1: this.stripe.form.address.street,
-//                                 city: this.stripe.form.address.city,
-//                                 country: "PH",
-//                                 postal_code:
-//                                     this.stripe.form.address.postal_code,
-//                             },
-//                         },
-//                     }
-//                 );
-
-//             if (error) {
-//                 this.stripe.processing = false;
-//             } else {
-//                 this.stripe.form.payment_method_id = paymentMethod.id;
-
-//                 const AuthStr = "Bearer ".concat(userStore().accessToken);
-//                 axios({
-//                     method: "POST",
-//                     params: {
-//                         subscription_plan: this.subscription_plan,
-//                         payment_method_id: this.stripe.form.payment_method_id,
-//                     },
-//                     url: `/api/users/membership`,
-//                     headers: { Authorization: AuthStr },
-//                 })
-//                     .then((res) => {
-//                         let cart_count_deduct = 0;
-
-//                         this.cart_items.forEach((item) => {
-//                             if (this.orders.includes(item.id)) {
-//                                 cart_count_deduct =
-//                                     cart_count_deduct + item.quantity;
-//                             }
-//                         });
-
-//                         userStore().$patch((state) => {
-//                             state.cart_count -= cart_count_deduct;
-//                             state.subscription = true;
-//                         });
-
-//                         this.$router.push("/dashboard");
-//                     })
-//                     .catch((err) => {
-//                         e.target.disabled = false;
-//                         this.stripe.processing = false;
-//                     });
-//             }
-//         },
-
-//         async renderStripe() {
-//             this.stripe.load_stripe = await loadStripe(
-//                 import.meta.env.VITE_STRIPE_PK
-//             );
-//             this.stripe.card_element = this.stripe.load_stripe
-//                 .elements()
-//                 .create("card", {
-//                     classes: {
-//                         base: "bg-gray-100 rounded border border-gray-300 focus:border-indigo-500 text-base outline-none text-gray-700 p-3 leading-8 transition-colors duration-200 ease-in-out",
-//                     },
-//                     hidePostalCode: true,
-//                 });
-
-//             this.stripe.card_element.mount("#card-element");
-//         },
-
-//         getAuthSubscription() {
-//             const AuthStr = "Bearer ".concat(userStore().accessToken);
-//             axios({
-//                 method: "GET",
-//                 url: `/api/users/membership/show`,
-//                 headers: { Authorization: AuthStr },
-//             })
-//                 .then((res) => {
-//                     this.auth.subscription = res.data.subscription[0];
-//                     this.auth.subscription.type = JSON.parse(
-//                         this.auth.subscription.type
-//                     );
-//                 })
-//                 .catch((err) => {});
-//         },
-//     },
-
-//     watch: {
-//         $data: {
-//             handler: function (val, oldVal) {
-//                 console.log("watcher: ", val);
-//             },
-//             deep: true,
-//         },
-
-//         $props: {
-//             handler: function (val, oldVal) {
-//                 console.log("watcher: ", val);
-//             },
-//             deep: true,
-//         },
-//         some_prop: function () {
-//             //do something if some_prop updated
-//         },
-//     },
-
-//     updated() {},
-
-//     beforeMount() {
-//         this.getAuthSubscription();
-//     },
-
-//     mounted() {
-
-//         this.renderStripe();
-//     },
-// };
 </script>
 
 <style scoped>
