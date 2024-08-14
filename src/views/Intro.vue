@@ -799,20 +799,8 @@
         </div>
     </div>
 </template>
-<script>
-export default {
-    data() {
-        return {};
-    },
+<script setup>
 
-    name: "IntroComponent",
-
-    components: {},
-
-    props: {},
-
-    computed: {},
-};
 </script>
 
 <style scoped>

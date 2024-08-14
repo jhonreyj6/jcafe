@@ -20,9 +20,7 @@
                   />
                 </div>
                 <div class="mb-3">
-                  <label for="cpass" class="form-label"
-                    >Confrim Password:</label
-                  >
+                  <label for="cpass" class="form-label">Confrim Password:</label>
                   <input
                     type="password"
                     class="form-control"
@@ -32,16 +30,9 @@
                   />
                 </div>
                 <div class="mb-3 d-grid">
-                  <button type="submit" class="btn btn-primary">
-                    Change Password
-                  </button>
+                  <button type="submit" class="btn btn-primary">Change Password</button>
                 </div>
-                <span
-                  >Don't have an account?
-                  <router-link to="/register"
-                    >Click here to register.</router-link
-                  ></span
-                >
+                <span>Don't have an account? <router-link to="/register">Click here to register.</router-link></span>
               </form>
             </div>
           </div>
@@ -50,79 +41,46 @@
     </div>
   </div>
 </template>
-<script>
-//import name from './
+<script setup>
+import { onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
 
-export default {
-  data() {
-    return {
-      token: "",
-      form: {
-        password: 'jhonreyj6',
-        confirm_password: 'jhonreyj6',
-      }
-    };
-  },
-  components: {},
+const token = ref();
+const form = ref({
+  password: "",
+  confirm_password: "",
+});
 
-  props: {},
+const route = useRoute();
 
-  computed: {},
-
-  methods: {
-    changePass() {
-      axios({
-          method: 'patch',
-          params: {
-            password: this.form.password,
-            confirm_password: this.form.confirm_password,
-            access_token: this.token,
-          },
-          url: `/api/reset/password`,
-      }).then(res => {
-        console.log(res.data);
-      }).catch(err => {
-        console.log(err.response.data.message);
-      });
-    }
-  },
-
-  watch: {
-    $data: {
-      handler: function (val, oldVal) {
-        console.log("watcher: ", val);
-      },
-      deep: true,
+const changePass = () => {
+  axios({
+    method: "patch",
+    params: {
+      password: form.value.password,
+      confirm_password: form.value.confirm_password,
+      access_token: token.value,
     },
-
-    $props: {
-      handler: function (val, oldVal) {
-        console.log("watcher: ", val);
-      },
-      deep: true,
-    },
-    some_prop: function () {
-      //do something if some_prop updated
-    },
-  },
-
-  updated() {},
-
-  beforeMounted() {},
-
-  mounted() {
-    axios({
-      method: "get",
-      url: `/api/reset/password/${this.$route.query.access_token}`,
+    url: `/api/reset/password`,
+  })
+    .then((res) => {
+      console.log(res.data);
     })
-      .then((res) => {
-        this.token = res.data;
-      })
-      .catch((err) => {});
-  },
+    .catch((err) => {
+      console.log(err.response.data.message);
+    });
 };
+
+onMounted(() => {
+  axios({
+    method: "get",
+    url: `/api/reset/password/${route.query.access_token}`,
+  })
+    .then((res) => {
+      token.value = res.data;
+    })
+    .catch((err) => {});
+});
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

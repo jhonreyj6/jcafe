@@ -207,14 +207,6 @@ const router = createRouter({
         },
 
         {
-            path: "/save",
-            name: "Save",
-            component: () =>
-                import(/* webpackChunkName: "Save" */ "../views/Save.vue"),
-            meta: { requiresAuth: true },
-        },
-
-        {
             path: "/post/:id",
             name: "PostPage",
             component: () =>

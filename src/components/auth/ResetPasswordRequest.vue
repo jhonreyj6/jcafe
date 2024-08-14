@@ -7,9 +7,7 @@
             <div class="card-body">
               <div class="mb-4">
                 <h5>Forgot Password?</h5>
-                <p class="mb-2">
-                  Enter your registered email ID to reset the password
-                </p>
+                <p class="mb-2">Enter your registered email ID to reset the password</p>
               </div>
               <form @submit="resetPassword">
                 <div class="mb-3">
@@ -24,16 +22,9 @@
                   />
                 </div>
                 <div class="mb-3 d-grid">
-                  <button type="submit" ref="reset_btn" class="btn btn-primary">
-                    Reset Password
-                  </button>
+                  <button type="submit" ref="reset_btn" class="btn btn-primary">Reset Password</button>
                 </div>
-                <span
-                  >Don't have an account?
-                  <router-link to="/register"
-                    >Click here to register.</router-link
-                  ></span
-                >
+                <span>Don't have an account? <router-link to="/register">Click here to register.</router-link></span>
               </form>
             </div>
           </div>
@@ -43,67 +34,24 @@
   </div>
 </template>
 <script>
-//import name from './
+import { ref } from "vue";
 
-export default {
-  data() {
-    return {
-      email: "j6cafe2018@gmail.com",
-    };
-  },
-  components: {},
+const email = ref("");
 
-  props: {},
-
-  computed: {},
-
-  methods: {
-    resetPassword(e) {
-      e.preventDefault();
-      axios({
-        method: "post",
-        url: "/api/reset/password/request",
-        data: {
-          email: this.email,
-        },
-      })
-        .then(function (res) {
-
-        })
-        .catch(function (err) {
-          console.log(err.response.data.message);
-        });
-
+const resetPassword = (e) => {
+  e.preventDefault();
+  axios({
+    method: "post",
+    url: "/api/reset/password/request",
+    data: {
+      email: email.value,
     },
-  },
-
-  watch: {
-    $data: {
-      handler: function (val, oldVal) {
-        console.log("watcher: ", val);
-      },
-      deep: true,
-    },
-
-    $props: {
-      handler: function (val, oldVal) {
-        console.log("watcher: ", val);
-      },
-      deep: true,
-    },
-    some_prop: function () {
-      //do something if some_prop updated
-    },
-  },
-
-  updated() {},
-
-  beforeMounted() {},
-
-  mounted() {},
+  })
+    .then(function (res) {})
+    .catch(function (err) {
+      console.log(err.response.data.message);
+    });
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
