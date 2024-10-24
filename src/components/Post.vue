@@ -31,7 +31,7 @@
                 height="350"
               />
               <video v-else class="w-100 h-100" controls>
-                <source :src="file.image_url" :type="`video/${file.file_type}`" />
+                <source :src="displayPostImage(file.file_link)" :type="`video/${file.file_type}`" />
               </video>
             </router-link>
           </div>
@@ -42,12 +42,12 @@
             <router-link :to="`/post/${data.id}?item=${index}`">
               <img
                 v-if="file.file_type == 'png' || file.file_type == 'jpg' || !file.file_type"
-                :src="file.image_url"
+                :src="displayPostImage(file.file_link)"
                 class="w-100"
                 height="320"
               />
               <video v-else class="w-100 h-100" controls>
-                <source :src="file.image_url" :type="`video/${file.file_type}`" />
+                <source :src="displayPostImage(file.file_link)" :type="`video/${file.file_type}`" />
               </video>
             </router-link>
           </div>
@@ -64,12 +64,12 @@
                 <router-link :to="`/post/${data.id}?item=${index}`">
                   <img
                     v-if="file.file_type == 'png' || file.file_type == 'jpg' || !file.file_type"
-                    :src="file.image_url"
+                    :src="displayPostImage(file.file_link)"
                     class="w-100"
                     height="280"
                   />
                   <video v-else class="w-100 h-100" controls>
-                    <source :src="file.image_url" :type="`video/${file.file_type}`" />
+                    <source :src="displayPostImage(file.file_link)" :type="`video/${file.file_type}`" />
                   </video>
                 </router-link>
               </div>
@@ -84,12 +84,12 @@
                 <router-link :to="`/post/${data.id}?item=${index}`">
                   <img
                     v-if="file.file_type == 'png' || file.file_type == 'jpg' || !file.file_type"
-                    :src="file.image_url"
+                    :src="displayPostImage(file.file_link)"
                     class="w-100"
                     height="240"
                   />
                   <video v-else class="w-100 h-100" controls>
-                    <source :src="file.image_url" :type="`video/${file.file_type}`" />
+                    <source :src="displayPostImage(file.file_link)" :type="`video/${file.file_type}`" />
                   </video>
                 </router-link>
               </div>
@@ -110,12 +110,12 @@
                   <img
                     v-if="file.file_type == 'png' || file.file_type == 'jpg' || !file.file_type"
                     :class="index == 3 ? 'opacity-25' : ''"
-                    :src="file.image_url"
+                    :src="displayPostImage(file.file_link)"
                     class="w-100"
                     height="240"
                   />
                   <video v-else class="w-100 h-100" controls>
-                    <source :src="file.image_url" :type="`video/${file.file_type}`" />
+                    <source :src="displayPostImage(file.file_link)" :type="`video/${file.file_type}`" />
                   </video>
                   <div class="position-absolute end-50 top-50 text-white" v-if="index == 3">
                     <i class="fa fa-plus-square"></i>

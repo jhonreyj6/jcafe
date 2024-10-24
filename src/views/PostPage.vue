@@ -27,13 +27,13 @@
                         <div v-if="currentFile == index">
                           <img
                             v-if="file.file_type == 'png' || file.file_type == 'jpg' || !file.file_type"
-                            :src="file.image_url"
+                            :src="displayVideoOrImage(file.image_url)"
                             alt=""
                             class="img-height w-100"
                           />
 
                           <video v-else class="w-100" controls>
-                            <source :src="file.image_url" :type="`video/${file.file_type}`" />
+                            <source :src="displayVideoOrImage(file.image_url)" :type="`video/${file.file_type}`" />
                           </video>
 
                           <div class="position-absolute mx-0 absolute-center-left" v-if="currentFile > 0">
@@ -73,14 +73,20 @@
 </template>
 <script setup>
 import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import Post from "../components/Post.vue";
 import { userStore } from "../stores/userStore";
 
 const currentFile = ref(0);
-const post = ref();
+const post = ref({
+  data: [],
+});
 const router = useRouter();
 const route = useRoute();
+
+const displayVideoOrImage = (img_url) => {
+  return `${import.meta.env.VITE_API_URL}${img_url}`;
+};
 
 const prevImage = (data) => {
   if (currentFile.value != 0) {
