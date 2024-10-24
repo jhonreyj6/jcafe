@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-md-3 col-12">
             <div class="bg-image hover-zoom ripple rounded mb-3 ripple-surface">
-              <img :src="data.image_url" class="w-100 product-img img-thumbnail" />
+              <img :src="displayProductImage(data.image)" class="w-100 product-img img-thumbnail" />
             </div>
           </div>
           <div class="col-md-6 col-7">
@@ -84,6 +84,10 @@
 import { computed, onMounted } from "vue";
 import { userStore } from "../stores/userStore";
 import Star from "./Star.vue";
+
+const displayProductImage = (img) => {
+  return `${import.meta.env.VITE_API_URL}/storage/products/images/${img}`;
+};
 
 const currentUser = computed(() => {
   return userStore().user;

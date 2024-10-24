@@ -27,7 +27,7 @@
                   class="img-account-profile rounded-circle mb-2"
                   width="120"
                   height="120"
-                  :src="form.photo"
+                  :src="displayUserImage(form.id, form.photo)"
                   id="myPhoto"
                   alt=""
                 />
@@ -139,6 +139,7 @@ import { onMounted, ref } from "vue";
 import { userStore } from "../stores/userStore";
 
 const form = ref({
+  id: "",
   first_name: "",
   last_name: "",
   birthday: "",
@@ -157,6 +158,10 @@ const error = ref({
   last_name: "",
   contact: "",
 });
+
+const displayUserImage = (id, img) => {
+  return `${import.meta.env.VITE_API_URL}/storage/users/${id}/images/${img}`;
+};
 
 const updateProfile = (e) => {
   e.target.setAttribute("disabled", true);
@@ -230,6 +235,7 @@ const getAuthUserDetails = () => {
   })
     .then((res) => {
       user.value = res.data;
+      form.value.id = res.data.id;
       form.value.first_name = res.data.first_name;
       form.value.last_name = res.data.last_name;
       form.value.email = res.data.email;
@@ -237,7 +243,7 @@ const getAuthUserDetails = () => {
       form.value.contact = res.data.contact;
       form.value.birthday = res.data.birthday;
       form.value.photo = res.data.profile_img
-        ? res.data.image_url
+        ? res.data.profile_img
         : "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
     })
     .catch((err) => {});
