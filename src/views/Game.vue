@@ -15,7 +15,7 @@
                   height="250"
                 />
               </div>
-              <div class="py-3 mx-3 w-100">
+              <div class="d-flex flex-column py-3 mx-3 w-100">
                 <div class="d-flex text-primary justify-content-between align-content-center">
                   <h4>{{ game.name }}</h4>
                   <div class="fs-5">
@@ -27,7 +27,7 @@
                 <p class="game-description">
                   {{ game.description }}
                 </p>
-                <a :href="game.trailer_link" class="btn btn-primary w-100"> Trailer </a>
+                <a :href="game.trailer_link" class="btn btn-primary w-100 mt-auto"> Trailer </a>
               </div>
             </div>
           </div>
