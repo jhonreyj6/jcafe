@@ -16,7 +16,7 @@ axios.interceptors.response.use(function (response) {
   return response;
 }, function (error) {
   // Check your token for validity, and if needed, refresh the token / force re-login etc.
-  if(error.response.status == 401) {
+  if(error.response.status == 401 && window.location.pathname != "/login") {
       userStore().$reset();
       window.location.href = '/login';
   }
