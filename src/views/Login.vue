@@ -32,19 +32,19 @@
               <!-- Email input -->
               <div class="form-outline mb-3">
                 <label class="form-label" for="form1Example13">Email address:</label>
-                <input type="email" v-model="email" id="form1Example13" class="form-control form-control-lg" />
+                <input type="email" v-model="email" id="form1Example13" class="form-control" />
                 <span class="text-danger" v-if="errorMessages.email" v-text="errorMessages.email"></span>
               </div>
 
               <!-- Password input -->
-              <div class="form-outline mb-3">
+              <div class="form-outline mb-4">
                 <label class="form-label" for="form1Example23">Password:</label>
-                <input type="password" v-model="password" id="form1Example23" class="form-control form-control-lg" />
+                <input type="password" v-model="password" id="form1Example23" class="form-control" />
                 <span class="text-danger" v-if="errorMessages.password" v-text="errorMessages.password"></span>
               </div>
 
               <!-- Submit button -->
-              <button type="button" @click="authenticate" class="btn btn-primary w-100 bg-gradient btn-lg btn-block">
+              <button type="button" @click="authenticate" class="btn btn-primary w-100 bg-gradient btn-block">
                 Sign In
               </button>
             </div>
