@@ -138,8 +138,7 @@
         </div>
       </div>
 
-      <div class="px-2">
-        <hr />
+      <div class="px-2 mt-4">
         <div class="btn-group d-flex mb-2" role="group">
           <a
             role="button"
