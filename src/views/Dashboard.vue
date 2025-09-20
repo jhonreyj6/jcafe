@@ -1,20 +1,20 @@
 <template>
-    <div>
-        <div class="container space-intro">
-            <div class="row d-flex">
-                <div class="col-lg-8">
-                    <div>
-                        <Post :datas="posts" />
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <Ads />
-                </div>
-            </div>
+  <div>
+    <div class="container space-intro">
+      <div class="row d-flex">
+        <div class="col-lg-9">
+          <div>
+            <Post :datas="posts" />
+          </div>
         </div>
 
-        <!-- <div
+        <div class="col-lg-3">
+          <Ads />
+        </div>
+      </div>
+    </div>
+
+    <!-- <div
             class="modal fade"
             id="editModal"
             tabindex="-1"
@@ -137,7 +137,7 @@
                 </div>
             </div>
         </div> -->
-    </div>
+  </div>
 </template>
 
 <script setup>
@@ -154,71 +154,64 @@ const posts = ref([]);
 // });
 
 const post = ref({
-    currentPage: 1,
-    timeout: 0,
-    collection: [],
+  currentPage: 1,
+  timeout: 0,
+  collection: [],
 });
 
 const getPost = () => {
-    if (userStore().user && post.value.currentPage) {
-        const AuthStr = "Bearer ".concat(userStore().access_token);
-        return new Promise((resolve, reject) => {
-            axios({
-                method: "get",
-                url: `/api/posts?page=${post.value.currentPage}`,
-                headers: { Authorization: AuthStr },
-            })
-                .then((res) => {
-                    post.value.timeout = 1;
-                    if (post.value.currentPage == 1) {
-                        posts.value = res.data;
-                        resolve(
-                            res.data.data.forEach((data) => {
-                                post.value.collection.push(data.id);
-                            })
-                        );
-                    } else {
-                        resolve(
-                            res.data.data.forEach((data) => {
-                                if (!post.value.collection.includes(data.id)) {
-                                    posts.value.data.push(data);
-                                    post.value.collection.push(data.id);
-                                }
-                            })
-                        );
-                    }
-                })
-                .catch((err) => {
-                    console.log(err.response);
-                    reject(err);
-                });
+  if (userStore().user && post.value.currentPage) {
+    const AuthStr = "Bearer ".concat(userStore().access_token);
+    return new Promise((resolve, reject) => {
+      axios({
+        method: "get",
+        url: `/api/posts?page=${post.value.currentPage}`,
+        headers: { Authorization: AuthStr },
+      })
+        .then((res) => {
+          post.value.timeout = 1;
+          if (post.value.currentPage == 1) {
+            posts.value = res.data;
+            resolve(
+              res.data.data.forEach((data) => {
+                post.value.collection.push(data.id);
+              })
+            );
+          } else {
+            resolve(
+              res.data.data.forEach((data) => {
+                if (!post.value.collection.includes(data.id)) {
+                  posts.value.data.push(data);
+                  post.value.collection.push(data.id);
+                }
+              })
+            );
+          }
+        })
+        .catch((err) => {
+          console.log(err.response);
+          reject(err);
         });
-    }
+    });
+  }
 };
 
 const handleScroll = (event) => {
-    if (
-        window.scrollY + 200 >
-        document.documentElement.scrollHeight -
-            document.documentElement.clientHeight
-    ) {
-        if (
-            posts.value.last_page != post.value.currentPage &&
-            post.value.timeout
-        ) {
-            post.value.timeout = 0;
-            post.value.currentPage++;
-            getPost();
-        }
+  if (window.scrollY + 200 > document.documentElement.scrollHeight - document.documentElement.clientHeight) {
+    if (posts.value.last_page != post.value.currentPage && post.value.timeout) {
+      post.value.timeout = 0;
+      post.value.currentPage++;
+      getPost();
     }
+  }
 };
 
 onMounted(() => {
-    getPost();
+  getPost();
 });
 
 onBeforeMount(() => {
-    window.addEventListener("scroll", handleScroll);
+  window.addEventListener("scroll", handleScroll);
 });
 
 // export default {
@@ -480,23 +473,21 @@ onBeforeMount(() => {
 
 <style scoped>
 .min-100 {
-    min-height: 100px;
+  min-height: 100px;
 }
 
 .dropbox {
-    height: 150px;
+  height: 150px;
 }
 
 .img_attach_remove {
-    right: 0%;
-    top: 0%;
-    color: #ffffff;
+  right: 0%;
+  top: 0%;
+  color: #ffffff;
 }
 
 .center {
-    top: 40% !important;
-    left: 42% !important;
+  top: 40% !important;
+  left: 42% !important;
 }
 </style>
-
-
